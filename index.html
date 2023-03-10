@@ -1,108 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>My GitHub Page</title>
-    <style>
-      /* Styles for the education details */
-      .education-details {
-        display: none;
-        margin-top: 10px;
-        padding: 10px;
-        background-color: #eee;
-        border-radius: 5px;
-      }
-    </style>
-    <script>
-      function toggleEducationDetails() {
-        var educationDetails = document.querySelector('.education-details');
-        if (educationDetails.style.display === 'none') {
-          educationDetails.style.display = 'block';
-        } else {
-          educationDetails.style.display = 'none';
-        }
-      }
-    </script>
-  </head>
-  <body>
-    <header>
-      <h1>My GitHub Page</h1>
-    </header>
-    
-    <section id="about">
-      <h2>About Me</h2>
-      <p>Write a brief introduction about yourself here.</p>
-    </section>
-    
-    <section id="work-experience">
-      <h2>Work Experience</h2>
-      <ul>
-        <li>
-          <h3>Job Title</h3>
-          <h4>Company Name</h4>
-          <p>Date range worked</p>
-          <ul>
-            <li>Responsibility #1</li>
-            <li>Responsibility #2</li>
-            <li>Responsibility #3</li>
-          </ul>
-        </li>
-        
-        <li>
-          <h3>Job Title</h3>
-          <h4>Company Name</h4>
-          <p>Date range worked</p>
-          <ul>
-            <li>Responsibility #1</li>
-            <li>Responsibility #2</li>
-            <li>Responsibility #3</li>
-          </ul>
-        </li>
-      </ul>
-    </section>
-    
-    <section id="projects">
-      <h2>Projects</h2>
-      <ul>
-        <li>
-          <h3>Project Title</h3>
-          <p>A brief description of the project.</p>
-          <p>Technologies used: HTML, CSS, JavaScript</p>
-        </li>
-        
-        <li>
-          <h3>Project Title</h3>
-          <p>A brief description of the project.</p>
-          <p>Technologies used: HTML, CSS, JavaScript</p>
-        </li>
-      </ul>
-    </section>
-    
-    <section id="skills">
-      <h2>Skills</h2>
-      <ul>
-        <li>HTML</li>
-        <li>CSS</li>
-        <li>JavaScript</li>
-        <li>Python</li>
-        <li>SQL</li>
-      </ul>
-    </section>
-    
-    <section id="education">
-      <h2>Education</h2>
-      <button onclick="toggleEducationDetails()">Toggle Details</button>
-      <div class="education-details">
-        <ul>
-          <li>
-            <h3>Degree Name</h3>
-            <h4>University Name</h4>
-            <p>Date range attended</p>
-            <p>GPA: x.xx</p>
-          </li>
-          
-          <li>
-            <h3>Degree Name</h3>
-            <h4>University Name</h4>
-            <p>Date range attended</p>
-            <
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>My Portfolio</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<header>
+		<h1>My Portfolio</h1>
+		<nav>
+			<ul>
+				<li><a href="#about">About</a></li>
+				<li><a href="#work-experience">Work Experience</a></li>
+				<li><a href="#projects">Projects</a></li>
+				<li><a href="#skills">Skills</a></li>
+				<li><a href="#education">Education</a></li>
+				<li><a href="#languages">Languages</a></li>
+			</ul>
+		</nav>
+	</header>
+	<main>
+		<section id="about">
+			<h2>About</h2>
+			<p>Insert your about information here.</p>
+		</section>
+		<section id="work-experience">
+			<h2>Work Experience</h2>
+			<ul>
+				<li>
+					<h3>Job Title</h3>
+					<p>Company Name</p>
+					<p>Employment Dates</p>
+					<ul>
+						<li>Responsibility 1</li>
+						<li>Responsibility 2</li>
+						<li>Responsibility 3</li>
+					</ul>
+				</li>
+			</ul>
+		</section>
+		<section id="projects">
+			<h2>Projects</h2>
+			<ul>
+				<li>
+					<h3>Project Title</h3>
+					<p>Project Description</p>
+					<p>Technologies Used</p>
+					<p>Link to Project</p>
+				</li>
+			</ul>
+		</section>
+		<section id="skills">
+			<h2>Skills</h2>
+			<ul>
+				<li>Skill 1</li>
+				<li>Skill 2</li>
+				<li>Skill 3</li>
+				<li>Skill 4</li>
+			</ul>
+		</section>
+		<section id="education">
+			<h2>Education</h2>
+			<ul>
+				<li>
+					<h3>Degree Title</h3>
+					<p>Institution Name</p>
+					<p>Graduation Date</p>
+					<p>GPA</p>
+				</li>
+			</ul>
+		</section>
+		<section id="languages">
+			<h2>Languages</h2>
+			<ul>
+				<li>Language 1</li>
+				<li>Language 2</li>
+				<li>Language 3</li>
+			</ul>
+		</section>
+	</main>
+	<footer>
+		<p>Copyright © Your Name</p>
+	</footer>
+</body>
+</html>
