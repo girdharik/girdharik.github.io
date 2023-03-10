@@ -1,75 +1,138 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Portfolio</title>
-
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/css/bootstrap.min.css">
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-  <!-- Navigation Menu -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-      <a class="navbar-brand" href="#">My Portfolio</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#home">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#about">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#work-experience">Work Experience</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#projects">Projects</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#skills">Skills</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#certifications">Certifications</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#education">Education</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#training">Training</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#languages">Languages</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#achievements">Achievements</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Home Section -->
-  <section id="home" class="py-5 bg-primary text-white">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-4">
-          <img src="profile-picture.jpg" alt="Profile Picture" class="img-fluid rounded-circle">
-        </div>
-        <div class="col-md-8">
-          <h1 class="display-4">Your Name</h1>
-          <p class="lead">Web Developer</p>
-          <p>Hi, I'm a web developer with experience in HTML, CSS, JavaScript, and various web frameworks. I'm passionate about creating beautiful and responsive websites that engage users and drive business results. Let's work together to bring your web project to life!</p>
-          <ul class="list-unstyled">
-           
+	<title>My Resume</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<style>
+		body {
+			font-family: Arial, Helvetica, sans-serif;
+			margin: 0;
+		}
+		
+		/* Header */
+		.header {
+			background-color: #292929;
+			padding: 30px;
+			text-align: center;
+		}
+		
+		.header h1 {
+			font-size: 50px;
+			color: white;
+			margin: 0;
+		}
+		
+		/* Profile picture */
+		.profile-pic {
+			margin-top: -100px;
+			text-align: center;
+		}
+		
+		.profile-pic img {
+			width: 200px;
+			height: 200px;
+			border-radius: 50%;
+			border: 5px solid #292929;
+			box-shadow: 0 0 5px grey;
+		}
+		
+		/* About */
+		.about {
+			background-color: #f2f2f2;
+			padding: 20px;
+		}
+		
+		.about h2 {
+			font-size: 36px;
+			margin-top: 0;
+		}
+		
+		.about p {
+			font-size: 20px;
+		}
+		
+		/* Work experience */
+		.work {
+			padding: 20px;
+		}
+		
+		.work h2 {
+			font-size: 36px;
+			margin-top: 0;
+		}
+		
+		.work h3 {
+			font-size: 24px;
+			margin-top: 0;
+		}
+		
+		.work p {
+			font-size: 20px;
+		}
+		
+		/* Projects */
+		.projects {
+			background-color: #f2f2f2;
+			padding: 20px;
+		}
+		
+		.projects h2 {
+			font-size: 36px;
+			margin-top: 0;
+		}
+		
+		.projects h3 {
+			font-size: 24px;
+			margin-top: 0;
+		}
+		
+		.projects p {
+			font-size: 20px;
+		}
+		
+		.projects a {
+			font-size: 20px;
+		}
+		
+		/* Skills */
+		.skills {
+			padding: 20px;
+		}
+		
+		.skills h2 {
+			font-size: 36px;
+			margin-top: 0;
+		}
+		
+		.skills ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			display: flex;
+			flex-wrap: wrap;
+		}
+		
+		.skills li {
+			margin: 10px;
+			padding: 10px;
+			width: 150px;
+			height: 150px;
+			background-color: #f2f2f2;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			border-radius: 10px;
+			box-shadow: 0 0 5px grey;
+		}
+		
+		.skills img {
+			width: 80px;
+			height: 80px;
+			margin-bottom: 10px;
+		}
+		
+		.skills a {
+			font-size: 20px;
