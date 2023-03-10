@@ -3,6 +3,26 @@
   <head>
     <meta charset="UTF-8">
     <title>My GitHub Page</title>
+    <style>
+      /* Styles for the education details */
+      .education-details {
+        display: none;
+        margin-top: 10px;
+        padding: 10px;
+        background-color: #eee;
+        border-radius: 5px;
+      }
+    </style>
+    <script>
+      function toggleEducationDetails() {
+        var educationDetails = document.querySelector('.education-details');
+        if (educationDetails.style.display === 'none') {
+          educationDetails.style.display = 'block';
+        } else {
+          educationDetails.style.display = 'none';
+        }
+      }
+    </script>
   </head>
   <body>
     <header>
@@ -71,30 +91,18 @@
     
     <section id="education">
       <h2>Education</h2>
-      <ul>
-        <li>
-          <h3>Degree Name</h3>
-          <h4>University Name</h4>
-          <p>Date range attended</p>
-          <p>GPA: x.xx</p>
-        </li>
-        
-        <li>
-          <h3>Degree Name</h3>
-          <h4>University Name</h4>
-          <p>Date range attended</p>
-          <p>GPA: x.xx</p>
-        </li>
-      </ul>
-    </section>
-    
-    <section id="languages">
-      <h2>Languages</h2>
-      <ul>
-        <li>English</li>
-        <li>Spanish</li>
-        <li>French</li>
-      </ul>
-    </section>
-  </body>
-</html>
+      <button onclick="toggleEducationDetails()">Toggle Details</button>
+      <div class="education-details">
+        <ul>
+          <li>
+            <h3>Degree Name</h3>
+            <h4>University Name</h4>
+            <p>Date range attended</p>
+            <p>GPA: x.xx</p>
+          </li>
+          
+          <li>
+            <h3>Degree Name</h3>
+            <h4>University Name</h4>
+            <p>Date range attended</p>
+            <
