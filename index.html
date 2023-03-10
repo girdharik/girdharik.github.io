@@ -1,65 +1,110 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>My Resume</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <style>
-      .content {
-        display: none;
-      }
+<head>
+	<title>My Resume</title>
+	<!-- Add your CSS and JavaScript files here -->
+	<style>
+		/* Customize your page styles here */
+		#skills ul {
+			list-style: none;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+			align-items: center;
+			margin: 0;
+			padding: 0;
+		}
 
-      .content:first-child {
-        display: block;
-      }
+		#skills li {
+			flex-basis: calc(33.33% - 20px);
+			margin-bottom: 20px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
 
-      .toggle {
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-      }
+		#skills img {
+			width: 80px;
+			height: 80px;
+			margin-right: 20px;
+		}
 
-      .toggle-icon {
-        margin-left: 5px;
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <img src="profile-picture.jpg" alt="Profile picture">
-      <h1>Your Name</h1>
-      <p>Contact information</p>
-    </header>
-    <main>
-      <section>
-        <h2 class="toggle">About <span class="toggle-icon">+</span></h2>
-        <div class="content">
-          <p>Write a brief summary of your skills and experience here</p>
-        </div>
-      </section>
-      <section>
-        <h2 class="toggle">Work Experience <span class="toggle-icon">+</span></h2>
-        <div class="content">
-          <ul>
-            <li>Job title, Company name, Dates worked</li>
-            <li>Job title, Company name, Dates worked</li>
-            <li>Job title, Company name, Dates worked</li>
-          </ul>
-        </div>
-      </section>
-      <section>
-        <h2 class="toggle">Certifications <span class="toggle-icon">+</span></h2>
-        <div class="content">
-          <ul>
-            <li>Certification name, Issuing organization, Date obtained</li>
-            <li>Certification name, Issuing organization, Date obtained</li>
-          </ul>
-        </div>
-      </section>
-      <section>
-        <h2 class="toggle">Education <span class="toggle-icon">+</span></h2>
-        <div class="content">
-          <ul>
-            <li>Degree name, Institution name, Dates attended</li>
-            <li>Degree name, Institution name, Dates attended</li>
-          </ul>
-       
+		#skills p {
+			margin: 0;
+			font-size: 18px;
+			font-weight: bold;
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<img src="profile_picture.jpg" alt="Profile Picture">
+		<h1>Name</h1>
+		<p>Contact Details</p>
+		<button id="toggle-menu">Menu</button>
+	</header>
+
+	<div id="menu" class="hidden">
+		<ul>
+			<li><a href="#about">About</a></li>
+			<li><a href="#work-experience">Work Experience</a></li>
+			<li><a href="#skills">Skills</a></li>
+			<li><a href="#certifications">Certifications</a></li>
+			<li><a href="#education">Education</a></li>
+			<li><a href="#training">Training</a></li>
+			<li><a href="#interests">Interests</a></li>
+			<li><a href="#achievements">Achievements</a></li>
+		</ul>
+	</div>
+
+	<main>
+		<section id="about">
+			<!-- Add your About section content here -->
+		</section>
+
+		<section id="work-experience">
+			<!-- Add your Work Experience section content here -->
+		</section>
+
+		<section id="skills">
+			<h2>Skills</h2>
+			<ul>
+				<li>
+					<img src="path/to/icon1.png" alt="Skill 1">
+					<p>Skill 1</p>
+				</li>
+				<li>
+					<img src="path/to/icon2.png" alt="Skill 2">
+					<p>Skill 2</p>
+				</li>
+				<li>
+					<img src="path/to/icon3.png" alt="Skill 3">
+					<p>Skill 3</p>
+				</li>
+			</ul>
+		</section>
+
+		<section id="certifications">
+			<!-- Add your Certifications section content here -->
+		</section>
+
+		<section id="education">
+			<!-- Add your Education section content here -->
+		</section>
+
+		<section id="training">
+			<!-- Add your Training section content here -->
+		</section>
+
+		<section id="interests">
+			<!-- Add your Interests section content here -->
+		</section>
+
+		<section id="achievements">
+			<!-- Add your Achievements section content here -->
+		</section>
+	</main>
+
+	<script>
+		const toggleMenu = document.querySelector('#toggle-menu');
+		const menu
