@@ -2,6 +2,26 @@
 <html>
   <head>
     <title>My Resume</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+      .content {
+        display: none;
+      }
+
+      .content:first-child {
+        display: block;
+      }
+
+      .toggle {
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .toggle-icon {
+        margin-left: 5px;
+      }
+    </style>
   </head>
   <body>
     <header>
@@ -11,49 +31,35 @@
     </header>
     <main>
       <section>
-        <h2>About</h2>
-        <p>Write a brief summary of your skills and experience here</p>
+        <h2 class="toggle">About <span class="toggle-icon">+</span></h2>
+        <div class="content">
+          <p>Write a brief summary of your skills and experience here</p>
+        </div>
       </section>
       <section>
-        <h2>Work Experience</h2>
-        <ul>
-          <li>Job title, Company name, Dates worked</li>
-          <li>Job title, Company name, Dates worked</li>
-          <li>Job title, Company name, Dates worked</li>
-        </ul>
+        <h2 class="toggle">Work Experience <span class="toggle-icon">+</span></h2>
+        <div class="content">
+          <ul>
+            <li>Job title, Company name, Dates worked</li>
+            <li>Job title, Company name, Dates worked</li>
+            <li>Job title, Company name, Dates worked</li>
+          </ul>
+        </div>
       </section>
       <section>
-        <h2>Certifications</h2>
-        <ul>
-          <li>Certification name, Issuing organization, Date obtained</li>
-          <li>Certification name, Issuing organization, Date obtained</li>
-        </ul>
+        <h2 class="toggle">Certifications <span class="toggle-icon">+</span></h2>
+        <div class="content">
+          <ul>
+            <li>Certification name, Issuing organization, Date obtained</li>
+            <li>Certification name, Issuing organization, Date obtained</li>
+          </ul>
+        </div>
       </section>
       <section>
-        <h2>Education</h2>
-        <ul>
-          <li>Degree name, Institution name, Dates attended</li>
-          <li>Degree name, Institution name, Dates attended</li>
-        </ul>
-      </section>
-      <section>
-        <h2>Training</h2>
-        <ul>
-          <li>Training course name, Provider name, Dates attended</li>
-          <li>Training course name, Provider name, Dates attended</li>
-        </ul>
-      </section>
-      <section>
-        <h2>Interests</h2>
-        <p>Write about your hobbies and interests here</p>
-      </section>
-      <section>
-        <h2>Achievements</h2>
-        <ul>
-          <li>Achievement 1</li>
-          <li>Achievement 2</li>
-        </ul>
-      </section>
-    </main>
-  </body>
-</html>
+        <h2 class="toggle">Education <span class="toggle-icon">+</span></h2>
+        <div class="content">
+          <ul>
+            <li>Degree name, Institution name, Dates attended</li>
+            <li>Degree name, Institution name, Dates attended</li>
+          </ul>
+       
