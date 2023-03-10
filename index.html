@@ -1,138 +1,98 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>My Resume</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<style>
-		body {
-			font-family: Arial, Helvetica, sans-serif;
-			margin: 0;
-		}
-		
-		/* Header */
-		.header {
-			background-color: #292929;
-			padding: 30px;
-			text-align: center;
-		}
-		
-		.header h1 {
-			font-size: 50px;
-			color: white;
-			margin: 0;
-		}
-		
-		/* Profile picture */
-		.profile-pic {
-			margin-top: -100px;
-			text-align: center;
-		}
-		
-		.profile-pic img {
-			width: 200px;
-			height: 200px;
-			border-radius: 50%;
-			border: 5px solid #292929;
-			box-shadow: 0 0 5px grey;
-		}
-		
-		/* About */
-		.about {
-			background-color: #f2f2f2;
-			padding: 20px;
-		}
-		
-		.about h2 {
-			font-size: 36px;
-			margin-top: 0;
-		}
-		
-		.about p {
-			font-size: 20px;
-		}
-		
-		/* Work experience */
-		.work {
-			padding: 20px;
-		}
-		
-		.work h2 {
-			font-size: 36px;
-			margin-top: 0;
-		}
-		
-		.work h3 {
-			font-size: 24px;
-			margin-top: 0;
-		}
-		
-		.work p {
-			font-size: 20px;
-		}
-		
-		/* Projects */
-		.projects {
-			background-color: #f2f2f2;
-			padding: 20px;
-		}
-		
-		.projects h2 {
-			font-size: 36px;
-			margin-top: 0;
-		}
-		
-		.projects h3 {
-			font-size: 24px;
-			margin-top: 0;
-		}
-		
-		.projects p {
-			font-size: 20px;
-		}
-		
-		.projects a {
-			font-size: 20px;
-		}
-		
-		/* Skills */
-		.skills {
-			padding: 20px;
-		}
-		
-		.skills h2 {
-			font-size: 36px;
-			margin-top: 0;
-		}
-		
-		.skills ul {
-			list-style-type: none;
-			margin: 0;
-			padding: 0;
-			display: flex;
-			flex-wrap: wrap;
-		}
-		
-		.skills li {
-			margin: 10px;
-			padding: 10px;
-			width: 150px;
-			height: 150px;
-			background-color: #f2f2f2;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-			border-radius: 10px;
-			box-shadow: 0 0 5px grey;
-		}
-		
-		.skills img {
-			width: 80px;
-			height: 80px;
-			margin-bottom: 10px;
-		}
-		
-		.skills a {
-			font-size: 20px;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-OgVRvuATP1z7JjHLkuOUXw704mOn+jqGmWAvApebHFwGlODzOgxh6Tc1XQ2n0o7"
+          crossorigin="anonymous">
+
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+          integrity="sha384-mSKPQd4lBEqFqzOmy5XqbX9TktoRtzy5p5w5kYIHcsp5E2OKNWim3eWkM5UfIMgw"
+          crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">Resume</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#experience">Experience</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#projects">Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#skills">Skills</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#certifications">Certifications</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#education">Education</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#languages">Languages</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#achievements">Achievements</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- About -->
+    <section id="about" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <img src="https://via.placeholder.com/150" alt="Profile Picture" class="img-fluid rounded-circle mb-3">
+                        <h1>John Doe</h1>
+                        <p class="lead">Software Developer</p>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <h3>About Me</h3>
+<!-- Experience -->
+<section id="experience" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="mb-5">Experience</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Software Developer</h4>
+                        <p class="card-text">ABC Company</p>
+                        <p class="card-text">Jan 2020 - Present</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <ul>
+                    <li>Developed and maintained web applications using HTML, CSS, and JavaScript</li>
+                    <li>Collaborated with team members to identify and fix software defects</li>
+                    <li>Created and executed unit tests to ensure code quality and functionality</li>
+                    <li>Participated in code reviews to ensure adherence to coding standards</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
