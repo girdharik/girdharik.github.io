@@ -8,17 +8,18 @@
 		}
 
 		.header {
+			position: relative;
 			background-image: url('path/to/background-image.jpg');
 			background-size: cover;
 			background-position: center center;
 			background-repeat: no-repeat;
-			height: 200px; /* adjust height to the size of your background image */
+			height: 400px; /* adjust height to the size of your background image */
 		}
 
 		.profile {
 			position: absolute;
 			top: 50%;
-			left: 50%;
+			left: 5%;
 			transform: translate(-50%, -50%);
 			border-radius: 50%;
 			border: 2px solid white;
@@ -32,12 +33,37 @@
 			height: auto;
 			border-radius: 50%;
 		}
+
+		.about {
+			position: absolute;
+			top: 50%;
+			right: 5%;
+			transform: translate(50%, -50%);
+			color: white;
+			width: 45%;
+		}
+
+		.about h1 {
+			font-size: 3em;
+			margin: 0;
+			padding: 0;
+		}
+
+		.about p {
+			font-size: 1.5em;
+			margin-top: 20px;
+		}
 	</style>
 </head>
 <body>
-	<div class="header"></div>
-	<div class="profile">
-		<img src="path/to/profile-picture.png" alt="Profile Picture">
+	<div class="header">
+		<div class="profile">
+			<img src="path/to/profile-picture.png" alt="Profile Picture">
+		</div>
+		<div class="about">
+			<h1>About Me</h1>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sit amet libero ac enim pulvinar convallis. Fusce pharetra leo at quam imperdiet, sit amet egestas lorem ultricies.</p>
+		</div>
 	</div>
 </body>
 </html>
