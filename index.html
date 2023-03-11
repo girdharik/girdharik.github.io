@@ -2,109 +2,89 @@
 <html>
 <head>
 	<title>My Resume</title>
-	<!-- Add your CSS and JavaScript files here -->
-	<style>
-		/* Customize your page styles here */
-		#skills ul {
-			list-style: none;
-			display: flex;
-			flex-wrap: wrap;
-			justify-content: space-between;
-			align-items: center;
-			margin: 0;
-			padding: 0;
-		}
-
-		#skills li {
-			flex-basis: calc(33.33% - 20px);
-			margin-bottom: 20px;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-		}
-
-		#skills img {
-			width: 80px;
-			height: 80px;
-			margin-right: 20px;
-		}
-
-		#skills p {
-			margin: 0;
-			font-size: 18px;
-			font-weight: bold;
-		}
-	</style>
 </head>
 <body>
 	<header>
-		<img src="profile_picture.jpg" alt="Profile Picture">
-		<h1>Name</h1>
-		<p>Contact Details</p>
-		<button id="toggle-menu">Menu</button>
+		<nav>
+			<button class="menu-toggle">Menu</button>
+			<ul class="menu">
+				<li><a href="#about">About</a></li>
+				<li><a href="#work">Work Experience</a></li>
+				<li><a href="#skills">Skills</a></li>
+				<li><a href="#projects">Projects</a></li>
+				<li><a href="#education">Education</a></li>
+				<li><a href="#certifications">Certifications</a></li>
+				<li><a href="#training">Training</a></li>
+				<li><a href="#languages">Languages</a></li>
+				<li><a href="#interests">Interests</a></li>
+				<li><a href="#achievements">Achievements</a></li>
+				<li><a href="#contact">Contact</a></li>
+			</ul>
+		</nav>
 	</header>
-
-	<div id="menu" class="hidden">
-		<ul>
-			<li><a href="#about">About</a></li>
-			<li><a href="#work-experience">Work Experience</a></li>
-			<li><a href="#skills">Skills</a></li>
-			<li><a href="#certifications">Certifications</a></li>
-			<li><a href="#education">Education</a></li>
-			<li><a href="#training">Training</a></li>
-			<li><a href="#interests">Interests</a></li>
-			<li><a href="#achievements">Achievements</a></li>
-		</ul>
-	</div>
-
+	
 	<main>
 		<section id="about">
-			<!-- Add your About section content here -->
+			<h2>About Me</h2>
+			<p>Write something about yourself here.</p>
 		</section>
-
-		<section id="work-experience">
-			<!-- Add your Work Experience section content here -->
+		
+		<section id="work">
+			<h2>Work Experience</h2>
+			<p>Write your work experience here.</p>
 		</section>
-
+		
 		<section id="skills">
 			<h2>Skills</h2>
-			<ul>
-				<li>
-					<img src="path/to/icon1.png" alt="Skill 1">
-					<p>Skill 1</p>
-				</li>
-				<li>
-					<img src="path/to/icon2.png" alt="Skill 2">
-					<p>Skill 2</p>
-				</li>
-				<li>
-					<img src="path/to/icon3.png" alt="Skill 3">
-					<p>Skill 3</p>
-				</li>
-			</ul>
+			<p>List your skills here.</p>
 		</section>
-
-		<section id="certifications">
-			<!-- Add your Certifications section content here -->
+		
+		<section id="projects">
+			<h2>Projects</h2>
+			<p>List your projects here.</p>
 		</section>
-
+		
 		<section id="education">
-			<!-- Add your Education section content here -->
+			<h2>Education</h2>
+			<p>List your education here.</p>
 		</section>
-
+		
+		<section id="certifications">
+			<h2>Certifications</h2>
+			<p>List your certifications here.</p>
+		</section>
+		
 		<section id="training">
-			<!-- Add your Training section content here -->
+			<h2>Training</h2>
+			<p>List your training courses here.</p>
 		</section>
-
+		
+		<section id="languages">
+			<h2>Languages</h2>
+			<p>List your languages here.</p>
+		</section>
+		
 		<section id="interests">
-			<!-- Add your Interests section content here -->
+			<h2>Interests</h2>
+			<p>List your interests here.</p>
 		</section>
-
+		
 		<section id="achievements">
-			<!-- Add your Achievements section content here -->
+			<h2>Achievements</h2>
+			<p>List your achievements here.</p>
+		</section>
+		
+		<section id="contact">
+			<h2>Contact</h2>
+			<p>Add your contact details here.</p>
 		</section>
 	</main>
-
-	<script>
-		const toggleMenu = document.querySelector('#toggle-menu');
-		const menu
+	
+	<footer>
+		<p>&copy; Your Name</p>
+	</footer>
+	
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="script.js"></script>
+</body>
+</html>
