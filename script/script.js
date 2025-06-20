@@ -10,7 +10,7 @@ document.querySelectorAll('nav ul li a').forEach(link => {
     });
 });
 
-// Highlight active nav link on scroll 
+// Highlight active nav link on scroll
 window.addEventListener('scroll', () => {
     const sections = document.querySelectorAll('section');
     let scrollPos = window.scrollY || document.documentElement.scrollTop;
@@ -28,21 +28,7 @@ window.addEventListener('scroll', () => {
     });
 });
 
-// Animate sections on scroll only (no unstacking on load)
-const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-        }
-    });
-}, { threshold: 0.1 });
-
-document.querySelectorAll('section, .about-bg.about-flex').forEach(section => {
-    observer.observe(section);
-});
-
 // Add animated floating effect to skill icons
-
 document.querySelectorAll('.skill img').forEach((img, i) => {
     img.style.animation = `floatSkill 2.2s ease-in-out ${i * 0.13}s infinite alternate`;
 });
@@ -57,7 +43,6 @@ styleSheet.innerHTML = `
 document.head.appendChild(styleSheet);
 
 // Copy to clipboard for phone and email
-
 document.querySelectorAll('.copy-btn').forEach(btn => {
     btn.addEventListener('click', function() {
         const value = this.getAttribute('data-copy');
