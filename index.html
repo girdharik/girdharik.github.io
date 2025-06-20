@@ -9,15 +9,13 @@
 <body>
     <nav>
         <ul>
+            <li><a href="#" onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#skills">Skills</a></li>
             <li><a href="#work">Work Experience</a></li>
             <li><a href="#education">Education</a></li>
             <li><a href="#projects">Projects</a></li>
             <li><a href="#certifications">Certifications</a></li>
-        </ul>
-        <ul>
-            <li class="home-button" onclick="window.scrollTo({ top: 0, behavior: 'smooth' });">Home</li>
         </ul>
     </nav>
     <section id="about" class="about-bg about-flex">
@@ -26,7 +24,7 @@
             <div class="about-details">
                 <h1>John Doe</h1>
                 <h2>Software Engineer</h2>
-                <div class="social-links liquid">
+                <div class="social-links water-effect">
                     <a href="https://linkedin.com/in/johndoe" target="_blank" title="LinkedIn">
                         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linkedin/linkedin-original.svg" alt="LinkedIn">
                     </a>
@@ -83,7 +81,7 @@
                 <span>Kubernetes</span>
             </div>
             <div class="skill">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg" alt="AWS">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg" alt="AWS">
                 <span>AWS</span>
             </div>
             <div class="skill">
@@ -100,38 +98,39 @@
         <h2>Work Experience</h2>
         <div class="work-timeline">
             <div class="certification work-card">
-                <img src="https://cdn-icons-png.flaticon.com/512/5969/5969184.png" alt="TechCorp Logo" class="company-logo">
+                <img src="https://media.licdn.com/dms/image/D4E0BAQEF4S32BH4w4A/company-logo_100_100/0/1710818802753/microsoft_logo?e=1726992000&v=beta&t=QHgMyokLNynMxHkHjJgIYHAF7g5gl_hRpSP1OrLfDLE" alt="Microsoft Logo" class="company-logo">
                 <span>
                     <div class="job-header">
-                        <strong>Senior Developer</strong>
-                        <div class="job-meta">
-                            <span class="cert-date">2022 - Present</span>
-                            <span class="job-location">San Francisco, CA</span>
-                        </div>
+                        <strong>Senior Software Engineer</strong>
                     </div>
-                    <span class="cert-provider">TechCorp</span>
+                    <span class="company-name">Microsoft</span>
+                    <div class="job-meta">
+                        <span class="job-duration">Jan 2022 - Present · 3 yrs 6 mos</span>
+                        <span class="job-location">Redmond, WA</span>
+                    </div>
                     <ul class="job-description">
-                        <li>Lead developer for cloud-based solutions</li>
-                        <li>Mentored junior engineers</li>
-                        <li>Architected scalable systems</li>
+                        <li>Led development of cloud-based solutions with Azure and improved system performance by 40%</li>
+                        <li>Mentored 5 junior engineers and established best practices for the team</li>
+                        <li>Designed and implemented scalable architecture supporting 1M+ concurrent users</li>
                     </ul>
                 </span>
             </div>
             <div class="timeline-connector"></div>
             <div class="certification work-card">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" alt="Webify Logo" class="company-logo">
+                <img src="https://media.licdn.com/dms/image/C4D0BAQFcIVCLVRQgZg/company-logo_100_100/0/1679066183262/meta_logo?e=1726992000&v=beta&t=bzCuooC7LrNnxIBcmKK5fC3XOUG9569-dOQ0kmsBLrs" alt="Meta Logo" class="company-logo">
                 <span>
                     <div class="job-header">
                         <strong>Software Engineer</strong>
-                        <div class="job-meta">
-                            <span class="cert-date">2020 - 2022</span>
-                            <span class="job-location">Remote</span>
-                        </div>
                     </div>
-                    <span class="cert-provider">Webify</span>
+                    <span class="company-name">Meta</span>
+                    <div class="job-meta">
+                        <span class="job-duration">Mar 2020 - Dec 2021 · 1 yr 10 mos</span>
+                        <span class="job-location">Menlo Park, CA</span>
+                    </div>
                     <ul class="job-description">
-                        <li>Developed full-stack web applications</li>
-                        <li>Contributed to open-source projects</li>
+                        <li>Developed React-based components for Facebook interface used by millions of users</li>
+                        <li>Contributed to 3 open-source projects and implemented performance optimizations</li>
+                        <li>Collaborated with cross-functional teams to deliver features on time</li>
                     </ul>
                 </span>
             </div>
@@ -214,7 +213,7 @@
                 <img src="https://images.credly.com/images/fb97ccad-517a-4c89-9e88-d823fab2763c/image.png" alt="Google Cloud">
                 <span>
                     <a href="https://cloud.google.com/learn/certification" target="_blank" class="cert-name-link">
-                        <strong>Google Cloud Certified</strong>
+                        <strong>Google Cloud Digital Leader</strong>
                     </a><br>
                     <span class="cert-provider">Google Cloud</span><br>
                     <span class="cert-date">Issued Nov 2023</span><br>
