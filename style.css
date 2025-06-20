@@ -364,13 +364,19 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
     gap: 0.3em;
 }
 .about-details h1 {
-    font-size: 1.5em;
+    font-size: 2em;
     margin-bottom: 0.1em;
+    color: #ffffff;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    font-weight: 700;
+    letter-spacing: 0.5px;
 }
 .about-details h2 {
-    font-size: 1.1em;
+    font-size: 1.3em;
     margin-top: 0;
-    margin-bottom: 0.3em;
+    margin-bottom: 0.5em;
+    color: #e0f7fa;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.25);
 }
 .social-links {
     display: flex;
@@ -564,13 +570,27 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
 }
 
 .cert-name-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
     color: inherit;
     text-decoration: none;
     transition: color 0.3s;
 }
 
+.cert-name-link::after {
+    content: '🔗';
+    font-size: 0.9em;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
 .cert-name-link:hover {
     color: #00bcd4;
+}
+
+.cert-name-link:hover::after {
+    opacity: 1;
 }
 
 .work-card ul {
@@ -657,33 +677,25 @@ body {
 }
 
 .timeline-connector {
-    width: 3px;
-    height: 40px;
-    background: linear-gradient(to bottom, #00bcd4, #2196f3);
-    margin-left: 25px;
     position: relative;
+    width: 3px;
+    height: 50px;
+    margin-left: 28px;
+    background: none;
 }
 
-.timeline-connector:before {
+.timeline-connector::before {
     content: '';
     position: absolute;
-    width: 12px;
-    height: 12px;
-    background: #2196f3;
-    border-radius: 50%;
-    left: -4.5px;
-    bottom: -6px;
-}
-
-.timeline-connector:after {
-    content: '';
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    background: #00bcd4;
-    border-radius: 50%;
-    left: -4.5px;
-    top: -6px;
+    width: 40px;
+    height: 50px;
+    left: -18px;
+    background-image: 
+        linear-gradient(45deg, transparent 50%, #00bcd4 50%, #00bcd4 100%),
+        linear-gradient(-45deg, transparent 50%, #2196f3 50%, #2196f3 100%);
+    background-size: 20px 25px;
+    background-repeat: repeat-y;
+    z-index: 1;
 }
 
 .company-logo {
@@ -885,45 +897,40 @@ nav ul li.home-button:hover {
 /* Water effect for social links */
 .social-links.water-effect {
     display: flex;
-    gap: 0.7em;
+    gap: 0.5em;
     margin-top: 0.2em;
     flex-wrap: wrap;
     justify-content: flex-start;
     position: relative;
-    padding: 0.5em;
+    padding: 0.4em;
     z-index: 10;
+    max-width: 180px; /* Slightly reduced size */
 }
 
 .social-links.water-effect::before {
     content: '';
     position: absolute;
-    top: -10px;
-    left: -10px;
-    right: -10px;
-    bottom: -10px;
-    background: linear-gradient(-45deg, rgba(0,188,212,0.3), rgba(33,150,243,0.3)); /* More transparent */
-    border-radius: 12px;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    background: linear-gradient(-45deg, rgba(0,188,212,0.3), rgba(33,150,243,0.3)); /* 30% opacity */
+    border-radius: 10px;
     z-index: -1;
-    filter: blur(8px);
+    filter: blur(6px);
     animation: waterWave 8s ease-in-out infinite alternate;
 }
 
 .social-links.water-effect a, .social-links.water-effect button.copy-btn {
-    background: rgba(255, 255, 255, 0.15); /* More transparent */
+    background: rgba(255, 255, 255, 0.12);
     border-radius: 50%;
-    backdrop-filter: blur(5px);
-    padding: 6px; /* Smaller padding */
+    backdrop-filter: blur(3px);
+    padding: 5px; /* Smaller padding */
     border: 1px solid rgba(255, 255, 255, 0.12);
     transition: transform 0.3s, box-shadow 0.3s;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.social-links.water-effect img {
-    width: 20px; /* Smaller icons */
-    height: 20px;
-    filter: brightness(0) invert(1);
 }
 
 /* Company certification logos */
