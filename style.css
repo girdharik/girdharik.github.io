@@ -44,6 +44,15 @@ nav ul li a:hover, nav ul li a.active {
     color: #00bcd4;
     border-bottom: 2px solid #00bcd4;
 }
+section, .about-bg.about-flex {
+    opacity: 1;
+    transform: none;
+    transition: none;
+}
+section.visible, .about-bg.about-flex.visible {
+    opacity: 1;
+    transform: none;
+}
 section {
     max-width: 800px;
     margin: 0 auto;
@@ -581,8 +590,14 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
         margin-top: 0.5em;
     }
     .company-logo {
-        width: 40px;
-        height: 40px;
+        width: 8px;
+        height: 8px;
+        border-radius: 8px;
+        object-fit: contain;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0,188,212,0.10);
+        margin-top: 0.2em;
+        margin-bottom: 0.2em;
     }
 }
 @media (max-width: 600px) {
@@ -593,8 +608,8 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
         margin-top: 0.3em;
     }
     .company-logo {
-        width: 32px;
-        height: 32px;
+        width: 8px;
+        height: 8px;
         border-radius: 8px;
         object-fit: contain;
         background: #fff;
