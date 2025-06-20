@@ -10,7 +10,7 @@ document.querySelectorAll('nav ul li a').forEach(link => {
     });
 });
 
-// Highlight active nav link on scroll
+// Highlight active nav link on scroll 
 window.addEventListener('scroll', () => {
     const sections = document.querySelectorAll('section');
     let scrollPos = window.scrollY || document.documentElement.scrollTop;
