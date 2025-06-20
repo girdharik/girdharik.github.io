@@ -28,7 +28,7 @@ window.addEventListener('scroll', () => {
     });
 });
 
-// Animate sections on scroll and on first load for vertical reveal
+// Animate sections on scroll only (no unstacking on load)
 const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -37,21 +37,8 @@ const observer = new IntersectionObserver(entries => {
     });
 }, { threshold: 0.1 });
 
-document.querySelectorAll('section, .about-bg.about-flex').forEach((section, i) => {
-    setTimeout(() => {
-        observer.observe(section);
-    }, i * 200);
-});
-
-// Ensure all sections are visible if JS fails or on load
-window.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        document.querySelectorAll('section, .about-bg.about-flex').forEach((section, i) => {
-            setTimeout(() => {
-                section.classList.add('visible');
-            }, i * 200);
-        });
-    }, 200);
+document.querySelectorAll('section, .about-bg.about-flex').forEach(section => {
+    observer.observe(section);
 });
 
 // Add animated floating effect to skill icons
