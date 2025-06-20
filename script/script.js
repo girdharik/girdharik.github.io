@@ -55,3 +55,23 @@ styleSheet.innerHTML = `
   100% { transform: translateY(-10px) scale(1.08); }
 }`;
 document.head.appendChild(styleSheet);
+
+// Copy to clipboard for phone and email
+
+document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const value = this.getAttribute('data-copy');
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(value);
+        } else {
+            const temp = document.createElement('input');
+            document.body.appendChild(temp);
+            temp.value = value;
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+        }
+        this.classList.add('copied');
+        setTimeout(() => this.classList.remove('copied'), 1200);
+    });
+});
