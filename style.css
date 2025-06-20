@@ -44,13 +44,18 @@ nav ul li a:hover, nav ul li a.active {
 }
 section {
     max-width: 800px;
-    margin: 2em auto;
-    background: rgba(255,255,255,0.95);
-    padding: 2em;
+    margin: 0 auto;
+    margin-bottom: 0;
+    background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+    padding: 2em 1.5em;
     border-radius: 16px;
     box-shadow: 0 4px 24px rgba(0,0,0,0.08);
     animation: sectionFadeIn 1.2s;
     transition: background 0.5s;
+}
+section + section {
+    margin-top: 0;
+    border-top: 1px solid #e0eafc;
 }
 @keyframes sectionFadeIn {
     from { opacity: 0; transform: translateY(40px); }
@@ -85,9 +90,94 @@ h1 {
     text-decoration: underline;
     color: #2196f3;
 }
-/* Animated gradient background for sections */
-section {
-    background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+.profile-container {
+    display: flex;
+    align-items: center;
+    gap: 1.5em;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 0;
+}
+.profile-photo {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+    background: #e0eafc;
+}
+
+.about-bg {
+    background: url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
+    border-radius: 12px;
+    padding: 2em 1.5em;
+    color: #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+    min-height: 180px;
+    position: relative;
+    overflow: hidden;
+}
+.about-bg h2, .about-bg p {
+    position: relative;
+    z-index: 2;
+}
+.about-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 1;
+    border-radius: 12px;
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap: 1.5em 1em;
+    justify-items: center;
+    align-items: end;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+}
+.skill {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5em;
+    background: rgba(255,255,255,0.85);
+    border-radius: 10px;
+    padding: 0.7em 0.5em 0.5em 0.5em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    min-width: 80px;
+    min-height: 100px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.skill img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 0.2em;
+}
+.skill span {
+    font-size: 0.98em;
+    color: #222;
+    margin-top: 0.2em;
+    text-align: center;
+}
+.skill:hover {
+    transform: translateY(-6px) scale(1.07);
+    box-shadow: 0 6px 24px rgba(0,188,212,0.10);
+}
+
+@media (max-width: 900px) {
+    section {
+        max-width: 98vw;
+        padding: 1.2em 0.5em;
+    }
+    .profile-container {
+        flex-direction: column;
+        gap: 0.7em;
+    }
 }
 @media (max-width: 600px) {
     nav ul {
@@ -95,6 +185,19 @@ section {
         align-items: center;
     }
     section {
-        padding: 1em;
+        padding: 0.7em 0.2em;
+        border-radius: 0;
+        box-shadow: none;
+    }
+    .about-bg {
+        padding: 1.2em 0.5em;
+        min-height: 120px;
+    }
+    .skills-grid {
+        gap: 1em 0.5em;
+    }
+    .profile-photo {
+        width: 80px;
+        height: 80px;
     }
 }
