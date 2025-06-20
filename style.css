@@ -2,15 +2,23 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background: #f4f4f4;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
     color: #222;
+    transition: background 0.5s;
 }
 nav {
-    background: #222;
+    background: rgba(34, 34, 34, 0.95);
     padding: 0.5em 0;
     position: sticky;
     top: 0;
     z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    animation: navFadeIn 1s;
+}
+@keyframes navFadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 nav ul {
     list-style: none;
@@ -26,31 +34,60 @@ nav ul li a {
     color: #fff;
     text-decoration: none;
     font-weight: 500;
-    transition: color 0.2s;
+    transition: color 0.2s, border-bottom 0.2s;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 2px;
 }
-nav ul li a:hover {
+nav ul li a:hover, nav ul li a.active {
     color: #00bcd4;
+    border-bottom: 2px solid #00bcd4;
 }
 section {
     max-width: 800px;
     margin: 2em auto;
-    background: #fff;
+    background: rgba(255,255,255,0.95);
     padding: 2em;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    animation: sectionFadeIn 1.2s;
+    transition: background 0.5s;
+}
+@keyframes sectionFadeIn {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 h1, h2, h3 {
     color: #222;
+    letter-spacing: 1px;
+}
+h1 {
+    font-size: 2.5em;
+    background: linear-gradient(90deg, #00bcd4 30%, #2196f3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 .job, .edu, .project {
     margin-bottom: 1.5em;
+    animation: fadeInUp 1s;
+}
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 .project a {
     color: #00bcd4;
     text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
 }
 .project a:hover {
     text-decoration: underline;
+    color: #2196f3;
+}
+/* Animated gradient background for sections */
+section {
+    background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
 }
 @media (max-width: 600px) {
     nav ul {
