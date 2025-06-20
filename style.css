@@ -238,35 +238,102 @@ h1 {
     z-index: 2;
     margin: 0 0 0.5em 0;
 }
+section#name.name-about-flex {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 2em;
+    justify-content: space-between;
+    padding: 1.2em 1em;
+    min-height: 180px;
+    margin-bottom: 0;
+    background: none;
+    box-shadow: none;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+section#name.name-about-flex .profile-container {
+    flex: 0 0 270px;
+    min-width: 180px;
+    align-items: flex-start;
+    gap: 1em;
+    background: none;
+    box-shadow: none;
+    margin-bottom: 0;
+    justify-content: flex-start;
+}
+section#name.name-about-flex .profile-photo {
+    width: 80px;
+    height: 80px;
+    margin-right: 0.7em;
+}
+section#name.name-about-flex h1 {
+    font-size: 1.5em;
+    margin-bottom: 0.2em;
+}
+section#name.name-about-flex h2 {
+    font-size: 1.1em;
+    margin-top: 0;
+}
+section#name.name-about-flex .about-bg {
+    flex: 1 1 0;
+    min-width: 180px;
+    margin: 0;
+    padding: 1.2em 1em;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
+    border-radius: 12px;
+    color: #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+    position: relative;
+    overflow: hidden;
+}
+section#name.name-about-flex .about-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 1;
+    border-radius: 12px;
+}
+section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-bg p {
+    position: relative;
+    z-index: 2;
+    margin: 0 0 0.5em 0;
+}
 @media (max-width: 900px) {
-    .name-about-flex {
+    section#name.name-about-flex {
         flex-direction: column;
         gap: 1em;
         min-height: unset;
         padding: 0.7em 0.2em;
     }
-    .name-about-flex .profile-container {
+    section#name.name-about-flex .profile-container {
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
         min-width: unset;
     }
-    .name-about-flex .about-bg {
+    section#name.name-about-flex .about-bg {
         min-width: unset;
         padding: 1em 0.7em;
     }
 }
 @media (max-width: 600px) {
-    .name-about-flex {
+    section#name.name-about-flex {
         flex-direction: column;
         gap: 0.7em;
         padding: 0.5em 0.1em;
     }
-    .name-about-flex .profile-photo {
+    section#name.name-about-flex .profile-photo {
         width: 60px;
         height: 60px;
     }
-    .name-about-flex .about-bg {
+    section#name.name-about-flex .about-bg {
         padding: 0.7em 0.3em;
         min-height: 70px;
     }
