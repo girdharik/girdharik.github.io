@@ -662,6 +662,147 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
     margin-top: 1.5em;
 }
 
+:root {
+    --background-image: url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80');
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+    color: #222;
+    transition: background 0.5s;
+    overflow-x: hidden;
+}
+
+/* About section with dynamic background */
+.about-bg {
+    background: var(--background-image) center/cover no-repeat;
+    border-radius: 12px;
+    padding: 2em 1.5em;
+    color: #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+    min-height: 180px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Liquid social links */
+.social-links.liquid {
+    background: linear-gradient(-45deg, #00bcd4, #2196f3, #3f51b5, #00bcd4);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    border-radius: 10px;
+    padding: 0.7em 1em;
+    box-shadow: 0 4px 15px rgba(0,188,212,0.15);
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.social-links a img, .social-links button.copy-btn img {
+    width: 28px;
+    height: 28px;
+    border-radius: 10px;
+    padding: 4px;
+    transition: transform 0.3s cubic-bezier(.68,-0.55,.27,1.55), box-shadow 0.3s;
+    filter: brightness(0) invert(1);
+}
+
+/* Work experience timeline */
+.work-timeline {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.timeline-connector {
+    width: 3px;
+    height: 40px;
+    background: linear-gradient(to bottom, #00bcd4, #2196f3);
+    margin-left: 25px;
+    position: relative;
+}
+
+.timeline-connector:before {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #2196f3;
+    border-radius: 50%;
+    left: -4.5px;
+    bottom: -6px;
+}
+
+.timeline-connector:after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #00bcd4;
+    border-radius: 50%;
+    left: -4.5px;
+    top: -6px;
+}
+
+.company-logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: contain;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0,188,212,0.15);
+    padding: 5px;
+    transition: transform 0.3s;
+}
+
+.certification:hover .company-logo {
+    transform: scale(1.15) rotate(-5deg);
+}
+
+.job-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 5px;
+}
+
+.job-meta {
+    display: flex;
+    gap: 15px;
+    font-size: 0.95em;
+}
+
+/* Project GitHub links */
+.project-github-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.project-github-link img {
+    width: 40px;
+    height: 40px;
+    transition: transform 0.3s, filter 0.3s;
+}
+
+.project-github-link:hover img {
+    transform: scale(1.15) rotate(-10deg);
+    filter: drop-shadow(0 0 5px rgba(0,188,212,0.5));
+}
+
 @media (max-width: 900px) {
     .about-bg.about-flex {
         flex-direction: column;
