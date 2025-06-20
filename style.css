@@ -135,6 +135,7 @@ h1 {
     border: 4px solid #fff;
     box-shadow: 0 2px 12px rgba(0,0,0,0.10);
     background: #e0eafc;
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
 }
 
 .about-bg {
@@ -530,13 +531,7 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
     border: 1px solid #eee;
 }
 
-.certifications-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2em;
-    margin-top: 1.5em;
-    justify-content: flex-start;
-}
+/* Updated certification/card styling */
 .certification {
     display: flex;
     flex-direction: row;
@@ -544,26 +539,34 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
     text-decoration: none;
     background: rgba(255,255,255,0.85);
     border-radius: 10px;
-    padding: 0.7em 1em 0.7em 0.7em;
+    padding: 1em 1.2em 1em 1em;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     min-width: 180px;
     min-height: 40px;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.3s, box-shadow 0.3s;
     color: #222;
     font-size: 0.98em;
     text-align: left;
     gap: 1em;
     border-left: 4px solid #00bcd4;
     position: relative;
+    margin-bottom: 1em;
 }
+
 .certification img {
     width: 40px;
     height: 40px;
     margin-right: 1em;
     border-radius: 8px;
-    padding: 2px;
+    padding: 4px;
     object-fit: contain;
+    transition: transform 0.3s;
 }
+
+.certification:hover img {
+    transform: scale(1.15) rotate(-5deg);
+}
+
 .certification span {
     color: #222;
     font-size: 1em;
@@ -571,26 +574,94 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
     display: flex;
     flex-direction: column;
     gap: 0.1em;
+    flex: 1;
 }
-.cert-provider {
-    color: #00bcd4;
-    font-size: 0.97em;
-    font-weight: 600;
+
+.certification:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 30px rgba(0,188,212,0.15);
 }
-.cert-date {
-    color: #888;
-    font-size: 0.95em;
-    font-weight: 400;
+
+.job-description {
+    padding-left: 1.5em;
+    margin-top: 0.5em;
+    margin-bottom: 0;
 }
-.cert-expiry {
-    color: #e91e63;
-    font-size: 0.95em;
+
+.job-location {
+    color: #666;
+    font-size: 0.9em;
+    font-style: italic;
+}
+
+.education-gpa, .education-achievement {
+    color: #4caf50;
     font-weight: 500;
 }
-.certification:hover {
-    transform: translateY(-6px) scale(1.07);
-    box-shadow: 0 6px 24px rgba(0,188,212,0.10);
+
+.project-desc {
+    margin: 0.3em 0;
 }
+
+.project-tech {
+    margin: 0.2em 0;
+    color: #333;
+}
+
+.project-links {
+    margin-top: 0.5em;
+    display: flex;
+    gap: 1em;
+}
+
+.github-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.github-link:hover {
+    color: #00bcd4;
+}
+
+.github-link img {
+    width: 20px !important;
+    height: 20px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.cert-name-link {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.cert-name-link:hover {
+    color: #00bcd4;
+}
+
+.work-card ul {
+    margin-top: 0.5em;
+    margin-bottom: 0;
+}
+
+.work-card li {
+    margin-bottom: 0.3em;
+    font-size: 0.9em;
+}
+
+/* Certification styles */
+.certifications-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2em;
+    margin-top: 1.5em;
+}
+
 @media (max-width: 900px) {
     .about-bg.about-flex {
         flex-direction: column;
