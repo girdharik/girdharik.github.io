@@ -356,7 +356,12 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
     gap: 0.7em;
     margin-top: 0.2em;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-start;
+    background: linear-gradient(90deg, #e0eafc 0%, #00bcd4 100%);
+    border-radius: 8px;
+    padding: 0.5em 1em;
+    box-shadow: 0 2px 8px rgba(0,188,212,0.10);
+    margin-bottom: 0.5em;
 }
 .social-links a, .social-links button.copy-btn {
     background: none;
@@ -590,6 +595,12 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
     .company-logo {
         width: 32px;
         height: 32px;
+        border-radius: 8px;
+        object-fit: contain;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0,188,212,0.10);
+        margin-top: 0.2em;
+        margin-bottom: 0.2em;
     }
     .certification {
         min-width: 90px;
