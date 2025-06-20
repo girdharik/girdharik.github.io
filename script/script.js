@@ -112,3 +112,52 @@ document.querySelectorAll('.copy-btn').forEach(btn => {
         setTimeout(() => this.classList.remove('copied'), 1200);
     });
 });
+
+// Function to calculate and update job duration
+function updateJobDurations() {
+    const currentDate = new Date();
+    
+    document.querySelectorAll('.job-duration[data-start-date]').forEach(element => {
+        const startDate = new Date(element.getAttribute('data-start-date'));
+        const endDate = element.hasAttribute('data-end-date') 
+            ? new Date(element.getAttribute('data-end-date')) 
+            : currentDate;
+        
+        const years = endDate.getFullYear() - startDate.getFullYear();
+        const months = endDate.getMonth() - startDate.getMonth() + (years * 12);
+        
+        const yearsText = Math.floor(months / 12);
+        const monthsText = months % 12;
+        
+        let durationText = '';
+        
+        if (element.hasAttribute('data-end-date')) {
+            // For previous jobs
+            const startMonthYear = startDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+            const endMonthYear = endDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+            durationText = `${startMonthYear} - ${endMonthYear} · `;
+        } else {
+            // For current job
+            const startMonthYear = startDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+            durationText = `${startMonthYear} - Present · `;
+        }
+        
+        if (yearsText > 0) {
+            durationText += `${yearsText} yr${yearsText > 1 ? 's' : ''} `;
+        }
+        
+        if (monthsText > 0 || yearsText === 0) {
+            durationText += `${monthsText} mo${monthsText > 1 ? 's' : ''}`;
+        }
+        
+        element.textContent = durationText;
+    });
+}
+
+// Call this when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+    updateJobDurations();
+    
+    // Rest of your existing code
+    // ...existing code...
+});
