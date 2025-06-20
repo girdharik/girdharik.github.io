@@ -33,12 +33,21 @@ document.querySelectorAll('.skill img').forEach((img, i) => {
     img.style.animation = `floatSkill 2.2s ease-in-out ${i * 0.13}s infinite alternate`;
 });
 
-// Floating keyframes for skill icons
+// Add animated floating effect to social/contact icons
+document.querySelectorAll('.social-links img').forEach((img, i) => {
+    img.style.animation = `floatSocial 2s ease-in-out ${i * 0.1}s infinite alternate`;
+});
+
+// Floating keyframes for skill and social icons
 const styleSheet = document.createElement('style');
 styleSheet.innerHTML = `
 @keyframes floatSkill {
   0% { transform: translateY(0) scale(1); }
   100% { transform: translateY(-10px) scale(1.08); }
+}
+@keyframes floatSocial {
+  0% { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-5px) scale(1.15); }
 }`;
 document.head.appendChild(styleSheet);
 
