@@ -43,6 +43,17 @@ document.querySelectorAll('section, .about-bg.about-flex').forEach((section, i) 
     }, i * 200);
 });
 
+// Ensure all sections are visible if JS fails or on load
+window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        document.querySelectorAll('section, .about-bg.about-flex').forEach((section, i) => {
+            setTimeout(() => {
+                section.classList.add('visible');
+            }, i * 200);
+        });
+    }, 200);
+});
+
 // Add animated floating effect to skill icons
 
 document.querySelectorAll('.skill img').forEach((img, i) => {
