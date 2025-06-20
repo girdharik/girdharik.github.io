@@ -6,6 +6,7 @@ body {
     background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
     color: #222;
     transition: background 0.5s;
+    overflow-x: hidden;
 }
 nav {
     background: rgba(34, 34, 34, 0.95);
@@ -53,6 +54,13 @@ section {
     box-shadow: 0 4px 24px rgba(0,0,0,0.08);
     animation: sectionFadeIn 1.2s;
     transition: background 0.5s;
+    opacity: 0;
+    transform: translateY(60px);
+    transition: opacity 0.8s cubic-bezier(.68,-0.55,.27,1.55), transform 0.8s cubic-bezier(.68,-0.55,.27,1.55);
+}
+section.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 section + section {
     margin-top: 0;
@@ -364,7 +372,7 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
     width: 28px;
     height: 28px;
     border-radius: 10px;
-    background: transparent;
+    background: transparent !important;
     box-shadow: none;
     padding: 4px;
     transition: transform 0.3s cubic-bezier(.68,-0.55,.27,1.55), box-shadow 0.3s;
@@ -464,7 +472,7 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
     width: 28px;
     height: 28px;
     border-radius: 10px;
-    background: transparent;
+    background: transparent !important;
     box-shadow: none;
     padding: 4px;
     transition: transform 0.3s cubic-bezier(.68,-0.55,.27,1.55), box-shadow 0.3s;
@@ -511,7 +519,7 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
 .certification {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     text-decoration: none;
     background: rgba(255,255,255,0.85);
     border-radius: 10px;
@@ -524,20 +532,36 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
     font-size: 0.98em;
     text-align: left;
     gap: 1em;
+    border-left: 4px solid #00bcd4;
+    position: relative;
 }
 .certification img {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     margin-right: 1em;
-    background: #fff;
+    background: transparent;
     border-radius: 8px;
     padding: 2px;
-    border: 1px solid #eee;
+    border: none;
+    box-shadow: none;
 }
 .certification span {
     color: #222;
     font-size: 1em;
     font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1em;
+}
+.cert-provider {
+    color: #00bcd4;
+    font-size: 0.97em;
+    font-weight: 600;
+}
+.cert-date {
+    color: #888;
+    font-size: 0.95em;
+    font-weight: 400;
 }
 .certification:hover {
     transform: translateY(-6px) scale(1.07);
@@ -552,8 +576,8 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
         margin-top: 0.5em;
     }
     .company-logo {
-        width: 36px;
-        height: 36px;
+        width: 40px;
+        height: 40px;
     }
 }
 @media (max-width: 600px) {
