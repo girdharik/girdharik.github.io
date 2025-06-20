@@ -28,6 +28,33 @@ window.addEventListener('scroll', () => {
     });
 });
 
+// Mobile menu toggle
+const menuToggle = document.getElementById('menuToggle');
+const navMenu = document.getElementById('navMenu');
+
+if (menuToggle && navMenu) {
+    menuToggle.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+        menuToggle.classList.toggle('active');
+    });
+
+    // Close menu when a nav link is clicked
+    document.querySelectorAll('#navMenu a').forEach(link => {
+        link.addEventListener('click', () => {
+            navMenu.classList.remove('active');
+            menuToggle.classList.remove('active');
+        });
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!navMenu.contains(e.target) && !menuToggle.contains(e.target) && navMenu.classList.contains('active')) {
+            navMenu.classList.remove('active');
+            menuToggle.classList.remove('active');
+        }
+    });
+}
+
 // Add animated floating effect to skill icons
 document.querySelectorAll('.skill img').forEach((img, i) => {
     img.style.animation = `floatSkill 2.2s ease-in-out ${i * 0.13}s infinite alternate`;
