@@ -8,16 +8,23 @@
 </head>
 <body>
     <nav>
-        <ul>
+        <div class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul id="navMenu">
             <li><a href="#" onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;">Home</a></li>
             <li><a href="#about">About</a></li>
-            <li><a href="#skills">Skills</a></li>
             <li><a href="#work">Work Experience</a></li>
-            <li><a href="#education">Education</a></li>
             <li><a href="#projects">Projects</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#education">Education</a></li>
             <li><a href="#certifications">Certifications</a></li>
         </ul>
     </nav>
+
+    <!-- About Section -->
     <section id="about" class="about-bg about-flex">
         <div class="about-profile">
             <img src="profile.jpg" alt="Profile Photo" class="profile-photo">
@@ -26,10 +33,10 @@
                 <h2>Software Engineer</h2>
                 <div class="social-links water-effect">
                     <a href="https://linkedin.com/in/johndoe" target="_blank" title="LinkedIn">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linkedin/linkedin-original.svg" alt="LinkedIn">
+                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/linkedin.svg" alt="LinkedIn">
                     </a>
                     <a href="https://github.com/johndoe" target="_blank" title="GitHub">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" alt="GitHub">
+                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg" alt="GitHub">
                     </a>
                     <button class="copy-btn" data-copy="+1234567890" title="Copy Mobile">
                         <img src="https://cdn.jsdelivr.net/npm/feather-icons/dist/icons/phone.svg" alt="Mobile">
@@ -42,9 +49,83 @@
         </div>
         <div class="about-content">
             <h2>About</h2>
-            <p>Passionate software engineer with experience in web development, cloud computing, and open-source projects.</p>
+            <p>Passionate software engineer with experience in web development, cloud computing, and open-source projects. I specialize in building scalable applications and enjoy solving complex technical challenges.</p>
+            <p>My goal is to create efficient, maintainable code that provides exceptional user experiences. I'm continuously learning new technologies and best practices to stay at the cutting edge of software development.</p>
         </div>
     </section>
+
+    <!-- Work Experience Section -->
+    <section id="work">
+        <h2>Work Experience</h2>
+        <div class="work-timeline">
+            <div class="certification work-card">
+                <img src="https://media.licdn.com/dms/image/D4E0BAQEF4S32BH4w4A/company-logo_100_100/0/1710818802753/microsoft_logo?e=1726992000&v=beta&t=QHgMyokLNynMxHkHjJgIYHAF7g5gl_hRpSP1OrLfDLE" alt="Microsoft Logo" class="company-logo">
+                <span>
+                    <div class="job-header">
+                        <strong>Senior Software Engineer</strong>
+                    </div>
+                    <span class="company-name">Microsoft</span>
+                    <div class="job-meta">
+                        <span class="job-duration">Jan 2022 - Present · 3 yrs 6 mos</span>
+                        <span class="job-location">Redmond, WA</span>
+                    </div>
+                    <ul class="job-description">
+                        <li>Led development of cloud-based solutions with Azure and improved system performance by 40%</li>
+                        <li>Mentored 5 junior engineers and established best practices for the team</li>
+                        <li>Designed and implemented scalable architecture supporting 1M+ concurrent users</li>
+                    </ul>
+                </span>
+            </div>
+            <div class="timeline-connector"></div>
+            <div class="certification work-card">
+                <img src="https://media.licdn.com/dms/image/C4D0BAQFcIVCLVRQgZg/company-logo_100_100/0/1679066183262/meta_logo?e=1726992000&v=beta&t=bzCuooC7LrNnxIBcmKK5fC3XOUG9569-dOQ0kmsBLrs" alt="Meta Logo" class="company-logo">
+                <span>
+                    <div class="job-header">
+                        <strong>Software Engineer</strong>
+                    </div>
+                    <span class="company-name">Meta</span>
+                    <div class="job-meta">
+                        <span class="job-duration">Mar 2020 - Dec 2021 · 1 yr 10 mos</span>
+                        <span class="job-location">Menlo Park, CA</span>
+                    </div>
+                    <ul class="job-description">
+                        <li>Developed React-based components for Facebook interface used by millions of users</li>
+                        <li>Contributed to 3 open-source projects and implemented performance optimizations</li>
+                        <li>Collaborated with cross-functional teams to deliver features on time</li>
+                    </ul>
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <h2>Projects</h2>
+        <div class="certifications-grid">
+            <div class="certification project-card">
+                <a href="https://github.com/johndoe/portfolio" target="_blank" class="project-github-link">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" alt="GitHub">
+                </a>
+                <span>
+                    <strong>Portfolio Website</strong><br>
+                    <span class="project-desc">Personal website built with React and hosted on GitHub Pages.</span><br>
+                    <span class="project-tech"><strong>Tech Stack:</strong> React, GitHub Pages</span>
+                </span>
+            </div>
+            <div class="certification project-card">
+                <a href="https://github.com/johndoe/api-automation" target="_blank" class="project-github-link">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" alt="GitHub">
+                </a>
+                <span>
+                    <strong>API Automation Tool</strong><br>
+                    <span class="project-desc">Automated API testing and reporting tool.</span><br>
+                    <span class="project-tech"><strong>Tech Stack:</strong> Python, Flask, Postman</span>
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
     <section id="skills">
         <h2>Skills</h2>
         <div class="skills-grid">
@@ -94,48 +175,8 @@
             </div>
         </div>
     </section>
-    <section id="work">
-        <h2>Work Experience</h2>
-        <div class="work-timeline">
-            <div class="certification work-card">
-                <img src="https://media.licdn.com/dms/image/D4E0BAQEF4S32BH4w4A/company-logo_100_100/0/1710818802753/microsoft_logo?e=1726992000&v=beta&t=QHgMyokLNynMxHkHjJgIYHAF7g5gl_hRpSP1OrLfDLE" alt="Microsoft Logo" class="company-logo">
-                <span>
-                    <div class="job-header">
-                        <strong>Senior Software Engineer</strong>
-                    </div>
-                    <span class="company-name">Microsoft</span>
-                    <div class="job-meta">
-                        <span class="job-duration">Jan 2022 - Present · 3 yrs 6 mos</span>
-                        <span class="job-location">Redmond, WA</span>
-                    </div>
-                    <ul class="job-description">
-                        <li>Led development of cloud-based solutions with Azure and improved system performance by 40%</li>
-                        <li>Mentored 5 junior engineers and established best practices for the team</li>
-                        <li>Designed and implemented scalable architecture supporting 1M+ concurrent users</li>
-                    </ul>
-                </span>
-            </div>
-            <div class="timeline-connector"></div>
-            <div class="certification work-card">
-                <img src="https://media.licdn.com/dms/image/C4D0BAQFcIVCLVRQgZg/company-logo_100_100/0/1679066183262/meta_logo?e=1726992000&v=beta&t=bzCuooC7LrNnxIBcmKK5fC3XOUG9569-dOQ0kmsBLrs" alt="Meta Logo" class="company-logo">
-                <span>
-                    <div class="job-header">
-                        <strong>Software Engineer</strong>
-                    </div>
-                    <span class="company-name">Meta</span>
-                    <div class="job-meta">
-                        <span class="job-duration">Mar 2020 - Dec 2021 · 1 yr 10 mos</span>
-                        <span class="job-location">Menlo Park, CA</span>
-                    </div>
-                    <ul class="job-description">
-                        <li>Developed React-based components for Facebook interface used by millions of users</li>
-                        <li>Contributed to 3 open-source projects and implemented performance optimizations</li>
-                        <li>Collaborated with cross-functional teams to deliver features on time</li>
-                    </ul>
-                </span>
-            </div>
-        </div>
-    </section>
+
+    <!-- Education Section -->
     <section id="education">
         <h2>Education</h2>
         <div class="certifications-grid">
@@ -159,36 +200,13 @@
             </div>
         </div>
     </section>
-    <section id="projects">
-        <h2>Projects</h2>
-        <div class="certifications-grid">
-            <div class="certification project-card">
-                <a href="https://github.com/johndoe/portfolio" target="_blank" class="project-github-link">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" alt="GitHub">
-                </a>
-                <span>
-                    <strong>Portfolio Website</strong><br>
-                    <span class="project-desc">Personal website built with React and hosted on GitHub Pages.</span><br>
-                    <span class="project-tech"><strong>Tech Stack:</strong> React, GitHub Pages</span>
-                </span>
-            </div>
-            <div class="certification project-card">
-                <a href="https://github.com/johndoe/api-automation" target="_blank" class="project-github-link">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" alt="GitHub">
-                </a>
-                <span>
-                    <strong>API Automation Tool</strong><br>
-                    <span class="project-desc">Automated API testing and reporting tool.</span><br>
-                    <span class="project-tech"><strong>Tech Stack:</strong> Python, Flask, Postman</span>
-                </span>
-            </div>
-        </div>
-    </section>
+
+    <!-- Certifications Section -->
     <section id="certifications">
         <h2>Certifications</h2>
         <div class="certifications-grid">
             <div class="certification">
-                <img src="https://images.credly.com/images/0e284c3f-5164-4b21-8660-0d84737941bc/image.png" alt="AWS">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" alt="AWS" class="company-cert-logo">
                 <span>
                     <a href="https://aws.amazon.com/certification/certified-solutions-architect-associate/" target="_blank" class="cert-name-link">
                         <strong>AWS Certified Solutions Architect</strong>
@@ -199,7 +217,7 @@
                 </span>
             </div>
             <div class="certification">
-                <img src="https://images.credly.com/images/be8fcaeb-c769-4858-b567-ffaaa73ce8cf/image.png" alt="Azure">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Microsoft_Azure_Logo.svg" alt="Azure" class="company-cert-logo">
                 <span>
                     <a href="https://learn.microsoft.com/en-us/credentials/certifications/azure-fundamentals/" target="_blank" class="cert-name-link">
                         <strong>Microsoft Certified: Azure Fundamentals</strong>
@@ -210,7 +228,7 @@
                 </span>
             </div>
             <div class="certification">
-                <img src="https://images.credly.com/images/fb97ccad-517a-4c89-9e88-d823fab2763c/image.png" alt="Google Cloud">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Google_Cloud_logo.svg" alt="Google Cloud" class="company-cert-logo">
                 <span>
                     <a href="https://cloud.google.com/learn/certification" target="_blank" class="cert-name-link">
                         <strong>Google Cloud Digital Leader</strong>
