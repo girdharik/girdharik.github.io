@@ -113,7 +113,7 @@ document.querySelectorAll('.copy-btn').forEach(btn => {
     });
 });
 
-// Function to calculate and update job duration
+// Function to calculate and update job durations - enhanced version
 function updateJobDurations() {
     const currentDate = new Date();
     
@@ -151,12 +151,116 @@ function updateJobDurations() {
         }
         
         element.textContent = durationText;
+        element.setAttribute('title', `Duration updated on ${currentDate.toLocaleDateString()}`);
     });
 }
 
-// Call this when the page loads
-document.addEventListener('DOMContentLoaded', function() {
+// Initialize the multiple roles functionality
+function initMultipleRoles() {
+    // Create toggle buttons for companies with multiple roles
+    document.querySelectorAll('.work-card').forEach(workCard => {
+        // Check if this company has multiple roles data
+        if (workCard.hasAttribute('data-has-multiple-roles')) {
+            const toggleBtn = document.createElement('button');
+            toggleBtn.className = 'company-roles-toggle';
+            toggleBtn.textContent = '+ Show all roles';
+            toggleBtn.setAttribute('aria-expanded', 'false');
+            
+            // Create multiple roles container
+            const rolesContainer = document.createElement('div');
+            rolesContainer.className = 'multiple-roles';
+            
+            // Get the company name for data binding
+            const companyName = workCard.querySelector('.company-name').textContent;
+            
+            // Example structured data for multiple roles
+            // In a real scenario, this would likely come from your data source
+            const exampleRoles = [
+                {
+                    title: "Software Engineer II",
+                    startDate: "2022-01",
+                    endDate: "2022-12",
+                    description: "Developed core features for the cloud platform"
+                },
+                {
+                    title: "Senior Software Engineer",
+                    startDate: "2023-01",
+                    endDate: "",  // Empty for current role
+                    description: "Leading development team and architecting new solutions"
+                }
+            ];
+            
+            // Only add for Microsoft as an example
+            if (companyName === "Microsoft") {
+                // Create role items
+                exampleRoles.forEach(role => {
+                    const roleItem = document.createElement('div');
+                    roleItem.className = 'role-item';
+                    
+                    const startDate = new Date(role.startDate);
+                    const endDate = role.endDate ? new Date(role.endDate) : new Date();
+                    
+                    const startMonthYear = startDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+                    const endMonthYear = role.endDate ? 
+                        new Date(role.endDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : 
+                        'Present';
+                    
+                    roleItem.innerHTML = `
+                        <div class="role-title">${role.title}</div>
+                        <div class="role-duration">${startMonthYear} - ${endMonthYear}</div>
+                        <div class="role-desc">${role.description}</div>
+                    `;
+                    
+                    rolesContainer.appendChild(roleItem);
+                });
+                
+                // Insert the roles container and button
+                const jobMeta = workCard.querySelector('.job-meta');
+                jobMeta.parentNode.insertBefore(rolesContainer, jobMeta.nextSibling);
+                jobMeta.parentNode.insertBefore(toggleBtn, rolesContainer);
+                
+                // Add toggle functionality
+                toggleBtn.addEventListener('click', () => {
+                    const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+                    toggleBtn.setAttribute('aria-expanded', !isExpanded);
+                    toggleBtn.textContent = isExpanded ? '+ Show all roles' : '- Hide roles';
+                    rolesContainer.classList.toggle('visible');
+                });
+            }
+        }
+    });
+}
+
+// Update job durations automatically every day
+function setupAutomaticDurationUpdates() {
+    // Update once on load
     updateJobDurations();
+    
+    // Check if we've updated today
+    const today = new Date().toLocaleDateString();
+    const lastUpdated = localStorage.getItem('lastDurationUpdate');
+    
+    if (lastUpdated !== today) {
+        // Save that we've updated today
+        localStorage.setItem('lastDurationUpdate', today);
+    }
+    
+    // Set a check every hour in case the page stays open
+    setInterval(() => {
+        const currentDay = new Date().toLocaleDateString();
+        const savedDay = localStorage.getItem('lastDurationUpdate');
+        
+        if (savedDay !== currentDay) {
+            updateJobDurations();
+            localStorage.setItem('lastDurationUpdate', currentDay);
+        }
+    }, 3600000); // Check every hour
+}
+
+// Call when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+    setupAutomaticDurationUpdates();
+    initMultipleRoles();
     
     // Rest of your existing code
     // ...existing code...
