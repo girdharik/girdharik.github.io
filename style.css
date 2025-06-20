@@ -15,19 +15,38 @@ nav {
     top: 0;
     z-index: 100;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    animation: navFadeIn 1s;
     margin-bottom: 1.2em;
 }
-@keyframes navFadeIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+
 nav ul {
     list-style: none;
     display: flex;
     justify-content: center;
     margin: 0;
     padding: 0;
+}
+
+section, .about-bg.about-flex {
+    opacity: 1;
+    transform: none;
+    transition: none;
+}
+
+section {
+    max-width: 800px;
+    margin: 0 auto;
+    margin-bottom: 1.5em;
+    background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+    padding: 2em 1.5em;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    transition: background 0.5s;
+    opacity: 1;
+    transform: none;
+}
+
+.job, .edu, .project {
+    margin-bottom: 1.5em;
 }
 nav ul li {
     margin: 0 1.5em;
@@ -647,5 +666,47 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
     .profile-photo {
         width: 80px;
         height: 80px;
+    }
+}
+
+nav ul li.home-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #00bcd4;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+    z-index: 999;
+    color: white;
+    transition: transform 0.3s, background 0.3s;
+}
+
+nav ul li.home-button:hover {
+    background: #2196f3;
+    transform: scale(1.1);
+}
+
+@media (max-width: 600px) {
+    nav ul {
+        flex-wrap: wrap;
+    }
+
+    nav ul li {
+        margin: 0 0.7em;
+    }
+
+    nav ul li.home-button {
+        width: 40px;
+        height: 40px;
+        bottom: 15px;
+        right: 15px;
     }
 }
