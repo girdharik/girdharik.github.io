@@ -40,3 +40,18 @@ const observer = new IntersectionObserver(entries => {
 document.querySelectorAll('section').forEach(section => {
     observer.observe(section);
 });
+
+// Add animated floating effect to skill icons
+
+document.querySelectorAll('.skill img').forEach((img, i) => {
+    img.style.animation = `floatSkill 2.2s ease-in-out ${i * 0.13}s infinite alternate`;
+});
+
+// Floating keyframes for skill icons
+const styleSheet = document.createElement('style');
+styleSheet.innerHTML = `
+@keyframes floatSkill {
+  0% { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-10px) scale(1.08); }
+}`;
+document.head.appendChild(styleSheet);
