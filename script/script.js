@@ -58,6 +58,15 @@ styleSheet.innerHTML = `
 }`;
 document.head.appendChild(styleSheet);
 
+// Function to change the about section background
+function changeAboutBackground(imageUrl) {
+    document.documentElement.style.setProperty('--background-image', `url('${imageUrl}')`);
+}
+
+// Example of how to use it:
+// To change the background later, you can call:
+// changeAboutBackground('https://images.unsplash.com/new-image-url');
+
 // Copy to clipboard for phone and email
 document.querySelectorAll('.copy-btn').forEach(btn => {
     btn.addEventListener('click', function() {
