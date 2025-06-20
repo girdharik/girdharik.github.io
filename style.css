@@ -15,6 +15,7 @@ nav {
     z-index: 100;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     animation: navFadeIn 1s;
+    margin-bottom: 1.2em;
 }
 @keyframes navFadeIn {
     from { opacity: 0; transform: translateY(-20px); }
@@ -360,19 +361,14 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
     transition: transform 0.2s;
 }
 .social-links a img, .social-links button.copy-btn img {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     border-radius: 10px;
-    background: #fff;
-    box-shadow: 0 2px 8px rgba(0,188,212,0.10);
-    transition: transform 0.3s cubic-bezier(.68,-0.55,.27,1.55), box-shadow 0.3s;
-    filter: drop-shadow(0 2px 6px rgba(0,188,212,0.10));
+    background: transparent;
+    box-shadow: none;
     padding: 4px;
-}
-.social-links a:hover img, .social-links button.copy-btn:hover img {
-    transform: scale(1.18) rotate(-8deg);
-    box-shadow: 0 6px 18px rgba(33,150,243,0.18);
-    filter: drop-shadow(0 4px 16px #00bcd4);
+    transition: transform 0.3s cubic-bezier(.68,-0.55,.27,1.55), box-shadow 0.3s;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.10));
 }
 .about-flex .about-bg {
     flex: 1 1 0;
@@ -416,7 +412,7 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
     box-shadow: 0 4px 24px rgba(0,0,0,0.08);
     position: relative;
     min-height: 200px;
-    z-index: 1;
+    margin-top: 0.5em;
 }
 .about-bg.about-flex::before {
     content: '';
@@ -468,16 +464,11 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
     width: 28px;
     height: 28px;
     border-radius: 10px;
-    background: #fff;
-    box-shadow: 0 2px 8px rgba(0,188,212,0.10);
+    background: transparent;
+    box-shadow: none;
+    padding: 4px;
     transition: transform 0.3s cubic-bezier(.68,-0.55,.27,1.55), box-shadow 0.3s;
     filter: drop-shadow(0 2px 6px rgba(0,188,212,0.10));
-    padding: 4px;
-}
-.social-links a:hover img, .social-links button.copy-btn:hover img {
-    transform: scale(1.18) rotate(-8deg);
-    box-shadow: 0 6px 18px rgba(33,150,243,0.18);
-    filter: drop-shadow(0 4px 16px #00bcd4);
 }
 .about-content {
     position: relative;
@@ -503,89 +494,119 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
 
 .skills-grid .skill img[alt="AWS"],
 .skills-grid .skill img[alt="Amazon Web Services"],
-.skills-grid .skill img[src*="amazonwebservices"],
-.certifications-grid .certification img,
-.company-logo {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
+.skills-grid .skill img[src*="amazonwebservices"] {
     background: #fff;
-    box-shadow: 0 2px 8px rgba(0,188,212,0.10);
+    border-radius: 8px;
     padding: 2px;
     border: 1px solid #eee;
 }
 
-.job {
-    display: flex;
-    align-items: flex-start;
-    gap: 1.2em;
-    margin-bottom: 2em;
-    background: rgba(255,255,255,0.85);
-    border-radius: 10px;
-    padding: 1em 1em 1em 1em;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    animation: fadeInUp 1s ease-in-out;
-}
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-.company-logo {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    object-fit: contain;
-    background: #fff;
-    box-shadow: 0 2px 8px rgba(0,188,212,0.10);
-    margin-top: 0.2em;
-}
-.job-details {
-    flex: 1 1 0;
+.certifications-grid {
     display: flex;
     flex-direction: column;
-    gap: 0.2em;
+    gap: 1.2em;
+    margin-top: 1.5em;
+    justify-content: flex-start;
 }
-.job-header {
+.certification {
     display: flex;
-    align-items: baseline;
-    gap: 1em;
-    font-size: 1.1em;
-    font-weight: 600;
-}
-.job-title {
+    flex-direction: row;
+    align-items: center;
+    text-decoration: none;
+    background: rgba(255,255,255,0.85);
+    border-radius: 10px;
+    padding: 0.7em 1em 0.7em 0.7em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    min-width: 180px;
+    min-height: 40px;
+    transition: transform 0.2s, box-shadow 0.2s;
     color: #222;
-    font-weight: 700;
-    font-size: 1.1em;
+    font-size: 0.98em;
+    text-align: left;
+    gap: 1em;
 }
-.company-name {
-    color: #00bcd4;
-    font-weight: 600;
+.certification img {
+    width: 32px;
+    height: 32px;
+    margin-right: 1em;
+    background: #fff;
+    border-radius: 8px;
+    padding: 2px;
+    border: 1px solid #eee;
+}
+.certification span {
+    color: #222;
     font-size: 1em;
+    font-weight: 500;
 }
-.job-meta {
-    display: flex;
-    gap: 1.5em;
-    font-size: 0.98em;
-    color: #666;
-    margin-bottom: 0.2em;
+.certification:hover {
+    transform: translateY(-6px) scale(1.07);
+    box-shadow: 0 6px 24px rgba(0,188,212,0.10);
 }
-.job-description {
-    margin: 0.2em 0 0 0;
-    padding-left: 1.2em;
-    color: #333;
-    font-size: 0.98em;
-}
-.job-description li {
-    margin-bottom: 0.2em;
-}
-@media (max-width: 600px) {
-    .job {
+@media (max-width: 900px) {
+    .about-bg.about-flex {
         flex-direction: column;
-        align-items: flex-start;
-        padding: 0.7em 0.3em;
+        gap: 1em;
+        min-height: unset;
+        padding: 1.2em 0.5em;
+        margin-top: 0.5em;
     }
     .company-logo {
-        width: 28px;
-        height: 28px;
+        width: 36px;
+        height: 36px;
+    }
+}
+@media (max-width: 600px) {
+    nav {
+        margin-bottom: 0.7em;
+    }
+    .about-bg.about-flex {
+        margin-top: 0.3em;
+    }
+    .company-logo {
+        width: 32px;
+        height: 32px;
+    }
+    .certification {
+        min-width: 90px;
+        padding: 0.5em 0.2em 0.3em 0.2em;
+        gap: 0.7em;
+    }
+    .certification img {
+        width: 24px;
+        height: 24px;
+        margin-right: 0.7em;
+    }
+}
+@media (max-width: 900px) {
+    section {
+        max-width: 98vw;
+        padding: 1.2em 0.5em;
+    }
+    .profile-container {
+        flex-direction: column;
+        gap: 0.7em;
+    }
+}
+@media (max-width: 600px) {
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+    section {
+        padding: 0.7em 0.2em;
+        border-radius: 0;
+        box-shadow: none;
+    }
+    .about-bg {
+        padding: 1.2em 0.5em;
+        min-height: 120px;
+    }
+    .skills-grid {
+        gap: 1em 0.5em;
+    }
+    .profile-photo {
+        width: 80px;
+        height: 80px;
     }
 }
