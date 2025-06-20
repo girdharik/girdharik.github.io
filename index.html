@@ -26,7 +26,7 @@
             <div class="about-details">
                 <h1>John Doe</h1>
                 <h2>Software Engineer</h2>
-                <div class="social-links">
+                <div class="social-links liquid">
                     <a href="https://linkedin.com/in/johndoe" target="_blank" title="LinkedIn">
                         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linkedin/linkedin-original.svg" alt="LinkedIn">
                     </a>
@@ -34,10 +34,10 @@
                         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" alt="GitHub">
                     </a>
                     <button class="copy-btn" data-copy="+1234567890" title="Copy Mobile">
-                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/phone.svg" alt="Mobile">
+                        <img src="https://cdn.jsdelivr.net/npm/feather-icons/dist/icons/phone.svg" alt="Mobile">
                     </button>
                     <button class="copy-btn" data-copy="johndoe@gmail.com" title="Copy Email">
-                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/gmail.svg" alt="Email">
+                        <img src="https://cdn.jsdelivr.net/npm/feather-icons/dist/icons/mail.svg" alt="Email">
                     </button>
                 </div>
             </div>
@@ -98,14 +98,18 @@
     </section>
     <section id="work">
         <h2>Work Experience</h2>
-        <div class="certifications-grid">
+        <div class="work-timeline">
             <div class="certification work-card">
-                <img src="https://cdn-icons-png.flaticon.com/512/5969/5969184.png" alt="TechCorp Logo">
+                <img src="https://cdn-icons-png.flaticon.com/512/5969/5969184.png" alt="TechCorp Logo" class="company-logo">
                 <span>
-                    <strong>Senior Developer</strong><br>
-                    <span class="cert-provider">TechCorp</span><br>
-                    <span class="cert-date">2022 - Present</span><br>
-                    <span class="job-location">San Francisco, CA</span>
+                    <div class="job-header">
+                        <strong>Senior Developer</strong>
+                        <div class="job-meta">
+                            <span class="cert-date">2022 - Present</span>
+                            <span class="job-location">San Francisco, CA</span>
+                        </div>
+                    </div>
+                    <span class="cert-provider">TechCorp</span>
                     <ul class="job-description">
                         <li>Lead developer for cloud-based solutions</li>
                         <li>Mentored junior engineers</li>
@@ -113,13 +117,18 @@
                     </ul>
                 </span>
             </div>
+            <div class="timeline-connector"></div>
             <div class="certification work-card">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" alt="Webify Logo">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" alt="Webify Logo" class="company-logo">
                 <span>
-                    <strong>Software Engineer</strong><br>
-                    <span class="cert-provider">Webify</span><br>
-                    <span class="cert-date">2020 - 2022</span><br>
-                    <span class="job-location">Remote</span>
+                    <div class="job-header">
+                        <strong>Software Engineer</strong>
+                        <div class="job-meta">
+                            <span class="cert-date">2020 - 2022</span>
+                            <span class="job-location">Remote</span>
+                        </div>
+                    </div>
+                    <span class="cert-provider">Webify</span>
                     <ul class="job-description">
                         <li>Developed full-stack web applications</li>
                         <li>Contributed to open-source projects</li>
@@ -155,31 +164,23 @@
         <h2>Projects</h2>
         <div class="certifications-grid">
             <div class="certification project-card">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" alt="React">
+                <a href="https://github.com/johndoe/portfolio" target="_blank" class="project-github-link">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" alt="GitHub">
+                </a>
                 <span>
                     <strong>Portfolio Website</strong><br>
                     <span class="project-desc">Personal website built with React and hosted on GitHub Pages.</span><br>
-                    <span class="project-tech"><strong>Tech Stack:</strong> React, GitHub Pages</span><br>
-                    <span class="project-links">
-                        <a href="https://github.com/johndoe/portfolio" target="_blank" class="github-link">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" alt="GitHub">
-                            GitHub Repository
-                        </a>
-                    </span>
+                    <span class="project-tech"><strong>Tech Stack:</strong> React, GitHub Pages</span>
                 </span>
             </div>
             <div class="certification project-card">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python">
+                <a href="https://github.com/johndoe/api-automation" target="_blank" class="project-github-link">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" alt="GitHub">
+                </a>
                 <span>
                     <strong>API Automation Tool</strong><br>
                     <span class="project-desc">Automated API testing and reporting tool.</span><br>
-                    <span class="project-tech"><strong>Tech Stack:</strong> Python, Flask, Postman</span><br>
-                    <span class="project-links">
-                        <a href="https://github.com/johndoe/api-automation" target="_blank" class="github-link">
-                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" alt="GitHub">
-                            GitHub Repository
-                        </a>
-                    </span>
+                    <span class="project-tech"><strong>Tech Stack:</strong> Python, Flask, Postman</span>
                 </span>
             </div>
         </div>
@@ -188,7 +189,7 @@
         <h2>Certifications</h2>
         <div class="certifications-grid">
             <div class="certification">
-                <img src="https://d1.awsstatic.com/training-and-certification/certification-badges/AWS-Certified-Solutions-Architect-Associate_badge.3419559c4379cf3b3de8e7b958e5f5ac83c93a38.png" alt="AWS">
+                <img src="https://images.credly.com/images/0e284c3f-5164-4b21-8660-0d84737941bc/image.png" alt="AWS">
                 <span>
                     <a href="https://aws.amazon.com/certification/certified-solutions-architect-associate/" target="_blank" class="cert-name-link">
                         <strong>AWS Certified Solutions Architect</strong>
@@ -199,7 +200,7 @@
                 </span>
             </div>
             <div class="certification">
-                <img src="https://learn.microsoft.com/en-us/media/learn/certification/badges/microsoft-certified-fundamentals-badge.svg" alt="Azure">
+                <img src="https://images.credly.com/images/be8fcaeb-c769-4858-b567-ffaaa73ce8cf/image.png" alt="Azure">
                 <span>
                     <a href="https://learn.microsoft.com/en-us/credentials/certifications/azure-fundamentals/" target="_blank" class="cert-name-link">
                         <strong>Microsoft Certified: Azure Fundamentals</strong>
@@ -210,7 +211,7 @@
                 </span>
             </div>
             <div class="certification">
-                <img src="https://cloud.google.com/images/certification/cloud-digital-leader.png" alt="Google Cloud">
+                <img src="https://images.credly.com/images/fb97ccad-517a-4c89-9e88-d823fab2763c/image.png" alt="Google Cloud">
                 <span>
                     <a href="https://cloud.google.com/learn/certification" target="_blank" class="cert-name-link">
                         <strong>Google Cloud Certified</strong>
