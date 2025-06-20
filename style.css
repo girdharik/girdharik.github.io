@@ -629,3 +629,72 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
         height: 80px;
     }
 }
+.job {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.2em;
+    margin-bottom: 2em;
+    background: rgba(255,255,255,0.85);
+    border-radius: 10px;
+    padding: 1em 1em 1em 1em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.company-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    object-fit: contain;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,188,212,0.10);
+    margin-top: 0.2em;
+}
+.job-details {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2em;
+}
+.job-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1em;
+    font-size: 1.1em;
+    font-weight: 600;
+}
+.job-title {
+    color: #222;
+    font-weight: 700;
+    font-size: 1.1em;
+}
+.company-name {
+    color: #00bcd4;
+    font-weight: 600;
+    font-size: 1em;
+}
+.job-meta {
+    display: flex;
+    gap: 1.5em;
+    font-size: 0.98em;
+    color: #666;
+    margin-bottom: 0.2em;
+}
+.job-description {
+    margin: 0.2em 0 0 0;
+    padding-left: 1.2em;
+    color: #333;
+    font-size: 0.98em;
+}
+.job-description li {
+    margin-bottom: 0.2em;
+}
+@media (max-width: 600px) {
+    .job {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0.7em 0.3em;
+    }
+    .company-logo {
+        width: 36px;
+        height: 36px;
+    }
+}
