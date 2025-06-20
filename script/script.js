@@ -38,6 +38,9 @@ document.querySelectorAll('.social-links img').forEach((img, i) => {
     img.style.animation = `floatSocial 2s ease-in-out ${i * 0.1}s infinite alternate`;
 });
 
+// Add animated floating effect to profile photo
+document.querySelector('.profile-photo').style.animation = "floatProfile 3s ease-in-out infinite alternate";
+
 // Floating keyframes for skill and social icons
 const styleSheet = document.createElement('style');
 styleSheet.innerHTML = `
@@ -48,6 +51,10 @@ styleSheet.innerHTML = `
 @keyframes floatSocial {
   0% { transform: translateY(0) scale(1); }
   100% { transform: translateY(-5px) scale(1.15); }
+}
+@keyframes floatProfile {
+  0% { transform: translateY(0) scale(1); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+  100% { transform: translateY(-8px) scale(1.02); box-shadow: 0 15px 25px rgba(0,0,0,0.3); }
 }`;
 document.head.appendChild(styleSheet);
 
