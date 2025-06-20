@@ -351,7 +351,7 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
 }
 .about-profile {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     min-width: 220px;
     gap: 1em;
@@ -360,23 +360,24 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
 .about-details {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 0.3em;
+    align-items: flex-start;
+    gap: 0.2em;
 }
 .about-details h1 {
-    font-size: 2em;
-    margin-bottom: 0.1em;
-    color: #ffffff;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    font-size: 1.8em;
+    margin-bottom: 0;
+    margin-top: 0;
+    color: #222;
+    text-shadow: none;
     font-weight: 700;
     letter-spacing: 0.5px;
 }
 .about-details h2 {
-    font-size: 1.3em;
+    font-size: 1.1em;
     margin-top: 0;
-    margin-bottom: 0.5em;
-    color: #e0f7fa;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    margin-bottom: 0.3em;
+    color: #444;
+    text-shadow: none;
 }
 .social-links {
     display: flex;
@@ -443,13 +444,12 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
     gap: 2.5em;
     justify-content: flex-start;
     max-width: 800px;
-    margin: 0 auto 1em auto; /* Reduced bottom margin */
-    padding: 2em 1.5em;
-    background: var(--background-image) center/cover no-repeat;
+    margin: 0 auto 0.8em auto; /* Reduced bottom margin */
+    padding: 1.5em 1.2em; /* Reduced padding */
     border-radius: 16px;
     box-shadow: 0 4px 24px rgba(0,0,0,0.08);
     position: relative;
-    min-height: 200px;
+    min-height: 180px; /* Reduced min-height */
 }
 .about-content {
     position: relative;
@@ -457,13 +457,38 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
     flex: 1 1 0;
     min-width: 180px;
     margin: 0;
-    padding: 0 0 0 1.5em;
+    padding: 0 0 0 1em; /* Reduced left padding */
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Changed from center to allow content to expand */
-    color: #fff;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.18);
-    overflow: auto; /* Allow scrolling if needed */
+    justify-content: flex-start;
+    color: #333;
+    text-shadow: none;
+    overflow: auto;
+}
+.about-content h2 {
+    margin-top: 0;
+    font-size: 1.3em; /* Smaller heading */
+}
+.about-content p {
+    font-size: 0.95em; /* Smaller text */
+    margin-bottom: 0.5em;
+}
+
+/* Remove background overlay from about section */
+.about-bg::before {
+    display: none;
+}
+
+/* Adjust profile photo size */
+.profile-photo {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+    background: #e0eafc;
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
 }
 
 /* Updated certification/card styling */
@@ -570,27 +595,42 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
 }
 
 .cert-name-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
     color: inherit;
     text-decoration: none;
     transition: color 0.3s;
 }
 
+/* Remove the chain symbol from the cert name link */
 .cert-name-link::after {
-    content: '🔗';
-    font-size: 0.9em;
-    opacity: 0.7;
-    transition: opacity 0.3s;
+    display: none;
 }
 
-.cert-name-link:hover {
-    color: #00bcd4;
+/* Create separate chain icon element */
+.cert-link-icon {
+    color: #1a73e8; /* Google blue color */
+    font-size: 1.1em;
+    margin-left: 5px;
+    display: inline-block;
+    vertical-align: middle;
+    transition: transform 0.3s;
 }
 
-.cert-name-link:hover::after {
-    opacity: 1;
+.cert-name-link:hover .cert-link-icon {
+    transform: translateY(-2px);
+}
+
+/* Update Google Cloud Logo styling */
+.company-cert-logo {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    background: transparent;
+    padding: 4px;
+    transition: transform 0.3s;
+}
+
+.certification:hover .company-cert-logo {
+    transform: scale(1.12);
 }
 
 .work-card ul {
@@ -678,41 +718,22 @@ body {
 
 .timeline-connector {
     position: relative;
-    width: 3px;
+    width: 4px; /* Increased width for boldness */
     height: 50px;
     margin-left: 28px;
-    background: none;
+    background: #00bcd4; /* Solid background color */
 }
 
-.timeline-connector::before {
-    content: '';
-    position: absolute;
-    width: 40px;
-    height: 50px;
-    left: -18px;
-    background-image: 
-        linear-gradient(45deg, transparent 50%, #00bcd4 50%, #00bcd4 100%),
-        linear-gradient(-45deg, transparent 50%, #2196f3 50%, #2196f3 100%);
-    background-size: 20px 25px;
-    background-repeat: repeat-y;
-    z-index: 1;
+/* Job duration styling */
+.job-duration {
+    color: #00bcd4; /* Make job duration stand out */
+    font-weight: 500;
+    font-size: 0.95em;
+    display: block;
+    margin-bottom: 5px;
 }
 
-.company-logo {
-    width: 50px;
-    height: 50px;
-    border-radius: 8px;
-    object-fit: contain;
-    background: #fff;
-    box-shadow: 0 4px 12px rgba(0,188,212,0.15);
-    padding: 5px;
-    transition: transform 0.3s;
-}
-
-.certification:hover .company-logo {
-    transform: scale(1.15) rotate(-5deg);
-}
-
+/* Styling for job roles */
 .job-header {
     display: flex;
     justify-content: space-between;
@@ -720,30 +741,44 @@ body {
     margin-bottom: 5px;
 }
 
-.job-meta {
-    display: flex;
-    gap: 15px;
-    font-size: 0.95em;
+/* Add styling for company roles toggle */
+.company-roles-toggle {
+    cursor: pointer;
+    color: #00bcd4;
+    font-size: 0.9em;
+    background: none;
+    border: none;
+    text-decoration: underline;
+    margin-top: 0.5em;
+    padding: 0;
 }
 
-/* Project GitHub links */
-.project-github-link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* Style for multiple roles container */
+.multiple-roles {
+    margin-top: 0.5em;
+    border-left: 3px solid #e0eafc;
+    padding-left: 1em;
+    display: none; /* Hidden by default */
 }
 
-.project-github-link img {
-    width: 40px;
-    height: 40px;
-    transition: transform 0.3s, filter 0.3s;
+.multiple-roles.visible {
+    display: block;
 }
 
-.project-github-link:hover img {
-    transform: scale(1.15) rotate(-10deg);
-    filter: drop-shadow(0 0 5px rgba(0,188,212,0.5));
+.role-item {
+    margin-bottom: 1em;
 }
 
+.role-title {
+    font-weight: 600;
+    color: #333;
+}
+
+.role-duration {
+    color: #00bcd4;
+    font-size: 0.9em;
+    margin: 0.2em 0;
+}
 @media (max-width: 900px) {
     .about-bg.about-flex {
         flex-direction: column;
