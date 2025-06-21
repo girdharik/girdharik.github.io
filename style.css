@@ -143,13 +143,13 @@ h1 {
     align-items: flex-start;
     gap: 2em;
     justify-content: flex-start;
-    max-width: 800px;
-    margin: 0 auto 0.8em auto; /* Reduced bottom margin */
-    padding: 1.5em 1.2em; /* Reduced padding */
+    max-width: 800px; /* Same as other sections */
+    margin: 0 auto 0.6em auto; /* Same as other sections */
+    padding: 1.4em 1.1em; /* Same as other sections */
     border-radius: 16px;
     box-shadow: 0 4px 24px rgba(0,0,0,0.08);
     position: relative;
-    min-height: 180px; /* Reduced min-height */
+    min-height: auto; /* Remove fixed height */
     background: white; /* Replace background image with solid white */
 }
 
@@ -358,6 +358,7 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
     min-width: 220px;
     gap: 1em;
     justify-content: flex-start;
+    flex: 0 0 auto; /* Don't grow or shrink */
 }
 .about-details {
     display: flex;
@@ -658,160 +659,73 @@ nav ul li.home-button:hover {
     transition: transform 0.2s;
 }
 
-/* Company certification logos */
-.company-cert-logo {
-    width: 50px;
-    height: 50px;
-    object-fit: contain;
-    background: transparent; /* No background */
-    padding: 0;
-}
-
-/* Mobile menu toggle */
-.menu-toggle {
-    display: none;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 30px;
-    height: 21px;
-    cursor: pointer;
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    z-index: 200;
-}
-
-.menu-toggle span {
-    display: block;
-    width: 100%;
-    height: 3px;
-    background: white;
-    border-radius: 3px;
-    transition: all 0.3s ease;
-}
-
-/* Mobile menu toggle animation */
-.menu-toggle.active span:nth-child(1) {
-    transform: translateY(9px) rotate(45deg);
-}
-
-.menu-toggle.active span:nth-child(2) {
-    opacity: 0;
-}
-
-.menu-toggle.active span:nth-child(3) {
-    transform: translateY(-9px) rotate(-45deg);
-}
-
-/* Nav menu overlay for mobile */
-@media (max-width: 768px) {
-    nav {
-        display: flex;
-        justify-content: flex-end;
-        padding-right: 15px;
-    }
-    
-    nav::after {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.5);
-        z-index: 90;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s, visibility 0.3s;
-        pointer-events: none;
-    }
-    
-    nav ul.active + nav::after {
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
-    }
-}
-
-@media (max-width: 768px) {
-    .about-bg.about-flex {
-        flex-direction: column;
-        gap: 1em;
-    }
-    
-    .about-content {
-        padding: 1em 0 0 0;
-    }
-    
-    .menu-toggle {
-        display: flex;
-    }
-    
-    nav ul {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 70%;
-        height: 100vh;
-        background: rgba(34, 34, 34, 0.97);
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        transition: right 0.3s ease;
-        z-index: 100;
-        padding: 50px 0;
-    }
-    
-    nav ul.active {
-        right: 0;
-    }
-    
-    nav ul li {
-        margin: 1.2em 0;
-    }
-}
-
-/* Update About content text color for white background */
-.about-content {
+/* Enhanced tooltips for phone and email */
+.social-links .copy-btn {
     position: relative;
-    z-index: 2;
-    flex: 1 1 0;
-    min-width: 180px;
-    margin: 0;
-    padding: 0 0 0 1em;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    color: #333; /* Dark text color for white background */
-    text-shadow: none;
-    overflow: auto;
+    cursor: pointer;
 }
 
-.about-content h2 {
-    margin-top: 0;
-    font-size: 1.3em;
-    color: #222; /* Darker heading color */
+.social-links .copy-btn::after {
+    content: attr(data-copy);
+    position: absolute;
+    top: -35px;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+    z-index: 100;
+    pointer-events: none; /* Let hover continue to work */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-.about-content p {
-    font-size: 0.95em;
-    margin-bottom: 0.5em;
-    color: #444; /* Slightly lighter paragraph text */
+/* Arrow for tooltip */
+.social-links .copy-btn::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+    z-index: 101;
+    pointer-events: none;
 }
 
-/* Improve contact details alignment and spacing */
-.about-details {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.2em;
+.social-links .copy-btn:hover::after,
+.social-links .copy-btn:hover::before {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
 }
 
-/* Better arrange social links */
+/* Feedback for copy action */
+.social-links .copy-btn.copied::after {
+    content: 'Copied!';
+    background: #4caf50;
+    animation: fadeInOut 1.2s ease;
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0; }
+    20%, 80% { opacity: 1; }
+}
+
+/* Make sure social links have proper spacing */
 .social-links.water-effect {
     display: flex;
     flex-direction: row;
-    gap: 0.8em; /* Slightly increase gap between icons */
+    gap: 1em; /* Slightly more space between icons */
     margin-top: 0.3em;
     flex-wrap: nowrap;
     justify-content: flex-start;
@@ -820,68 +734,4 @@ nav ul li.home-button:hover {
     z-index: 10;
     background: transparent;
     box-shadow: none;
-}
-
-/* Make social icons more consistent */
-.social-links.water-effect a img, 
-.social-links.water-effect button.copy-btn img {
-    width: 22px; /* Smaller icon size */
-    height: 22px;
-    filter: invert(0); /* Remove inversion for better visibility on white */
-    opacity: 0.8; /* Slightly transparent */
-    transition: transform 0.2s, opacity 0.2s;
-}
-
-.social-links.water-effect a:hover img, 
-.social-links.water-effect button.copy-btn:hover img {
-    transform: translateY(-3px);
-    opacity: 1;
-}
-
-/* Make sure social links don't wrap */
-.about-details {
-    min-width: 180px;
-}
-
-/* Further reduce spacing between certification items */
-.certification {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    text-decoration: none;
-    background: rgba(255,255,255,0.85);
-    border-radius: 10px;
-    padding: 0.8em 1em 0.8em 0.8em; /* Reduced padding */
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    min-width: 180px;
-    min-height: 40px;
-    transition: transform 0.3s, box-shadow 0.3s;
-    color: #222;
-    font-size: 0.98em;
-    text-align: left;
-    gap: 0.8em; /* Reduced gap */
-    border-left: 4px solid #00bcd4;
-    position: relative;
-    margin-bottom: 0.5em; /* Reduced margin */
-}
-
-/* Reduce spacing between jobs in work experience */
-.job-description {
-    padding-left: 1.5em;
-    margin-top: 0.3em; /* Reduced from 0.5em */
-    margin-bottom: 0;
-}
-
-.job-description li {
-    margin-bottom: 0.2em; /* Reduced margin between list items */
-}
-
-/* Reduce spacing between project cards */
-.project-card {
-    margin-bottom: 0.5em; /* Reduced margin */
-}
-
-/* Tighten up education cards */
-.education-card {
-    margin-bottom: 0.5em; /* Reduced margin */
 }
