@@ -35,9 +35,9 @@ section, .about-bg.about-flex {
 section {
     max-width: 800px;
     margin: 0 auto;
-    margin-bottom: 1em; /* Reduced spacing between sections */
+    margin-bottom: 1.5em;
     background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
-    padding: 1.8em 1.5em; /* Slightly less padding */
+    padding: 2em 1.5em;
     border-radius: 16px;
     box-shadow: 0 4px 24px rgba(0,0,0,0.08);
     transition: background 0.5s;
@@ -351,7 +351,7 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
 }
 .about-profile {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     min-width: 220px;
     gap: 1em;
@@ -360,24 +360,17 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
 .about-details {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 0.2em;
+    align-items: center;
+    gap: 0.3em;
 }
 .about-details h1 {
-    font-size: 1.8em;
-    margin-bottom: 0;
-    margin-top: 0;
-    color: #222;
-    text-shadow: none;
-    font-weight: 700;
-    letter-spacing: 0.5px;
+    font-size: 1.5em;
+    margin-bottom: 0.1em;
 }
 .about-details h2 {
     font-size: 1.1em;
     margin-top: 0;
     margin-bottom: 0.3em;
-    color: #444;
-    text-shadow: none;
 }
 .social-links {
     display: flex;
@@ -440,16 +433,72 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
 }
 .about-bg.about-flex {
     display: flex;
-    align-items: flex-start; /* Changed from stretch to allow for content growth */
+    align-items: stretch;
     gap: 2.5em;
     justify-content: flex-start;
     max-width: 800px;
-    margin: 0 auto 0.8em auto; /* Reduced bottom margin */
-    padding: 1.5em 1.2em; /* Reduced padding */
+    margin: 0 auto 0 auto;
+    padding: 2em 1.5em;
+    background: url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
     border-radius: 16px;
     box-shadow: 0 4px 24px rgba(0,0,0,0.08);
     position: relative;
-    min-height: 180px; /* Reduced min-height */
+    min-height: 200px;
+    margin-top: 0.5em;
+}
+.about-bg.about-flex::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 1;
+    border-radius: 16px;
+}
+.about-profile {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 180px;
+    gap: 1em;
+    justify-content: flex-start;
+}
+.about-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3em;
+}
+.about-details h1, .about-details h2 {
+    color: #fff;
+    margin: 0;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.18);
+}
+.social-links {
+    display: flex;
+    gap: 0.7em;
+    margin-top: 0.2em;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+.social-links a, .social-links button.copy-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s;
+}
+.social-links a img, .social-links button.copy-btn img {
+    width: 28px;
+    height: 28px;
+    border-radius: 10px;
+    padding: 4px;
+    transition: transform 0.3s cubic-bezier(.68,-0.55,.27,1.55), box-shadow 0.3s;
+    filter: invert(1) brightness(1.8);
 }
 .about-content {
     position: relative;
@@ -457,38 +506,29 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
     flex: 1 1 0;
     min-width: 180px;
     margin: 0;
-    padding: 0 0 0 1em; /* Reduced left padding */
+    padding: 0 0 0 1.5em;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    color: #333;
-    text-shadow: none;
-    overflow: auto;
+    justify-content: center;
+    color: #fff;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.18);
 }
 .about-content h2 {
     margin-top: 0;
-    font-size: 1.3em; /* Smaller heading */
 }
-.about-content p {
-    font-size: 0.95em; /* Smaller text */
-    margin-bottom: 0.5em;
-}
-
-/* Remove background overlay from about section */
-.about-bg::before {
-    display: none;
+.about-bg.about-flex h2, .about-bg.about-flex p {
+    position: relative;
+    z-index: 2;
+    margin: 0 0 0.5em 0;
 }
 
-/* Adjust profile photo size */
-.profile-photo {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #fff;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.10);
-    background: #e0eafc;
-    transition: transform 0.5s ease, box-shadow 0.5s ease;
+.skills-grid .skill img[alt="AWS"],
+.skills-grid .skill img[alt="Amazon Web Services"],
+.skills-grid .skill img[src*="amazonwebservices"] {
+    background: #fff;
+    border-radius: 8px;
+    padding: 2px;
+    border: 1px solid #eee;
 }
 
 /* Updated certification/card styling */
@@ -600,37 +640,8 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
     transition: color 0.3s;
 }
 
-/* Remove the chain symbol from the cert name link */
-.cert-name-link::after {
-    display: none;
-}
-
-/* Create separate chain icon element */
-.cert-link-icon {
-    color: #1a73e8; /* Google blue color */
-    font-size: 1.1em;
-    margin-left: 5px;
-    display: inline-block;
-    vertical-align: middle;
-    transition: transform 0.3s;
-}
-
-.cert-name-link:hover .cert-link-icon {
-    transform: translateY(-2px);
-}
-
-/* Update Google Cloud Logo styling */
-.company-cert-logo {
-    width: 50px;
-    height: 50px;
-    object-fit: contain;
-    background: transparent;
-    padding: 4px;
-    transition: transform 0.3s;
-}
-
-.certification:hover .company-cert-logo {
-    transform: scale(1.12);
+.cert-name-link:hover {
+    color: #00bcd4;
 }
 
 .work-card ul {
@@ -717,23 +728,50 @@ body {
 }
 
 .timeline-connector {
+    width: 3px;
+    height: 40px;
+    background: linear-gradient(to bottom, #00bcd4, #2196f3);
+    margin-left: 25px;
     position: relative;
-    width: 4px; /* Increased width for boldness */
+}
+
+.timeline-connector:before {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #2196f3;
+    border-radius: 50%;
+    left: -4.5px;
+    bottom: -6px;
+}
+
+.timeline-connector:after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #00bcd4;
+    border-radius: 50%;
+    left: -4.5px;
+    top: -6px;
+}
+
+.company-logo {
+    width: 50px;
     height: 50px;
-    margin-left: 28px;
-    background: #00bcd4; /* Solid background color */
+    border-radius: 8px;
+    object-fit: contain;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0,188,212,0.15);
+    padding: 5px;
+    transition: transform 0.3s;
 }
 
-/* Job duration styling */
-.job-duration {
-    color: #00bcd4; /* Make job duration stand out */
-    font-weight: 500;
-    font-size: 0.95em;
-    display: block;
-    margin-bottom: 5px;
+.certification:hover .company-logo {
+    transform: scale(1.15) rotate(-5deg);
 }
 
-/* Styling for job roles */
 .job-header {
     display: flex;
     justify-content: space-between;
@@ -741,44 +779,30 @@ body {
     margin-bottom: 5px;
 }
 
-/* Add styling for company roles toggle */
-.company-roles-toggle {
-    cursor: pointer;
-    color: #00bcd4;
-    font-size: 0.9em;
-    background: none;
-    border: none;
-    text-decoration: underline;
-    margin-top: 0.5em;
-    padding: 0;
+.job-meta {
+    display: flex;
+    gap: 15px;
+    font-size: 0.95em;
 }
 
-/* Style for multiple roles container */
-.multiple-roles {
-    margin-top: 0.5em;
-    border-left: 3px solid #e0eafc;
-    padding-left: 1em;
-    display: none; /* Hidden by default */
+/* Project GitHub links */
+.project-github-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.multiple-roles.visible {
-    display: block;
+.project-github-link img {
+    width: 40px;
+    height: 40px;
+    transition: transform 0.3s, filter 0.3s;
 }
 
-.role-item {
-    margin-bottom: 1em;
+.project-github-link:hover img {
+    transform: scale(1.15) rotate(-10deg);
+    filter: drop-shadow(0 0 5px rgba(0,188,212,0.5));
 }
 
-.role-title {
-    font-weight: 600;
-    color: #333;
-}
-
-.role-duration {
-    color: #00bcd4;
-    font-size: 0.9em;
-    margin: 0.2em 0;
-}
 @media (max-width: 900px) {
     .about-bg.about-flex {
         flex-direction: column;
@@ -932,151 +956,111 @@ nav ul li.home-button:hover {
 /* Water effect for social links */
 .social-links.water-effect {
     display: flex;
-    gap: 0.5em;
+    gap: 0.7em;
     margin-top: 0.2em;
     flex-wrap: wrap;
     justify-content: flex-start;
     position: relative;
-    padding: 0.4em;
+    padding: 0.5em;
     z-index: 10;
-    max-width: 180px; /* Slightly reduced size */
 }
 
 .social-links.water-effect::before {
     content: '';
     position: absolute;
-    top: -5px;
-    left: -5px;
-    right: -5px;
-    bottom: -5px;
-    background: linear-gradient(-45deg, rgba(0,188,212,0.3), rgba(33,150,243,0.3)); /* 30% opacity */
-    border-radius: 10px;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: linear-gradient(-45deg, rgba(0,188,212,0.6), rgba(33,150,243,0.6));
+    border-radius: 12px;
     z-index: -1;
-    filter: blur(6px);
+    filter: blur(8px);
     animation: waterWave 8s ease-in-out infinite alternate;
 }
 
+@keyframes waterWave {
+    0% {
+        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    }
+    50% {
+        border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+    }
+    100% {
+        border-radius: 40% 60% 60% 40% / 70% 30% 50% 60%;
+    }
+}
+
 .social-links.water-effect a, .social-links.water-effect button.copy-btn {
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.25);
     border-radius: 50%;
-    backdrop-filter: blur(3px);
-    padding: 5px; /* Smaller padding */
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(5px);
+    padding: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
     transition: transform 0.3s, box-shadow 0.3s;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* Company certification logos */
-.company-cert-logo {
-    width: 50px;
-    height: 50px;
+.social-links.water-effect a:hover, .social-links.water-effect button.copy-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.social-links.water-effect img {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) invert(1);
+}
+
+/* Updated work experience styling */
+.company-logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
     object-fit: contain;
-    background: transparent; /* No background */
-    padding: 0;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0,188,212,0.15);
+    padding: 8px;
+    transition: transform 0.3s;
 }
 
-/* Mobile menu toggle */
-.menu-toggle {
-    display: none;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 30px;
-    height: 21px;
-    cursor: pointer;
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    z-index: 200;
-}
-
-.menu-toggle span {
+.company-name {
+    font-weight: bold;
+    color: #2196f3;
+    font-size: 1.1em;
     display: block;
-    width: 100%;
-    height: 3px;
-    background: white;
-    border-radius: 3px;
-    transition: all 0.3s ease;
+    margin: 5px 0;
 }
 
-/* Mobile menu toggle animation */
-.menu-toggle.active span:nth-child(1) {
-    transform: translateY(9px) rotate(45deg);
+.job-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 8px 0;
+    font-size: 0.9em;
+    color: #666;
 }
 
-.menu-toggle.active span:nth-child(2) {
-    opacity: 0;
+.job-location {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
-.menu-toggle.active span:nth-child(3) {
-    transform: translateY(-9px) rotate(-45deg);
+.job-location::before {
+    content: '📍';
+    font-size: 0.9em;
 }
 
-/* Nav menu overlay for mobile */
-@media (max-width: 768px) {
-    nav {
-        display: flex;
-        justify-content: flex-end;
-        padding-right: 15px;
-    }
-    
-    nav::after {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.5);
-        z-index: 90;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s, visibility 0.3s;
-        pointer-events: none;
-    }
-    
-    nav ul.active + nav::after {
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
-    }
+.job-duration {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
-@media (max-width: 768px) {
-    .about-bg.about-flex {
-        flex-direction: column;
-        gap: 1em;
-    }
-    
-    .about-content {
-        padding: 1em 0 0 0;
-    }
-    
-    .menu-toggle {
-        display: flex;
-    }
-    
-    nav ul {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 70%;
-        height: 100vh;
-        background: rgba(34, 34, 34, 0.97);
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        transition: right 0.3s ease;
-        z-index: 100;
-        padding: 50px 0;
-    }
-    
-    nav ul.active {
-        right: 0;
-    }
-    
-    nav ul li {
-        margin: 1.2em 0;
-    }
+.job-duration::before {
+    content: '🗓️';
+    font-size: 0.9em;
 }
