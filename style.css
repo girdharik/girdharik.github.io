@@ -35,9 +35,9 @@ section, .about-bg.about-flex {
 section {
     max-width: 800px;
     margin: 0 auto;
-    margin-bottom: 1.5em;
+    margin-bottom: 0.6em auto; /* Further reduced bottom margin */
     background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
-    padding: 2em 1.5em;
+    padding: 1.4em 1.1em; /* Further reduced padding */
     border-radius: 16px;
     box-shadow: 0 4px 24px rgba(0,0,0,0.08);
     transition: background 0.5s;
@@ -71,7 +71,7 @@ section {
     margin: 0 auto;
     margin-bottom: 0;
     background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
-    padding: 2em 1.5em;
+    padding: 1.5em 1.2em; /* Reduced padding */
     border-radius: 16px;
     box-shadow: 0 4px 24px rgba(0,0,0,0.08);
     transition: background 0.5s;
@@ -139,35 +139,37 @@ h1 {
 }
 
 .about-bg {
-    background: url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
-    border-radius: 12px;
-    padding: 2em 1.5em;
-    color: #fff;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.10);
-    min-height: 180px;
+    display: flex;
+    align-items: flex-start;
+    gap: 2em;
+    justify-content: flex-start;
+    max-width: 800px; /* Same as other sections */
+    margin: 0 auto 0.6em auto; /* Same as other sections */
+    padding: 1.4em 1.1em; /* Same as other sections */
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
     position: relative;
-    overflow: hidden;
+    min-height: auto; /* Remove fixed height */
+    background: white; /* Replace background image with solid white */
 }
+
 .about-bg h2, .about-bg p {
     position: relative;
     z-index: 2;
 }
+
+/* Remove background overlay */
 .about-bg::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.45);
-    z-index: 1;
-    border-radius: 12px;
+    display: none;
 }
 
 .skills-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-    gap: 1.5em 1em;
+    gap: 1.2em 0.8em; /* Reduced gap */
     justify-items: center;
     align-items: end;
-    margin-top: 1.5em;
+    margin-top: 1.2em; /* Reduced margin */
     margin-bottom: 0.5em;
 }
 .skill {
@@ -351,26 +353,34 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
 }
 .about-profile {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     min-width: 220px;
     gap: 1em;
     justify-content: flex-start;
+    flex: 0 0 auto; /* Don't grow or shrink */
 }
 .about-details {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 0.3em;
+    align-items: flex-start;
+    gap: 0.2em;
 }
 .about-details h1 {
-    font-size: 1.5em;
-    margin-bottom: 0.1em;
+    font-size: 1.8em;
+    margin-bottom: 0;
+    margin-top: 0;
+    color: #222;
+    text-shadow: none;
+    font-weight: 700;
+    letter-spacing: 0.5px;
 }
 .about-details h2 {
     font-size: 1.1em;
     margin-top: 0;
     margin-bottom: 0.3em;
+    color: #444;
+    text-shadow: none;
 }
 .social-links {
     display: flex;
@@ -402,376 +412,33 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
     transition: transform 0.3s cubic-bezier(.68,-0.55,.27,1.55), box-shadow 0.3s;
     filter: invert(1) brightness(1.8);
 }
-.about-flex .about-bg {
-    flex: 1 1 0;
-    min-width: 180px;
-    margin: 0;
-    padding: 1.2em 1em;
-    min-height: 100px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background: url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
-    border-radius: 12px;
-    color: #fff;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.10);
-    position: relative;
-    overflow: hidden;
-}
-.about-flex .about-bg::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.45);
-    z-index: 1;
-    border-radius: 12px;
-}
-.about-flex .about-bg h2, .about-flex .about-bg p {
-    position: relative;
-    z-index: 2;
-    margin: 0 0 0.5em 0;
-}
-.about-bg.about-flex {
-    display: flex;
-    align-items: stretch;
-    gap: 2.5em;
-    justify-content: flex-start;
-    max-width: 800px;
-    margin: 0 auto 0 auto;
-    padding: 2em 1.5em;
-    background: url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
-    border-radius: 16px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-    position: relative;
-    min-height: 200px;
-    margin-top: 0.5em;
-}
-.about-bg.about-flex::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.45);
-    z-index: 1;
-    border-radius: 16px;
-}
-.about-profile {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    min-width: 180px;
-    gap: 1em;
-    justify-content: flex-start;
-}
-.about-details {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.3em;
-}
-.about-details h1, .about-details h2 {
-    color: #fff;
-    margin: 0;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.18);
-}
-.social-links {
-    display: flex;
-    gap: 0.7em;
-    margin-top: 0.2em;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-}
-.social-links a, .social-links button.copy-btn {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    outline: none;
-    display: flex;
-    align-items: center;
-    transition: transform 0.2s;
-}
-.social-links a img, .social-links button.copy-btn img {
-    width: 28px;
-    height: 28px;
-    border-radius: 10px;
-    padding: 4px;
-    transition: transform 0.3s cubic-bezier(.68,-0.55,.27,1.55), box-shadow 0.3s;
-    filter: invert(1) brightness(1.8);
-}
-.about-content {
-    position: relative;
-    z-index: 2;
-    flex: 1 1 0;
-    min-width: 180px;
-    margin: 0;
-    padding: 0 0 0 1.5em;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    color: #fff;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.18);
-}
-.about-content h2 {
-    margin-top: 0;
-}
-.about-bg.about-flex h2, .about-bg.about-flex p {
-    position: relative;
-    z-index: 2;
-    margin: 0 0 0.5em 0;
-}
-
-.skills-grid .skill img[alt="AWS"],
-.skills-grid .skill img[alt="Amazon Web Services"],
-.skills-grid .skill img[src*="amazonwebservices"] {
-    background: #fff;
-    border-radius: 8px;
-    padding: 2px;
-    border: 1px solid #eee;
-}
-
-/* Updated certification/card styling */
-.certification {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    text-decoration: none;
-    background: rgba(255,255,255,0.85);
-    border-radius: 10px;
-    padding: 1em 1.2em 1em 1em;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    min-width: 180px;
-    min-height: 40px;
-    transition: transform 0.3s, box-shadow 0.3s;
-    color: #222;
-    font-size: 0.98em;
-    text-align: left;
-    gap: 1em;
-    border-left: 4px solid #00bcd4;
-    position: relative;
-    margin-bottom: 1em;
-}
-
-.certification img {
-    width: 40px;
-    height: 40px;
-    margin-right: 1em;
-    border-radius: 8px;
-    padding: 4px;
-    object-fit: contain;
-    transition: transform 0.3s;
-}
-
-.certification:hover img {
-    transform: scale(1.15) rotate(-5deg);
-}
-
-.certification span {
-    color: #222;
-    font-size: 1em;
-    font-weight: 500;
-    display: flex;
-    flex-direction: column;
-    gap: 0.1em;
-    flex: 1;
-}
-
-.certification:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 15px 30px rgba(0,188,212,0.15);
-}
-
-.job-description {
-    padding-left: 1.5em;
-    margin-top: 0.5em;
-    margin-bottom: 0;
-}
-
-.job-location {
-    color: #666;
-    font-size: 0.9em;
-    font-style: italic;
-}
-
-.education-gpa, .education-achievement {
-    color: #4caf50;
-    font-weight: 500;
-}
-
-.project-desc {
-    margin: 0.3em 0;
-}
-
-.project-tech {
-    margin: 0.2em 0;
-    color: #333;
-}
-
-.project-links {
-    margin-top: 0.5em;
-    display: flex;
-    gap: 1em;
-}
-
-.github-link {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    color: #333;
-    text-decoration: none;
-    transition: color 0.3s;
-}
-
-.github-link:hover {
-    color: #00bcd4;
-}
-
-.github-link img {
-    width: 20px !important;
-    height: 20px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-.cert-name-link {
-    color: inherit;
-    text-decoration: none;
-    transition: color 0.3s;
-}
-
-.cert-name-link:hover {
-    color: #00bcd4;
-}
-
-.work-card ul {
-    margin-top: 0.5em;
-    margin-bottom: 0;
-}
-
-.work-card li {
-    margin-bottom: 0.3em;
-    font-size: 0.9em;
-}
-
-/* Certification styles */
-.certifications-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2em;
-    margin-top: 1.5em;
-}
-
-:root {
-    --background-image: url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80');
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
-    color: #222;
-    transition: background 0.5s;
-    overflow-x: hidden;
-}
-
-/* About section with dynamic background */
-.about-bg {
-    background: var(--background-image) center/cover no-repeat;
-    border-radius: 12px;
-    padding: 2em 1.5em;
-    color: #fff;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.10);
-    min-height: 180px;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Liquid social links */
-.social-links.liquid {
-    background: linear-gradient(-45deg, #00bcd4, #2196f3, #3f51b5, #00bcd4);
-    background-size: 400% 400%;
-    animation: gradient 15s ease infinite;
-    border-radius: 10px;
-    padding: 0.7em 1em;
-    box-shadow: 0 4px 15px rgba(0,188,212,0.15);
-}
-
-@keyframes gradient {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-.social-links a img, .social-links button.copy-btn img {
-    width: 28px;
-    height: 28px;
-    border-radius: 10px;
-    padding: 4px;
-    transition: transform 0.3s cubic-bezier(.68,-0.55,.27,1.55), box-shadow 0.3s;
-    filter: brightness(0) invert(1);
-}
 
 /* Work experience timeline */
 .work-timeline {
     display: flex;
     flex-direction: column;
     position: relative;
+    gap: 0.5em; /* Added to reduce space between elements */
 }
 
 .timeline-connector {
-    width: 3px;
-    height: 40px;
-    background: linear-gradient(to bottom, #00bcd4, #2196f3);
-    margin-left: 25px;
     position: relative;
+    width: 4px; /* Increased width for boldness */
+    height: 30px; /* Reduced from 50px */
+    margin-left: 28px;
+    background: #00bcd4; /* Solid background color */
 }
 
-.timeline-connector:before {
-    content: '';
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    background: #2196f3;
-    border-radius: 50%;
-    left: -4.5px;
-    bottom: -6px;
+/* Job duration styling */
+.job-duration {
+    color: #00bcd4; /* Make job duration stand out */
+    font-weight: 500;
+    font-size: 0.95em;
+    display: block;
+    margin-bottom: 5px;
 }
 
-.timeline-connector:after {
-    content: '';
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    background: #00bcd4;
-    border-radius: 50%;
-    left: -4.5px;
-    top: -6px;
-}
-
-.company-logo {
-    width: 50px;
-    height: 50px;
-    border-radius: 8px;
-    object-fit: contain;
-    background: #fff;
-    box-shadow: 0 4px 12px rgba(0,188,212,0.15);
-    padding: 5px;
-    transition: transform 0.3s;
-}
-
-.certification:hover .company-logo {
-    transform: scale(1.15) rotate(-5deg);
-}
-
+/* Styling for job roles */
 .job-header {
     display: flex;
     justify-content: space-between;
@@ -779,30 +446,44 @@ body {
     margin-bottom: 5px;
 }
 
-.job-meta {
-    display: flex;
-    gap: 15px;
-    font-size: 0.95em;
+/* Add styling for company roles toggle */
+.company-roles-toggle {
+    cursor: pointer;
+    color: #00bcd4;
+    font-size: 0.9em;
+    background: none;
+    border: none;
+    text-decoration: underline;
+    margin-top: 0.5em;
+    padding: 0;
 }
 
-/* Project GitHub links */
-.project-github-link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* Style for multiple roles container */
+.multiple-roles {
+    margin-top: 0.3em; /* Reduced margin */
+    border-left: 3px solid #e0eafc;
+    padding-left: 0.8em; /* Reduced padding */
+    display: none; /* Hidden by default */
 }
 
-.project-github-link img {
-    width: 40px;
-    height: 40px;
-    transition: transform 0.3s, filter 0.3s;
+.multiple-roles.visible {
+    display: block;
 }
 
-.project-github-link:hover img {
-    transform: scale(1.15) rotate(-10deg);
-    filter: drop-shadow(0 0 5px rgba(0,188,212,0.5));
+.role-item {
+    margin-bottom: 0.7em; /* Reduced margin */
 }
 
+.role-title {
+    font-weight: 600;
+    color: #333;
+}
+
+.role-duration {
+    color: #00bcd4;
+    font-size: 0.9em;
+    margin: 0.2em 0;
+}
 @media (max-width: 900px) {
     .about-bg.about-flex {
         flex-direction: column;
@@ -956,111 +637,101 @@ nav ul li.home-button:hover {
 /* Water effect for social links */
 .social-links.water-effect {
     display: flex;
-    gap: 0.7em;
-    margin-top: 0.2em;
-    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 0.8em; /* Slightly increase gap between icons */
+    margin-top: 0.3em;
+    flex-wrap: nowrap; /* Keep items in single row */
     justify-content: flex-start;
     position: relative;
-    padding: 0.5em;
+    padding: 0;
     z-index: 10;
+    background: transparent;
+    box-shadow: none;
 }
 
-.social-links.water-effect::before {
+.social-links.water-effect a, 
+.social-links.water-effect button.copy-btn {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 3px;
+    margin: 0;
+    transition: transform 0.2s;
+}
+
+/* Enhanced tooltips for phone and email */
+.social-links .copy-btn {
+    position: relative;
+    cursor: pointer;
+}
+
+.social-links .copy-btn::after {
+    content: attr(data-copy);
+    position: absolute;
+    top: -35px;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+    z-index: 100;
+    pointer-events: none; /* Let hover continue to work */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Arrow for tooltip */
+.social-links .copy-btn::before {
     content: '';
     position: absolute;
     top: -10px;
-    left: -10px;
-    right: -10px;
-    bottom: -10px;
-    background: linear-gradient(-45deg, rgba(0,188,212,0.6), rgba(33,150,243,0.6));
-    border-radius: 12px;
-    z-index: -1;
-    filter: blur(8px);
-    animation: waterWave 8s ease-in-out infinite alternate;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+    z-index: 101;
+    pointer-events: none;
 }
 
-@keyframes waterWave {
-    0% {
-        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-    }
-    50% {
-        border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
-    }
-    100% {
-        border-radius: 40% 60% 60% 40% / 70% 30% 50% 60%;
-    }
+.social-links .copy-btn:hover::after,
+.social-links .copy-btn:hover::before {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
 }
 
-.social-links.water-effect a, .social-links.water-effect button.copy-btn {
-    background: rgba(255, 255, 255, 0.25);
-    border-radius: 50%;
-    backdrop-filter: blur(5px);
-    padding: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    transition: transform 0.3s, box-shadow 0.3s;
+/* Feedback for copy action */
+.social-links .copy-btn.copied::after {
+    content: 'Copied!';
+    background: #4caf50;
+    animation: fadeInOut 1.2s ease;
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0; }
+    20%, 80% { opacity: 1; }
+}
+
+/* Make sure social links have proper spacing */
+.social-links.water-effect {
     display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.social-links.water-effect a:hover, .social-links.water-effect button.copy-btn:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-.social-links.water-effect img {
-    width: 24px;
-    height: 24px;
-    filter: brightness(0) invert(1);
-}
-
-/* Updated work experience styling */
-.company-logo {
-    width: 60px;
-    height: 60px;
-    border-radius: 8px;
-    object-fit: contain;
-    background: #fff;
-    box-shadow: 0 4px 12px rgba(0,188,212,0.15);
-    padding: 8px;
-    transition: transform 0.3s;
-}
-
-.company-name {
-    font-weight: bold;
-    color: #2196f3;
-    font-size: 1.1em;
-    display: block;
-    margin: 5px 0;
-}
-
-.job-meta {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin: 8px 0;
-    font-size: 0.9em;
-    color: #666;
-}
-
-.job-location {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.job-location::before {
-    content: '📍';
-    font-size: 0.9em;
-}
-
-.job-duration {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.job-duration::before {
-    content: '🗓️';
-    font-size: 0.9em;
+    flex-direction: row;
+    gap: 1em; /* Slightly more space between icons */
+    margin-top: 0.3em;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    position: relative;
+    padding: 0;
+    z-index: 10;
+    background: transparent;
+    box-shadow: none;
 }
