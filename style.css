@@ -35,9 +35,9 @@ section, .about-bg.about-flex {
 section {
     max-width: 800px;
     margin: 0 auto;
-    margin-bottom: 1em; /* Reduced spacing between sections */
+    margin-bottom: 0.6em auto; /* Further reduced bottom margin */
     background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
-    padding: 1.8em 1.5em; /* Slightly less padding */
+    padding: 1.4em 1.1em; /* Further reduced padding */
     border-radius: 16px;
     box-shadow: 0 4px 24px rgba(0,0,0,0.08);
     transition: background 0.5s;
@@ -71,7 +71,7 @@ section {
     margin: 0 auto;
     margin-bottom: 0;
     background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
-    padding: 2em 1.5em;
+    padding: 1.5em 1.2em; /* Reduced padding */
     border-radius: 16px;
     box-shadow: 0 4px 24px rgba(0,0,0,0.08);
     transition: background 0.5s;
@@ -139,35 +139,37 @@ h1 {
 }
 
 .about-bg {
-    background: url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
-    border-radius: 12px;
-    padding: 2em 1.5em;
-    color: #fff;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.10);
-    min-height: 180px;
+    display: flex;
+    align-items: flex-start;
+    gap: 2em;
+    justify-content: flex-start;
+    max-width: 800px;
+    margin: 0 auto 0.8em auto; /* Reduced bottom margin */
+    padding: 1.5em 1.2em; /* Reduced padding */
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
     position: relative;
-    overflow: hidden;
+    min-height: 180px; /* Reduced min-height */
+    background: white; /* Replace background image with solid white */
 }
+
 .about-bg h2, .about-bg p {
     position: relative;
     z-index: 2;
 }
+
+/* Remove background overlay */
 .about-bg::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.45);
-    z-index: 1;
-    border-radius: 12px;
+    display: none;
 }
 
 .skills-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-    gap: 1.5em 1em;
+    gap: 1.2em 0.8em; /* Reduced gap */
     justify-items: center;
     align-items: end;
-    margin-top: 1.5em;
+    margin-top: 1.2em; /* Reduced margin */
     margin-bottom: 0.5em;
 }
 .skill {
@@ -409,317 +411,19 @@ section#name.name-about-flex .about-bg h2, section#name.name-about-flex .about-b
     transition: transform 0.3s cubic-bezier(.68,-0.55,.27,1.55), box-shadow 0.3s;
     filter: invert(1) brightness(1.8);
 }
-.about-flex .about-bg {
-    flex: 1 1 0;
-    min-width: 180px;
-    margin: 0;
-    padding: 1.2em 1em;
-    min-height: 100px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background: url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
-    border-radius: 12px;
-    color: #fff;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.10);
-    position: relative;
-    overflow: hidden;
-}
-.about-flex .about-bg::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.45);
-    z-index: 1;
-    border-radius: 12px;
-}
-.about-flex .about-bg h2, .about-flex .about-bg p {
-    position: relative;
-    z-index: 2;
-    margin: 0 0 0.5em 0;
-}
-.about-bg.about-flex {
-    display: flex;
-    align-items: flex-start; /* Changed from stretch to allow for content growth */
-    gap: 2.5em;
-    justify-content: flex-start;
-    max-width: 800px;
-    margin: 0 auto 0.8em auto; /* Reduced bottom margin */
-    padding: 1.5em 1.2em; /* Reduced padding */
-    border-radius: 16px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-    position: relative;
-    min-height: 180px; /* Reduced min-height */
-}
-.about-content {
-    position: relative;
-    z-index: 2;
-    flex: 1 1 0;
-    min-width: 180px;
-    margin: 0;
-    padding: 0 0 0 1em; /* Reduced left padding */
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    color: #333;
-    text-shadow: none;
-    overflow: auto;
-}
-.about-content h2 {
-    margin-top: 0;
-    font-size: 1.3em; /* Smaller heading */
-}
-.about-content p {
-    font-size: 0.95em; /* Smaller text */
-    margin-bottom: 0.5em;
-}
-
-/* Remove background overlay from about section */
-.about-bg::before {
-    display: none;
-}
-
-/* Adjust profile photo size */
-.profile-photo {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #fff;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.10);
-    background: #e0eafc;
-    transition: transform 0.5s ease, box-shadow 0.5s ease;
-}
-
-/* Updated certification/card styling */
-.certification {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    text-decoration: none;
-    background: rgba(255,255,255,0.85);
-    border-radius: 10px;
-    padding: 1em 1.2em 1em 1em;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    min-width: 180px;
-    min-height: 40px;
-    transition: transform 0.3s, box-shadow 0.3s;
-    color: #222;
-    font-size: 0.98em;
-    text-align: left;
-    gap: 1em;
-    border-left: 4px solid #00bcd4;
-    position: relative;
-    margin-bottom: 1em;
-}
-
-.certification img {
-    width: 40px;
-    height: 40px;
-    margin-right: 1em;
-    border-radius: 8px;
-    padding: 4px;
-    object-fit: contain;
-    transition: transform 0.3s;
-}
-
-.certification:hover img {
-    transform: scale(1.15) rotate(-5deg);
-}
-
-.certification span {
-    color: #222;
-    font-size: 1em;
-    font-weight: 500;
-    display: flex;
-    flex-direction: column;
-    gap: 0.1em;
-    flex: 1;
-}
-
-.certification:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 15px 30px rgba(0,188,212,0.15);
-}
-
-.job-description {
-    padding-left: 1.5em;
-    margin-top: 0.5em;
-    margin-bottom: 0;
-}
-
-.job-location {
-    color: #666;
-    font-size: 0.9em;
-    font-style: italic;
-}
-
-.education-gpa, .education-achievement {
-    color: #4caf50;
-    font-weight: 500;
-}
-
-.project-desc {
-    margin: 0.3em 0;
-}
-
-.project-tech {
-    margin: 0.2em 0;
-    color: #333;
-}
-
-.project-links {
-    margin-top: 0.5em;
-    display: flex;
-    gap: 1em;
-}
-
-.github-link {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    color: #333;
-    text-decoration: none;
-    transition: color 0.3s;
-}
-
-.github-link:hover {
-    color: #00bcd4;
-}
-
-.github-link img {
-    width: 20px !important;
-    height: 20px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-.cert-name-link {
-    color: inherit;
-    text-decoration: none;
-    transition: color 0.3s;
-}
-
-/* Remove the chain symbol from the cert name link */
-.cert-name-link::after {
-    display: none;
-}
-
-/* Create separate chain icon element */
-.cert-link-icon {
-    color: #1a73e8; /* Google blue color */
-    font-size: 1.1em;
-    margin-left: 5px;
-    display: inline-block;
-    vertical-align: middle;
-    transition: transform 0.3s;
-}
-
-.cert-name-link:hover .cert-link-icon {
-    transform: translateY(-2px);
-}
-
-/* Update Google Cloud Logo styling */
-.company-cert-logo {
-    width: 50px;
-    height: 50px;
-    object-fit: contain;
-    background: transparent;
-    padding: 4px;
-    transition: transform 0.3s;
-}
-
-.certification:hover .company-cert-logo {
-    transform: scale(1.12);
-}
-
-.work-card ul {
-    margin-top: 0.5em;
-    margin-bottom: 0;
-}
-
-.work-card li {
-    margin-bottom: 0.3em;
-    font-size: 0.9em;
-}
-
-/* Certification styles */
-.certifications-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2em;
-    margin-top: 1.5em;
-}
-
-:root {
-    --background-image: url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80');
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
-    color: #222;
-    transition: background 0.5s;
-    overflow-x: hidden;
-}
-
-/* About section with dynamic background */
-.about-bg {
-    background: var(--background-image) center/cover no-repeat;
-    border-radius: 12px;
-    padding: 2em 1.5em;
-    color: #fff;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.10);
-    min-height: 180px;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Liquid social links */
-.social-links.liquid {
-    background: linear-gradient(-45deg, #00bcd4, #2196f3, #3f51b5, #00bcd4);
-    background-size: 400% 400%;
-    animation: gradient 15s ease infinite;
-    border-radius: 10px;
-    padding: 0.7em 1em;
-    box-shadow: 0 4px 15px rgba(0,188,212,0.15);
-}
-
-@keyframes gradient {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-.social-links a img, .social-links button.copy-btn img {
-    width: 28px;
-    height: 28px;
-    border-radius: 10px;
-    padding: 4px;
-    transition: transform 0.3s cubic-bezier(.68,-0.55,.27,1.55), box-shadow 0.3s;
-    filter: brightness(0) invert(1);
-}
 
 /* Work experience timeline */
 .work-timeline {
     display: flex;
     flex-direction: column;
     position: relative;
+    gap: 0.5em; /* Added to reduce space between elements */
 }
 
 .timeline-connector {
     position: relative;
     width: 4px; /* Increased width for boldness */
-    height: 50px;
+    height: 30px; /* Reduced from 50px */
     margin-left: 28px;
     background: #00bcd4; /* Solid background color */
 }
@@ -755,9 +459,9 @@ body {
 
 /* Style for multiple roles container */
 .multiple-roles {
-    margin-top: 0.5em;
+    margin-top: 0.3em; /* Reduced margin */
     border-left: 3px solid #e0eafc;
-    padding-left: 1em;
+    padding-left: 0.8em; /* Reduced padding */
     display: none; /* Hidden by default */
 }
 
@@ -766,7 +470,7 @@ body {
 }
 
 .role-item {
-    margin-bottom: 1em;
+    margin-bottom: 0.7em; /* Reduced margin */
 }
 
 .role-title {
@@ -932,40 +636,26 @@ nav ul li.home-button:hover {
 /* Water effect for social links */
 .social-links.water-effect {
     display: flex;
-    gap: 0.5em;
-    margin-top: 0.2em;
-    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 0.8em; /* Slightly increase gap between icons */
+    margin-top: 0.3em;
+    flex-wrap: nowrap; /* Keep items in single row */
     justify-content: flex-start;
     position: relative;
-    padding: 0.4em;
+    padding: 0;
     z-index: 10;
-    max-width: 180px; /* Slightly reduced size */
+    background: transparent;
+    box-shadow: none;
 }
 
-.social-links.water-effect::before {
-    content: '';
-    position: absolute;
-    top: -5px;
-    left: -5px;
-    right: -5px;
-    bottom: -5px;
-    background: linear-gradient(-45deg, rgba(0,188,212,0.3), rgba(33,150,243,0.3)); /* 30% opacity */
-    border-radius: 10px;
-    z-index: -1;
-    filter: blur(6px);
-    animation: waterWave 8s ease-in-out infinite alternate;
-}
-
-.social-links.water-effect a, .social-links.water-effect button.copy-btn {
-    background: rgba(255, 255, 255, 0.12);
-    border-radius: 50%;
-    backdrop-filter: blur(3px);
-    padding: 5px; /* Smaller padding */
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    transition: transform 0.3s, box-shadow 0.3s;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.social-links.water-effect a, 
+.social-links.water-effect button.copy-btn {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 3px;
+    margin: 0;
+    transition: transform 0.2s;
 }
 
 /* Company certification logos */
@@ -1079,4 +769,119 @@ nav ul li.home-button:hover {
     nav ul li {
         margin: 1.2em 0;
     }
+}
+
+/* Update About content text color for white background */
+.about-content {
+    position: relative;
+    z-index: 2;
+    flex: 1 1 0;
+    min-width: 180px;
+    margin: 0;
+    padding: 0 0 0 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    color: #333; /* Dark text color for white background */
+    text-shadow: none;
+    overflow: auto;
+}
+
+.about-content h2 {
+    margin-top: 0;
+    font-size: 1.3em;
+    color: #222; /* Darker heading color */
+}
+
+.about-content p {
+    font-size: 0.95em;
+    margin-bottom: 0.5em;
+    color: #444; /* Slightly lighter paragraph text */
+}
+
+/* Improve contact details alignment and spacing */
+.about-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2em;
+}
+
+/* Better arrange social links */
+.social-links.water-effect {
+    display: flex;
+    flex-direction: row;
+    gap: 0.8em; /* Slightly increase gap between icons */
+    margin-top: 0.3em;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    position: relative;
+    padding: 0;
+    z-index: 10;
+    background: transparent;
+    box-shadow: none;
+}
+
+/* Make social icons more consistent */
+.social-links.water-effect a img, 
+.social-links.water-effect button.copy-btn img {
+    width: 22px; /* Smaller icon size */
+    height: 22px;
+    filter: invert(0); /* Remove inversion for better visibility on white */
+    opacity: 0.8; /* Slightly transparent */
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.social-links.water-effect a:hover img, 
+.social-links.water-effect button.copy-btn:hover img {
+    transform: translateY(-3px);
+    opacity: 1;
+}
+
+/* Make sure social links don't wrap */
+.about-details {
+    min-width: 180px;
+}
+
+/* Further reduce spacing between certification items */
+.certification {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    text-decoration: none;
+    background: rgba(255,255,255,0.85);
+    border-radius: 10px;
+    padding: 0.8em 1em 0.8em 0.8em; /* Reduced padding */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    min-width: 180px;
+    min-height: 40px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    color: #222;
+    font-size: 0.98em;
+    text-align: left;
+    gap: 0.8em; /* Reduced gap */
+    border-left: 4px solid #00bcd4;
+    position: relative;
+    margin-bottom: 0.5em; /* Reduced margin */
+}
+
+/* Reduce spacing between jobs in work experience */
+.job-description {
+    padding-left: 1.5em;
+    margin-top: 0.3em; /* Reduced from 0.5em */
+    margin-bottom: 0;
+}
+
+.job-description li {
+    margin-bottom: 0.2em; /* Reduced margin between list items */
+}
+
+/* Reduce spacing between project cards */
+.project-card {
+    margin-bottom: 0.5em; /* Reduced margin */
+}
+
+/* Tighten up education cards */
+.education-card {
+    margin-bottom: 0.5em; /* Reduced margin */
 }
