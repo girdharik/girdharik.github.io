@@ -9,6 +9,13 @@
    */
   const AGENT_SPACE_URL = "https://girdharik-AiAgents.hf.space";
 
+  /**
+   * Optional shared key with Space secret PORTFOLIO_ASK_SECRET.
+   * Leave empty until the Space secret is set (flow keeps working).
+   * After you set the HF secret, put the same value here and redeploy Pages.
+   */
+  const PORTFOLIO_ASK_KEY = "spidey";
+
   const GENERIC_RETRY =
     "I couldn't complete that just now. Please try again in a moment.";
 
@@ -128,10 +135,23 @@
       html = null;
     }
     if (html) {
+      if (global.DOMPurify) {
+        html = global.DOMPurify.sanitize(html, {
+          USE_PROFILES: { html: true },
+        });
+      }
       appendMessage("assistant", html, true);
     } else {
       appendMessage("assistant", cleaned || "", false);
     }
+  }
+
+  function askHeaders(extra) {
+    const headers = Object.assign({}, extra || {});
+    if (PORTFOLIO_ASK_KEY) {
+      headers["X-Portfolio-Key"] = PORTFOLIO_ASK_KEY;
+    }
+    return headers;
   }
 
   async function fetchWithTimeout(url, options, timeoutMs) {
@@ -324,7 +344,7 @@
       {
         method: "POST",
         mode: "cors",
-        headers: { "Content-Type": "application/json" },
+        headers: askHeaders({ "Content-Type": "application/json" }),
         body: JSON.stringify({ question }),
       },
       ASK_TIMEOUT_MS
@@ -341,7 +361,12 @@
       if (text) form.append("jd", text);
       res = await fetchWithTimeout(
         AGENT_SPACE_URL + "/match_jd",
-        { method: "POST", mode: "cors", body: form },
+        {
+          method: "POST",
+          mode: "cors",
+          headers: askHeaders(),
+          body: form,
+        },
         JD_TIMEOUT_MS
       );
     } else {
@@ -350,7 +375,7 @@
         {
           method: "POST",
           mode: "cors",
-          headers: { "Content-Type": "application/json" },
+          headers: askHeaders({ "Content-Type": "application/json" }),
           body: JSON.stringify({ jd: text || "" }),
         },
         JD_TIMEOUT_MS
