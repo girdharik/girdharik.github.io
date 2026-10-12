@@ -531,7 +531,63 @@
       if (input) setTimeout(() => input.focus(), 200);
     } else {
       panel.classList.remove("open");
+      panel.classList.remove("is-resizing");
     }
+  }
+
+  function bindPanelResize(panel) {
+    const handle = $("botPanelResize");
+    if (!panel || !handle || handle.dataset.ready === "1") return;
+    handle.dataset.ready = "1";
+
+    let startX = 0;
+    let startY = 0;
+    let startW = 0;
+    let startH = 0;
+
+    function onMove(e) {
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      // Panel is right-anchored: drag left grows width, drag down grows height
+      const nextW = Math.min(
+        Math.max(startW + (startX - clientX), 300),
+        Math.min(720, window.innerWidth - 24)
+      );
+      const nextH = Math.min(
+        Math.max(startH + (clientY - startY), 320),
+        window.innerHeight - 72
+      );
+      panel.style.width = nextW + "px";
+      panel.style.height = nextH + "px";
+      if (e.cancelable) e.preventDefault();
+    }
+
+    function onUp() {
+      panel.classList.remove("is-resizing");
+      document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseup", onUp);
+      document.removeEventListener("touchmove", onMove);
+      document.removeEventListener("touchend", onUp);
+    }
+
+    function onDown(e) {
+      if (!panel.classList.contains("open")) return;
+      const point = e.touches ? e.touches[0] : e;
+      startX = point.clientX;
+      startY = point.clientY;
+      startW = panel.offsetWidth;
+      startH = panel.offsetHeight;
+      panel.classList.add("is-resizing");
+      document.addEventListener("mousemove", onMove);
+      document.addEventListener("mouseup", onUp);
+      document.addEventListener("touchmove", onMove, { passive: false });
+      document.addEventListener("touchend", onUp);
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    handle.addEventListener("mousedown", onDown);
+    handle.addEventListener("touchstart", onDown, { passive: false });
   }
 
   function initBot() {
@@ -547,6 +603,7 @@
       return;
     }
     fab.dataset.botReady = "1";
+    bindPanelResize(panel);
 
     fab.addEventListener("click", () => setOpen(!panel.classList.contains("open")));
     if (close) close.addEventListener("click", () => setOpen(false));

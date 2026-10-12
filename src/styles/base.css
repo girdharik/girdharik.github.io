@@ -692,20 +692,35 @@ a { color: var(--clr-primary); text-decoration: none; }
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0) scale(1) rotate(0deg);
-  resize: both;
+  resize: none;
   animation: botPanelPop 0.45s cubic-bezier(0.34, 1.45, 0.64, 1);
 }
-.bot-panel-resize-hint {
+.bot-panel-resize {
   position: absolute;
-  right: 6px;
-  bottom: 4px;
-  width: 12px;
-  height: 12px;
-  pointer-events: none;
-  opacity: 0.35;
+  left: 2px;
+  bottom: 2px;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  cursor: nwse-resize;
+  z-index: 5;
   background:
-    linear-gradient(135deg, transparent 45%, rgba(46,230,168,0.55) 46%, rgba(46,230,168,0.55) 54%, transparent 55%),
-    linear-gradient(135deg, transparent 65%, rgba(46,230,168,0.4) 66%, rgba(46,230,168,0.4) 74%, transparent 75%);
+    linear-gradient(-135deg, transparent 40%, rgba(46,230,168,0.55) 41%, rgba(46,230,168,0.55) 48%, transparent 49%),
+    linear-gradient(-135deg, transparent 58%, rgba(46,230,168,0.4) 59%, rgba(46,230,168,0.4) 66%, transparent 67%),
+    linear-gradient(-135deg, transparent 76%, rgba(46,230,168,0.3) 77%, rgba(46,230,168,0.3) 84%, transparent 85%);
+  opacity: 0.55;
+  background-color: transparent;
+}
+.bot-panel-resize:hover,
+.bot-panel.is-resizing .bot-panel-resize {
+  opacity: 1;
+  background-color: rgba(46, 230, 168, 0.08);
+}
+.bot-panel.is-resizing {
+  transition: none;
+  user-select: none;
 }
 @keyframes botPanelPop {
   0% { transform: translateY(-16px) scale(0.72) rotate(-8deg); opacity: 0; }
@@ -1039,9 +1054,8 @@ a { color: var(--clr-primary); text-decoration: none; }
     resize: none;
   }
   .bot-panel.open {
-    resize: vertical;
+    resize: none;
   }
-  .bot-panel-resize-hint { display: none; }
 }
 
 @media (max-width: 480px) {
