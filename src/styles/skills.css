@@ -1,0 +1,17 @@
+/* ============================================================
+   SKILLS PAGE
+   ============================================================ */
+
+.skill-group {
+  margin-bottom: 2rem;
+}
+.skill-group:last-child { margin-bottom: 0; }
+
+.skill-group-title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--clr-muted);
+  margin-bottom: 0.85rem;
+}

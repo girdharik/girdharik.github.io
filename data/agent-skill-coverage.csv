@@ -1,0 +1,8 @@
+Skill,Framework Coverage,Query Accuracy
+Performance,95,90
+Score Drift,90,88
+Feature Drift,88,82
+XAI / SHAP,85,80
+Bias,80,75
+RCA,92,85
+Confusion Matrix,78,72

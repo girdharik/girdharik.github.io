@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Portfolio Editor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f172a; --surface: #1e293b; --border: #334155;
+      --text: #e2e8f0; --muted: #94a3b8; --primary: #3b82f6;
+      --accent: #06b6d4; --danger: #ef4444; --success: #22c55e;
+      --radius: 10px; --font: 'Inter', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* ── Layout ───────────────────────────────── */
+    .admin-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2rem; background: var(--surface); border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .admin-header h1 { font-size: 1.1rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
+    .admin-header h1 span { color: var(--primary); }
+    .header-actions { display: flex; gap: 0.5rem; align-items: center; }
+
+    .admin-body { display: flex; min-height: calc(100vh - 56px); }
+    .admin-sidebar {
+      width: 220px; background: var(--surface); border-right: 1px solid var(--border);
+      padding: 1rem 0; position: sticky; top: 56px; height: calc(100vh - 56px); overflow-y: auto;
+    }
+    .admin-sidebar button {
+      display: flex; align-items: center; gap: 0.5rem; width: 100%;
+      padding: 0.65rem 1.25rem; border: none; background: none; color: var(--muted);
+      font-family: var(--font); font-size: 0.85rem; font-weight: 500; cursor: pointer;
+      text-align: left; transition: all 0.15s;
+    }
+    .admin-sidebar button:hover { background: rgba(59,130,246,0.08); color: var(--text); }
+    .admin-sidebar button.active { background: rgba(59,130,246,0.15); color: var(--primary); border-right: 2px solid var(--primary); }
+
+    .admin-content { flex: 1; padding: 2rem; max-width: 900px; }
+
+    /* ── Components ────────────────────────────── */
+    .section-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 1.5rem; }
+    .field { margin-bottom: 1.25rem; }
+    .field label {
+      display: block; font-size: 0.78rem; font-weight: 600;
+      color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em;
+      margin-bottom: 0.35rem;
+    }
+    .field input, .field textarea, .field select {
+      width: 100%; padding: 0.6rem 0.85rem; background: var(--bg);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      color: var(--text); font-family: var(--font); font-size: 0.88rem;
+      outline: none; transition: border-color 0.2s;
+    }
+    .field input:focus, .field textarea:focus { border-color: var(--primary); }
+    .field textarea { min-height: 100px; resize: vertical; line-height: 1.6; }
+    .field .hint { font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem; }
+
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem;
+      position: relative;
+    }
+    .card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border);
+    }
+    .card-header h3 { font-size: 0.95rem; font-weight: 600; }
+    .card-actions { display: flex; gap: 0.35rem; }
+
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+
+    /* ── Buttons ───────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.5rem 1rem; border: 1px solid var(--border); border-radius: var(--radius);
+      background: var(--surface); color: var(--text); font-family: var(--font);
+      font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: all 0.15s;
+    }
+    .btn:hover { border-color: var(--primary); color: var(--primary); }
+    .btn-primary { background: var(--primary); border-color: var(--primary); color: #fff; }
+    .btn-primary:hover { background: #2563eb; }
+    .btn-danger { color: var(--danger); }
+    .btn-danger:hover { background: rgba(239,68,68,0.1); border-color: var(--danger); }
+    .btn-sm { padding: 0.3rem 0.6rem; font-size: 0.78rem; }
+    .btn-success { background: var(--success); border-color: var(--success); color: #fff; }
+    .btn-success:hover { background: #16a34a; }
+
+    /* ── Setup / Status ───────────────────────── */
+    .setup-box {
+      max-width: 500px; margin: 4rem auto; padding: 2rem;
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      text-align: center;
+    }
+    .setup-box h2 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+    .setup-box p { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.5rem; line-height: 1.6; }
+    .setup-box input { margin-bottom: 0.5rem; }
+    .setup-box .btn { width: 100%; justify-content: center; margin-top: 0.5rem; }
+
+    .toast {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; padding: 0.75rem 1.25rem;
+      border-radius: var(--radius); font-size: 0.85rem; font-weight: 500; z-index: 200;
+      transform: translateY(100px); opacity: 0; transition: all 0.3s;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { background: var(--success); color: #fff; }
+    .toast.error { background: var(--danger); color: #fff; }
+
+    .status-bar {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.78rem; color: var(--muted);
+    }
+    .status-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--success); display: inline-block;
+    }
+    .status-dot.disconnected { background: var(--danger); }
+
+    /* ── List editor ──────────────────────────── */
+    .list-editor { display: flex; flex-direction: column; gap: 0.5rem; }
+    .list-item {
+      display: flex; gap: 0.5rem; align-items: center;
+    }
+    .list-item input { flex: 1; }
+
+    /* ── Loading ───────────────────────────────── */
+    .spinner {
+      width: 20px; height: 20px; border: 2px solid var(--border);
+      border-top-color: var(--primary); border-radius: 50%;
+      animation: spin 0.6s linear infinite; display: inline-block;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Responsive ────────────────────────────── */
+    @media (max-width: 768px) {
+      .admin-sidebar { display: none; }
+      .admin-content { padding: 1rem; }
+      .row, .row-3 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="app"></div>
+<div id="toast" class="toast"></div>
+
+<script>
+/* ================================================================
+   Admin Panel — GitHub API-based CMS for portfolio
+   Works on free GitHub Pages (static, no server needed)
+   ================================================================ */
+
+const APP = {
+  token: localStorage.getItem('gh_token') || '',
+  repo: localStorage.getItem('gh_repo') || '',   // "username/repo-name"
+  branch: localStorage.getItem('gh_branch') || 'main',
+  filePath: 'src/data.js',
+  data: null,      // parsed SITE object
+  fileSha: '',     // needed for GitHub API commits
+  activeTab: 'meta',
+};
+
+/* ── GitHub API helpers ─────────────────────────── */
+const GH = {
+  headers() {
+    return {
+      'Authorization': `token ${APP.token}`,
+      'Accept': 'application/vnd.github.v3+json',
+    };
+  },
+
+  async getFile() {
+    const url = `https://api.github.com/repos/${APP.repo}/contents/${APP.filePath}?ref=${APP.branch}`;
+    const res = await fetch(url, { headers: GH.headers() });
+    if (!res.ok) throw new Error(`Failed to fetch file: ${res.status}`);
+    const json = await res.json();
+    APP.fileSha = json.sha;
+    return atob(json.content.replace(/\n/g, ''));
+  },
+
+  async saveFile(content, message) {
+    const url = `https://api.github.com/repos/${APP.repo}/contents/${APP.filePath}`;
+    const body = {
+      message: message || `Update portfolio content — ${new Date().toLocaleDateString()}`,
+      content: btoa(unescape(encodeURIComponent(content))),
+      sha: APP.fileSha,
+      branch: APP.branch,
+    };
+    const res = await fetch(url, { method: 'PUT', headers: GH.headers(), body: JSON.stringify(body) });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.message || `Save failed: ${res.status}`);
+    }
+    const json = await res.json();
+    APP.fileSha = json.content.sha;
+    return json;
+  },
+
+  async testConnection() {
+    const url = `https://api.github.com/repos/${APP.repo}`;
+    const res = await fetch(url, { headers: GH.headers() });
+    return res.ok;
+  },
+};
+
+/* ── Parse data.js text → SITE object ───────────── */
+function parseDataJS(text) {
+  // Extract the object literal between "const SITE = {" and the final "};"
+  const start = text.indexOf('{');
+  const end = text.lastIndexOf('}');
+  if (start === -1 || end === -1) throw new Error('Could not parse data.js');
+  const objStr = text.substring(start, end + 1);
+
+  // Handle function expressions in chart data by replacing them with null
+  // (they'll be preserved in the raw text for charts)
+  const sanitized = objStr.replace(/function\s*\([^)]*\)\s*\{[^}]*\}/g, 'null');
+  try {
+    return (new Function('return (' + sanitized + ')'))();
+  } catch (e) {
+    throw new Error('Failed to parse SITE object: ' + e.message);
+  }
+}
+
+/* ── Serialize SITE object → data.js text ───────── */
+function serializeDataJS(siteObj, originalText) {
+  // We rebuild the meta, home, experience, projects (non-detail), skills, and about sections
+  // For project detail sections (charts, tables), we preserve the original text
+  const header = `/**
+ * ============================================================
+ *  SITE DATA — Single source of truth
+ * ============================================================
+ *  Edit ONLY this file to update content.
+ *
+ *  PAGES  – defined by the \`pages\` array; router picks them up
+ *           automatically. Add a page → nav link + route appear.
+ *
+ *  PROJECTS – each item in \`projects\` gets a card on /projects
+ *           AND its own deep-dive page at /projects/<slug>.
+ *           Add a \`detail\` object with sections array to build
+ *           an interactive project showcase page.
+ *
+ *  Section types available inside project detail:
+ *    "text"        – paragraphs / rich description
+ *    "metrics"     – counter cards
+ *    "architecture"– diagram image + caption
+ *    "features"    – bullet feature list with icons
+ *    "tech"        – tech stack badges
+ *    "gallery"     – image carousel / grid
+ *    "code"        – code snippet block
+ *    "timeline"    – step-by-step process
+ *    "chart"       – Chart.js graph (bar, line, doughnut, radar)
+ *    "table"       – interactive sortable/filterable data table
+ * ============================================================
+ */
+
+`;
+  const body = JSON.stringify(siteObj, (key, val) => {
+    // Keep functions as-is (they'll be null in JSON, handled below)
+    return val;
+  }, 2);
+
+  // Fix JSON to valid JS: unquote keys, restore trailing commas
+  let js = body
+    .replace(/"([a-zA-Z_$][a-zA-Z0-9_$]*)"\s*:/g, '$1: ')  // unquote keys
+    .replace(/: "true"/g, ': true')
+    .replace(/: "false"/g, ': false');
+
+  return header + 'const SITE = ' + js + ';\n';
+}
+
+/* ── Toast notification ─────────────────────────── */
+function toast(msg, type = 'success') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `toast ${type} show`;
+  setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+/* ── Render setup screen ────────────────────────── */
+function renderSetup() {
+  document.getElementById('app').innerHTML = `
+    <div class="setup-box">
+      <h2>⚙️ Connect to GitHub</h2>
+      <p>
+        Enter your GitHub repo and a Personal Access Token (PAT) with <strong>repo</strong> scope.<br>
+        <a href="https://github.com/settings/tokens/new?scopes=repo&description=Portfolio+Admin" target="_blank" style="color:var(--primary)">
+          Create a token here →
+        </a><br><br>
+        Your token is stored <strong>only in this browser's localStorage</strong>.<br>
+        It is never sent anywhere except GitHub's API.
+      </p>
+      <div class="field">
+        <label>Repository (owner/repo)</label>
+        <input type="text" id="setupRepo" placeholder="girdharik/girdharik.github.io" value="${APP.repo}">
+        <div class="hint">e.g. girdharik/girdharik.github.io</div>
+      </div>
+      <div class="field">
+        <label>Branch</label>
+        <input type="text" id="setupBranch" placeholder="main" value="${APP.branch}">
+      </div>
+      <div class="field">
+        <label>Personal Access Token</label>
+        <input type="password" id="setupToken" placeholder="ghp_..." value="${APP.token}">
+      </div>
+      <button class="btn btn-primary" onclick="doSetup()">Connect & Load Content</button>
+    </div>`;
+}
+
+async function doSetup() {
+  const repo = document.getElementById('setupRepo').value.trim();
+  const branch = document.getElementById('setupBranch').value.trim() || 'main';
+  const token = document.getElementById('setupToken').value.trim();
+
+  if (!repo || !token) return toast('Please fill in all fields', 'error');
+
+  APP.repo = repo; APP.branch = branch; APP.token = token;
+  localStorage.setItem('gh_repo', repo);
+  localStorage.setItem('gh_branch', branch);
+  localStorage.setItem('gh_token', token);
+
+  try {
+    const ok = await GH.testConnection();
+    if (!ok) throw new Error('Cannot access repo');
+    await loadContent();
+    toast('Connected successfully!');
+  } catch (e) {
+    toast('Connection failed: ' + e.message, 'error');
+  }
+}
+
+/* ── Load content from GitHub ───────────────────── */
+async function loadContent() {
+  const raw = await GH.getFile();
+  APP.data = parseDataJS(raw);
+  APP.rawText = raw;
+  renderAdmin();
+}
+
+/* ── Save content to GitHub ─────────────────────── */
+async function saveContent() {
+  const btn = document.querySelector('.save-btn');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Saving...'; }
+  try {
+    const js = serializeDataJS(APP.data, APP.rawText);
+    await GH.saveFile(js);
+    toast('Saved & published! Changes go live after GitHub Pages rebuilds (~1 min).');
+  } catch (e) {
+    toast('Save failed: ' + e.message, 'error');
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = '💾 Save & Publish'; }
+  }
+}
+
+/* ── Main admin layout ──────────────────────────── */
+function renderAdmin() {
+  const tabs = [
+    { id: 'meta', label: '👤 Personal Info' },
+    { id: 'home', label: '🏠 Home Page' },
+    { id: 'experience', label: '💼 Experience' },
+    { id: 'projects', label: '🚀 Projects' },
+    { id: 'skills', label: '🛠 Skills' },
+    { id: 'about', label: '📄 About' },
+    { id: 'pages', label: '📑 Custom Pages' },
+  ];
+
+  document.getElementById('app').innerHTML = `
+    <header class="admin-header">
+      <h1>📝 <span>Portfolio</span> Admin</h1>
+      <div class="header-actions">
+        <div class="status-bar">
+          <span class="status-dot"></span>
+          <span>${APP.repo}</span>
+        </div>
+        <button class="btn save-btn btn-success" onclick="saveContent()">💾 Save & Publish</button>
+        <button class="btn btn-sm" onclick="previewSite()">👁 Preview</button>
+        <button class="btn btn-sm btn-danger" onclick="disconnect()">Disconnect</button>
+      </div>
+    </header>
+    <div class="admin-body">
+      <nav class="admin-sidebar">
+        ${tabs.map(t => `<button data-tab="${t.id}" class="${t.id === APP.activeTab ? 'active' : ''}" onclick="switchTab('${t.id}')">${t.label}</button>`).join('')}
+      </nav>
+      <div class="admin-content" id="tabContent"></div>
+    </div>`;
+
+  renderTab();
+}
+
+function switchTab(id) {
+  APP.activeTab = id;
+  document.querySelectorAll('.admin-sidebar button').forEach(b => {
+    b.classList.toggle('active', b.dataset.tab === id);
+  });
+  renderTab();
+}
+
+function renderTab() {
+  const el = document.getElementById('tabContent');
+  const renderers = { meta: renderMeta, home: renderHome, experience: renderExperience, projects: renderProjects, skills: renderSkills, about: renderAbout, pages: renderPages };
+  if (renderers[APP.activeTab]) renderers[APP.activeTab](el);
+}
+
+function previewSite() {
+  // Open the portfolio in a new tab (works when running locally or on GitHub Pages)
+  const url = window.location.href.replace('admin.html', 'index.html');
+  window.open(url, '_blank');
+}
+
+function disconnect() {
+  localStorage.removeItem('gh_token');
+  localStorage.removeItem('gh_repo');
+  localStorage.removeItem('gh_branch');
+  APP.token = ''; APP.repo = ''; APP.data = null;
+  renderSetup();
+  toast('Disconnected');
+}
+
+/* ================================================================
+   TAB RENDERERS
+   ================================================================ */
+
+/* ── Meta (Personal Info) ─────────────────────────── */
+function renderMeta(el) {
+  const m = APP.data.meta;
+  el.innerHTML = `
+    <h2 class="section-title">Personal Info</h2>
+    <div class="card">
+      <div class="row">
+        <div class="field">
+          <label>Full Name</label>
+          <input type="text" value="${esc(m.name)}" onchange="APP.data.meta.name=this.value">
+        </div>
+        <div class="field">
+          <label>Short Name (sidebar)</label>
+          <input type="text" value="${esc(m.shortName)}" onchange="APP.data.meta.shortName=this.value">
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Title</label>
+          <input type="text" value="${esc(m.title)}" onchange="APP.data.meta.title=this.value">
+        </div>
+        <div class="field">
+          <label>Location</label>
+          <input type="text" value="${esc(m.location)}" onchange="APP.data.meta.location=this.value">
+        </div>
+      </div>
+      <div class="field">
+        <label>Tagline</label>
+        <input type="text" value="${esc(m.tagline)}" onchange="APP.data.meta.tagline=this.value">
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Email</label>
+          <input type="email" value="${esc(m.email)}" onchange="APP.data.meta.email=this.value">
+        </div>
+        <div class="field">
+          <label>Phone (leave empty to hide)</label>
+          <input type="text" value="${esc(m.phone)}" onchange="APP.data.meta.phone=this.value">
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>LinkedIn URL</label>
+          <input type="url" value="${esc(m.linkedin)}" onchange="APP.data.meta.linkedin=this.value">
+        </div>
+        <div class="field">
+          <label>GitHub URL (leave empty to hide)</label>
+          <input type="url" value="${esc(m.github)}" onchange="APP.data.meta.github=this.value">
+        </div>
+      </div>
+      <div class="field">
+        <label>Photo URL (leave empty to hide)</label>
+        <input type="text" value="${esc(m.photo)}" onchange="APP.data.meta.photo=this.value">
+        <div class="hint">Use a URL like "assets/profile.jpg" or leave empty</div>
+      </div>
+    </div>`;
+}
+
+/* ── Home Page ────────────────────────────────────── */
+function renderHome(el) {
+  const h = APP.data.home;
+  el.innerHTML = `
+    <h2 class="section-title">Home Page</h2>
+    <div class="card">
+      <div class="card-header"><h3>Hero Section</h3></div>
+      <div class="field">
+        <label>Greeting</label>
+        <input type="text" value="${esc(h.hero.greeting)}" onchange="APP.data.home.hero.greeting=this.value">
+      </div>
+      <div class="field">
+        <label>Summary Paragraphs (one per line)</label>
+        <textarea rows="5" onchange="APP.data.home.hero.summary=this.value.split('\\n').filter(l=>l.trim())">${h.hero.summary.join('\n')}</textarea>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <h3>Highlights / Metrics</h3>
+        <button class="btn btn-sm" onclick="addHighlight()">+ Add</button>
+      </div>
+      <div id="highlightsList">
+        ${h.highlights.map((hl, i) => `
+          <div class="list-item">
+            <input type="text" value="${esc(hl.value)}" placeholder="Value" style="max-width:100px"
+                   onchange="APP.data.home.highlights[${i}].value=this.value">
+            <input type="text" value="${esc(hl.label)}" placeholder="Label"
+                   onchange="APP.data.home.highlights[${i}].label=this.value">
+            <button class="btn btn-sm btn-danger" onclick="removeHighlight(${i})">✕</button>
+          </div>`).join('')}
+      </div>
+    </div>`;
+}
+function addHighlight() {
+  APP.data.home.highlights.push({ value: '', label: '' });
+  renderTab();
+}
+function removeHighlight(i) {
+  APP.data.home.highlights.splice(i, 1);
+  renderTab();
+}
+
+/* ── Experience ───────────────────────────────────── */
+function renderExperience(el) {
+  el.innerHTML = `
+    <h2 class="section-title">Experience</h2>
+    <button class="btn" onclick="addJob()" style="margin-bottom:1rem">+ Add Company</button>
+    <div id="jobsList">
+      ${APP.data.experience.map((job, ji) => `
+        <div class="card">
+          <div class="card-header">
+            <h3>${esc(job.company) || 'New Company'}</h3>
+            <div class="card-actions">
+              ${ji > 0 ? `<button class="btn btn-sm" onclick="moveJob(${ji},-1)">↑</button>` : ''}
+              ${ji < APP.data.experience.length - 1 ? `<button class="btn btn-sm" onclick="moveJob(${ji},1)">↓</button>` : ''}
+              <button class="btn btn-sm btn-danger" onclick="removeJob(${ji})">✕</button>
+            </div>
+          </div>
+          <div class="row-3">
+            <div class="field">
+              <label>Company</label>
+              <input type="text" value="${esc(job.company)}" onchange="APP.data.experience[${ji}].company=this.value">
+            </div>
+            <div class="field">
+              <label>Location</label>
+              <input type="text" value="${esc(job.location)}" onchange="APP.data.experience[${ji}].location=this.value">
+            </div>
+            <div class="field">
+              <label>Logo URL</label>
+              <input type="text" value="${esc(job.logo)}" onchange="APP.data.experience[${ji}].logo=this.value">
+              <div class="hint">Find at simpleicons.org: https://cdn.simpleicons.org/SLUG</div>
+            </div>
+          </div>
+          ${job.roles.map((role, ri) => `
+            <div style="background:var(--bg);padding:1rem;border-radius:var(--radius);margin-top:0.75rem">
+              <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem">
+                <strong style="font-size:0.85rem">${esc(role.title) || 'New Role'}</strong>
+                <button class="btn btn-sm btn-danger" onclick="removeRole(${ji},${ri})">✕</button>
+              </div>
+              <div class="row-3">
+                <div class="field">
+                  <label>Job Title</label>
+                  <input type="text" value="${esc(role.title)}" onchange="APP.data.experience[${ji}].roles[${ri}].title=this.value">
+                </div>
+                <div class="field">
+                  <label>Start (YYYY-MM-DD)</label>
+                  <input type="text" value="${esc(role.start)}" placeholder="2024-02-21"
+                    onchange="APP.data.experience[${ji}].roles[${ri}].start=this.value; updateDurationPreview(${ji},${ri})">
+                </div>
+                <div class="field">
+                  <label>End (empty = Present)</label>
+                  <input type="text" value="${esc(role.end)}" placeholder="2024-02-19"
+                    onchange="APP.data.experience[${ji}].roles[${ri}].end=this.value; updateDurationPreview(${ji},${ri})">
+                </div>
+              </div>
+              <div class="hint" id="dur-${ji}-${ri}" style="margin:0.35rem 0 0.5rem;color:var(--accent)">
+                ${esc(formatDurationPreview(role.start, role.end) || 'Computed: — set start date')}
+              </div>
+              <div class="field">
+                <label>Bullet Points (one per line)</label>
+                <textarea rows="6" onchange="APP.data.experience[${ji}].roles[${ri}].bullets=this.value.split('\\n').filter(l=>l.trim())">${(role.bullets || []).join('\n')}</textarea>
+              </div>
+            </div>`).join('')}
+          <button class="btn btn-sm" style="margin-top:0.75rem" onclick="addRole(${ji})">+ Add Role</button>
+        </div>`).join('')}
+    </div>`;
+}
+function addJob() {
+  APP.data.experience.unshift({ company: '', logo: '', location: '', roles: [{ title: '', start: '', end: '', bullets: [] }] });
+  renderTab();
+}
+function removeJob(i) {
+  if (confirm('Remove this company?')) { APP.data.experience.splice(i, 1); renderTab(); }
+}
+function moveJob(i, dir) {
+  const arr = APP.data.experience;
+  [arr[i], arr[i + dir]] = [arr[i + dir], arr[i]];
+  renderTab();
+}
+function addRole(ji) {
+  APP.data.experience[ji].roles.push({ title: '', start: '', end: '', bullets: [] });
+  renderTab();
+}
+function removeRole(ji, ri) {
+  APP.data.experience[ji].roles.splice(ri, 1);
+  renderTab();
+}
+
+/** Parse YYYY-MM or YYYY-MM-DD */
+function parseRoleDate(str) {
+  if (!str) return null;
+  const m = String(str).trim().match(/^(\d{4})-(\d{2})(?:-(\d{2}))?$/);
+  if (!m) return null;
+  const dt = new Date(+m[1], +m[2] - 1, m[3] ? +m[3] : 1);
+  return isNaN(dt.getTime()) ? null : dt;
+}
+
+function exactDateLabel(str) {
+  const dt = parseRoleDate(str);
+  if (!dt) return '';
+  return dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+/** Display line + exact range — mirrors site U.duration / U.exactRange */
+function formatDurationPreview(startStr, endStr) {
+  const start = parseRoleDate(startStr);
+  if (!start) return '';
+  const end = endStr ? parseRoleDate(endStr) : new Date();
+  if (!end) return '';
+  let months = (end.getFullYear() - start.getFullYear()) * 12
+    + (end.getMonth() - start.getMonth()) + 1;
+  if (months < 1) months = 1;
+  const y = Math.floor(months / 12);
+  const m = months % 12;
+  const sLabel = start.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+  const eLabel = endStr
+    ? end.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+    : 'Present';
+  let dur = '';
+  if (y > 0) dur += y + ' yr' + (y > 1 ? 's' : '');
+  if (m > 0) dur += (dur ? ' ' : '') + m + ' mo' + (m !== 1 ? 's' : '');
+  if (!dur) dur = '1 mo';
+  const display = sLabel + ' – ' + eLabel + ' · ' + dur;
+  const exact = exactDateLabel(startStr) + ' – ' + (endStr ? exactDateLabel(endStr) : 'Present');
+  return 'Display: ' + display + '  |  Exact: ' + exact;
+}
+
+function updateDurationPreview(ji, ri) {
+  const role = APP.data.experience[ji].roles[ri];
+  const el = document.getElementById('dur-' + ji + '-' + ri);
+  if (el) el.textContent = formatDurationPreview(role.start, role.end) || 'Computed: — set start date';
+}
+
+/* ── Projects ─────────────────────────────────────── */
+function renderProjects(el) {
+  const iconKeys = ['home','briefcase','rocket','tools','user','chartLine','chartDown','search','brain','scale','microscope','bot','target','barChart','fileText','graduationCap','award','send','filter','table'];
+  el.innerHTML = `
+    <h2 class="section-title">Projects</h2>
+    <button class="btn" onclick="addProject()" style="margin-bottom:1rem">+ Add Project</button>
+    <div id="projectsList">
+      ${APP.data.projects.map((p, pi) => `
+        <div class="card">
+          <div class="card-header">
+            <h3>${esc(p.title) || 'New Project'}</h3>
+            <div class="card-actions">
+              ${pi > 0 ? `<button class="btn btn-sm" onclick="moveProject(${pi},-1)">↑</button>` : ''}
+              ${pi < APP.data.projects.length - 1 ? `<button class="btn btn-sm" onclick="moveProject(${pi},1)">↓</button>` : ''}
+              <button class="btn btn-sm btn-danger" onclick="removeProject(${pi})">✕</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label>Title</label>
+              <input type="text" value="${esc(p.title)}" onchange="APP.data.projects[${pi}].title=this.value">
+            </div>
+            <div class="field">
+              <label>Slug (URL path)</label>
+              <input type="text" value="${esc(p.slug)}" onchange="APP.data.projects[${pi}].slug=this.value">
+              <div class="hint">URL-friendly name, e.g. "score-drift"</div>
+            </div>
+          </div>
+          <div class="field">
+            <label>Subtitle</label>
+            <input type="text" value="${esc(p.subtitle)}" onchange="APP.data.projects[${pi}].subtitle=this.value">
+          </div>
+          <div class="row">
+            <div class="field">
+              <label>Icon</label>
+              <select onchange="APP.data.projects[${pi}].icon=this.value">
+                ${iconKeys.map(k => `<option value="${k}" ${p.icon === k ? 'selected' : ''}>${k}</option>`).join('')}
+              </select>
+            </div>
+            <div class="field">
+              <label>Tags (comma-separated)</label>
+              <input type="text" value="${(p.tags || []).join(', ')}" onchange="APP.data.projects[${pi}].tags=this.value.split(',').map(s=>s.trim()).filter(Boolean)">
+            </div>
+          </div>
+          <div class="field">
+            <label>Description</label>
+            <textarea rows="3" onchange="APP.data.projects[${pi}].description=this.value">${esc(p.description)}</textarea>
+          </div>
+
+          <!-- Deep-dive detail sections -->
+          <div style="margin-top:1rem;padding-top:0.75rem;border-top:1px solid var(--border)">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;flex-wrap:wrap;gap:0.5rem">
+              <label style="font-size:0.78rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em">
+                Deep-dive sections ${p.detail && p.detail.sections ? '(' + p.detail.sections.length + ')' : ''}
+              </label>
+              <div style="display:flex;gap:0.35rem;flex-wrap:wrap">
+                <button class="btn btn-sm" onclick="addDetailSection(${pi},'text')">+ Text</button>
+                <button class="btn btn-sm" onclick="addDetailSection(${pi},'metrics')">+ Metrics</button>
+                <button class="btn btn-sm" onclick="addDetailSection(${pi},'features')">+ Features</button>
+                <button class="btn btn-sm" onclick="addDetailSection(${pi},'tech')">+ Tech</button>
+                <button class="btn btn-sm" onclick="addDetailSection(${pi},'timeline')">+ Timeline</button>
+                <button class="btn btn-sm" onclick="addDetailSection(${pi},'chart')">+ Chart</button>
+                <button class="btn btn-sm" onclick="addDetailSection(${pi},'files')">+ Files</button>
+              </div>
+            </div>
+            ${renderDetailSections(pi)}
+          </div>
+
+        </div>`).join('')}
+    </div>`;
+}
+function addProject() {
+  APP.data.projects.push({ slug: 'new-project', title: '', subtitle: '', icon: 'rocket', tags: [], description: '', detail: { sections: [] } });
+  renderTab();
+}
+function removeProject(i) {
+  if (confirm('Remove this project?')) { APP.data.projects.splice(i, 1); renderTab(); }
+}
+function moveProject(i, dir) {
+  const arr = APP.data.projects;
+  [arr[i], arr[i + dir]] = [arr[i + dir], arr[i]];
+  renderTab();
+}
+
+/* ── Project detail section editor ────────────────── */
+function ensureDetail(pi) {
+  const p = APP.data.projects[pi];
+  if (!p.detail) p.detail = { sections: [] };
+  if (!p.detail.sections) p.detail.sections = [];
+  return p.detail;
+}
+
+function renderDetailSections(pi) {
+  const detail = ensureDetail(pi);
+  const sections = detail.sections;
+  if (!sections.length) {
+    return '<div class="hint">No deep-dive sections yet. Add Text / Metrics / Features / Tech / Timeline / Chart / Files above.</div>';
+  }
+  return sections.map((sec, si) => `
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:0.85rem;margin-bottom:0.65rem">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;gap:0.5rem;flex-wrap:wrap">
+        <span style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;color:var(--accent);padding:0.15rem 0.45rem;border:1px solid var(--border);border-radius:4px">${esc(sec.type || 'unknown')}</span>
+        <div style="display:flex;gap:0.3rem">
+          ${si > 0 ? `<button class="btn btn-sm" onclick="moveDetailSection(${pi},${si},-1)">↑</button>` : ''}
+          ${si < sections.length - 1 ? `<button class="btn btn-sm" onclick="moveDetailSection(${pi},${si},1)">↓</button>` : ''}
+          <button class="btn btn-sm btn-danger" onclick="removeDetailSection(${pi},${si})">✕</button>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:0.65rem">
+        <label>Section title</label>
+        <input type="text" value="${esc(sec.title || '')}" onchange="APP.data.projects[${pi}].detail.sections[${si}].title=this.value">
+      </div>
+      ${renderSectionFields(pi, si, sec)}
+    </div>`).join('');
+}
+
+function renderSectionFields(pi, si, sec) {
+  const type = sec.type || 'text';
+  if (type === 'text') {
+    return `<div class="field" style="margin-bottom:0">
+      <label>Paragraphs (blank line between)</label>
+      <textarea rows="4" onchange="setTextContent(${pi},${si},this.value)">${esc((sec.content || []).join('\n\n'))}</textarea>
+    </div>`;
+  }
+  if (type === 'features') {
+    return `<div class="field" style="margin-bottom:0">
+      <label>Features (one per line)</label>
+      <textarea rows="5" onchange="APP.data.projects[${pi}].detail.sections[${si}].items=this.value.split('\\n').map(l=>l.trim()).filter(Boolean)">${esc((sec.items || []).join('\n'))}</textarea>
+    </div>`;
+  }
+  if (type === 'metrics') {
+    const rows = (sec.items || []).map((it, mi) => `
+      <div class="list-item" style="margin-bottom:0.35rem">
+        <input type="text" value="${esc(it.value)}" placeholder="Value" style="max-width:120px"
+          onchange="APP.data.projects[${pi}].detail.sections[${si}].items[${mi}].value=this.value">
+        <input type="text" value="${esc(it.label)}" placeholder="Label"
+          onchange="APP.data.projects[${pi}].detail.sections[${si}].items[${mi}].label=this.value">
+        <button class="btn btn-sm btn-danger" onclick="removeMetricItem(${pi},${si},${mi})">✕</button>
+      </div>`).join('') || '<div class="hint">No metrics yet.</div>';
+    return rows + `<button class="btn btn-sm" style="margin-top:0.35rem" onclick="addMetricItem(${pi},${si})">+ Metric</button>`;
+  }
+  if (type === 'tech') {
+    return `<div class="field" style="margin-bottom:0">
+      <label>Tech names (comma-separated — existing icons kept when name matches)</label>
+      <input type="text" value="${esc((sec.items || []).map(t => t.name || t).join(', '))}"
+        onchange="setTechItems(${pi},${si},this.value)">
+    </div>`;
+  }
+  if (type === 'timeline') {
+    const rows = (sec.steps || []).map((st, sti) => `
+      <div style="margin-bottom:0.5rem;padding:0.5rem;border:1px solid var(--border);border-radius:6px">
+        <div class="row" style="margin-bottom:0.35rem">
+          <div class="field" style="margin-bottom:0">
+            <label>Step title</label>
+            <input type="text" value="${esc(st.title || '')}"
+              onchange="APP.data.projects[${pi}].detail.sections[${si}].steps[${sti}].title=this.value">
+          </div>
+          <div style="display:flex;align-items:flex-end;padding-bottom:0.1rem">
+            <button class="btn btn-sm btn-danger" onclick="removeTimelineStep(${pi},${si},${sti})">✕</button>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label>Description</label>
+          <input type="text" value="${esc(st.desc || '')}"
+            onchange="APP.data.projects[${pi}].detail.sections[${si}].steps[${sti}].desc=this.value">
+        </div>
+      </div>`).join('') || '<div class="hint">No steps yet.</div>';
+    return rows + `<button class="btn btn-sm" style="margin-top:0.35rem" onclick="addTimelineStep(${pi},${si})">+ Step</button>`;
+  }
+  if (type === 'chart') {
+    return `<div class="row">
+      <div class="field" style="margin-bottom:0">
+        <label>Chart type</label>
+        <select onchange="APP.data.projects[${pi}].detail.sections[${si}].chartType=this.value">
+          ${['line','bar','doughnut','radar','pie'].map(t => `<option value="${t}" ${sec.chartType === t ? 'selected' : ''}>${t}</option>`).join('')}
+        </select>
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label>CSV path</label>
+        <input type="text" value="${esc(sec.csvFile || '')}" placeholder="data/file.csv"
+          onchange="APP.data.projects[${pi}].detail.sections[${si}].csvFile=this.value">
+      </div>
+    </div>
+    <div class="hint" style="margin-top:0.35rem">Upload CSVs under data/. Col 1 = labels, remaining cols = series.</div>`;
+  }
+  if (type === 'table') {
+    return `<div class="field" style="margin-bottom:0">
+      <label>CSV path</label>
+      <input type="text" value="${esc(sec.csvFile || '')}" placeholder="data/file.csv"
+        onchange="APP.data.projects[${pi}].detail.sections[${si}].csvFile=this.value">
+      <div class="hint" style="margin-top:0.25rem">
+        <label style="display:inline-flex;align-items:center;gap:0.35rem;text-transform:none;letter-spacing:0;font-weight:500">
+          <input type="checkbox" ${sec.filterable ? 'checked' : ''}
+            onchange="APP.data.projects[${pi}].detail.sections[${si}].filterable=this.checked"> Filterable table
+        </label>
+      </div>
+    </div>`;
+  }
+  if (type === 'files') {
+    const items = sec.items || [];
+    const rows = items.map((f, fi) => `
+      <div class="list-item" style="margin-bottom:0.35rem">
+        <input type="text" value="${esc(f.name || '')}" placeholder="filename.py" style="max-width:160px"
+          onchange="APP.data.projects[${pi}].detail.sections[${si}].items[${fi}].name=this.value">
+        <input type="text" value="${esc(f.path || f.url || '')}" placeholder="files/... or URL"
+          onchange="APP.data.projects[${pi}].detail.sections[${si}].items[${fi}].path=this.value">
+        <input type="text" value="${esc(f.description || '')}" placeholder="Description" style="max-width:180px"
+          onchange="APP.data.projects[${pi}].detail.sections[${si}].items[${fi}].description=this.value">
+        <button class="btn btn-sm btn-danger" onclick="removeFileItem(${pi},${si},${fi})">✕</button>
+      </div>`).join('') || '<div class="hint">No files yet.</div>';
+    return rows + `<button class="btn btn-sm" style="margin-top:0.35rem" onclick="addFileItem(${pi},${si})">+ File</button>`;
+  }
+  // Fallback for architecture / code / gallery / unknown
+  return `<div class="hint">Type <code>${esc(type)}</code> — edit title above. Complex fields: edit src/data.js or convert to text.</div>`;
+}
+
+function setTextContent(pi, si, raw) {
+  const parts = raw.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
+  APP.data.projects[pi].detail.sections[si].content = parts.length ? parts : (raw.trim() ? [raw.trim()] : []);
+}
+
+function setTechItems(pi, si, raw) {
+  const names = raw.split(',').map(s => s.trim()).filter(Boolean);
+  const prev = APP.data.projects[pi].detail.sections[si].items || [];
+  APP.data.projects[pi].detail.sections[si].items = names.map(name => {
+    const old = prev.find(t => (t.name || t) === name);
+    return old && typeof old === 'object' ? { ...old, name } : { name };
+  });
+}
+
+function addDetailSection(pi, type) {
+  ensureDetail(pi);
+  const templates = {
+    text: { type: 'text', title: 'Overview', content: [''] },
+    metrics: { type: 'metrics', title: 'Impact', items: [{ value: '', label: '' }] },
+    features: { type: 'features', title: 'Key Capabilities', items: [''] },
+    tech: { type: 'tech', title: 'Tech Stack', items: [{ name: 'Python' }] },
+    timeline: { type: 'timeline', title: 'How It Works', steps: [{ title: '', desc: '' }] },
+    chart: { type: 'chart', title: 'New Chart', chartType: 'line', csvFile: 'data/' },
+    table: { type: 'table', title: 'Data Table', filterable: true, csvFile: 'data/' },
+    files: { type: 'files', title: 'Source Files & Notebooks', items: [] },
+  };
+  APP.data.projects[pi].detail.sections.push(templates[type] || templates.text);
+  renderTab();
+}
+
+function removeDetailSection(pi, si) {
+  if (!confirm('Remove this section?')) return;
+  APP.data.projects[pi].detail.sections.splice(si, 1);
+  renderTab();
+}
+
+function moveDetailSection(pi, si, dir) {
+  const arr = APP.data.projects[pi].detail.sections;
+  const j = si + dir;
+  if (j < 0 || j >= arr.length) return;
+  [arr[si], arr[j]] = [arr[j], arr[si]];
+  renderTab();
+}
+
+function addMetricItem(pi, si) {
+  const sec = APP.data.projects[pi].detail.sections[si];
+  if (!sec.items) sec.items = [];
+  sec.items.push({ value: '', label: '' });
+  renderTab();
+}
+function removeMetricItem(pi, si, mi) {
+  APP.data.projects[pi].detail.sections[si].items.splice(mi, 1);
+  renderTab();
+}
+function addTimelineStep(pi, si) {
+  const sec = APP.data.projects[pi].detail.sections[si];
+  if (!sec.steps) sec.steps = [];
+  sec.steps.push({ title: '', desc: '' });
+  renderTab();
+}
+function removeTimelineStep(pi, si, sti) {
+  APP.data.projects[pi].detail.sections[si].steps.splice(sti, 1);
+  renderTab();
+}
+function addFileItem(pi, si) {
+  const sec = APP.data.projects[pi].detail.sections[si];
+  if (!sec.items) sec.items = [];
+  sec.items.push({ name: '', path: '', description: '' });
+  renderTab();
+}
+function removeFileItem(pi, si, fi) {
+  APP.data.projects[pi].detail.sections[si].items.splice(fi, 1);
+  renderTab();
+}
+
+/* ── Skills ───────────────────────────────────────── */
+function renderSkills(el) {
+  el.innerHTML = `
+    <h2 class="section-title">Skills</h2>
+    <button class="btn" onclick="addSkillGroup()" style="margin-bottom:1rem">+ Add Category</button>
+    <div id="skillsList">
+      ${APP.data.skills.map((cat, ci) => `
+        <div class="card">
+          <div class="card-header">
+            <h3>${esc(cat.category) || 'New Category'}</h3>
+            <div class="card-actions">
+              <button class="btn btn-sm btn-danger" onclick="removeSkillGroup(${ci})">✕</button>
+            </div>
+          </div>
+          <div class="field">
+            <label>Category Name</label>
+            <input type="text" value="${esc(cat.category)}" onchange="APP.data.skills[${ci}].category=this.value">
+          </div>
+          <div class="field">
+            <label>Skills</label>
+            <div class="list-editor" id="skills-${ci}">
+              ${cat.items.map((sk, si) => `
+                <div class="list-item">
+                  <input type="text" value="${esc(sk.name)}" placeholder="Skill name"
+                         onchange="APP.data.skills[${ci}].items[${si}].name=this.value">
+                  <input type="text" value="${esc(sk.icon)}" placeholder="Icon URL or key" style="max-width:300px"
+                         onchange="APP.data.skills[${ci}].items[${si}].icon=this.value">
+                  <button class="btn btn-sm btn-danger" onclick="removeSkill(${ci},${si})">✕</button>
+                </div>`).join('')}
+            </div>
+            <button class="btn btn-sm" style="margin-top:0.5rem" onclick="addSkill(${ci})">+ Add Skill</button>
+            <div class="hint">Icon: use URL (https://cdn.simpleicons.org/SLUG) or key name (brain, bot, etc.)</div>
+          </div>
+        </div>`).join('')}
+    </div>`;
+}
+function addSkillGroup() {
+  APP.data.skills.push({ category: '', items: [] });
+  renderTab();
+}
+function removeSkillGroup(i) {
+  if (confirm('Remove this skill category?')) { APP.data.skills.splice(i, 1); renderTab(); }
+}
+function addSkill(ci) {
+  APP.data.skills[ci].items.push({ name: '', icon: '' });
+  renderTab();
+}
+function removeSkill(ci, si) {
+  APP.data.skills[ci].items.splice(si, 1);
+  renderTab();
+}
+
+/* ── About ────────────────────────────────────────── */
+function renderAbout(el) {
+  const a = APP.data.about;
+  el.innerHTML = `
+    <h2 class="section-title">About</h2>
+    <div class="card">
+      <div class="card-header"><h3>Bio</h3></div>
+      <div class="field">
+        <label>Bio Paragraphs (one per line)</label>
+        <textarea rows="6" onchange="APP.data.about.bio=this.value.split('\\n').filter(l=>l.trim())">${a.bio.join('\n')}</textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h3>Education</h3>
+        <button class="btn btn-sm" onclick="addEducation()">+ Add</button>
+      </div>
+      ${a.education.map((ed, ei) => `
+        <div style="background:var(--bg);padding:1rem;border-radius:var(--radius);margin-bottom:0.75rem">
+          <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem">
+            <strong style="font-size:0.85rem">${esc(ed.degree)}</strong>
+            <button class="btn btn-sm btn-danger" onclick="removeEducation(${ei})">✕</button>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label>Degree</label>
+              <input type="text" value="${esc(ed.degree)}" onchange="APP.data.about.education[${ei}].degree=this.value">
+            </div>
+            <div class="field">
+              <label>Institution</label>
+              <input type="text" value="${esc(ed.institution)}" onchange="APP.data.about.education[${ei}].institution=this.value">
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label>Period</label>
+              <input type="text" value="${esc(ed.period)}" onchange="APP.data.about.education[${ei}].period=this.value">
+            </div>
+            <div class="field">
+              <label>Logo URL</label>
+              <input type="text" value="${esc(ed.logo)}" onchange="APP.data.about.education[${ei}].logo=this.value">
+            </div>
+          </div>
+        </div>`).join('')}
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h3>Certifications</h3>
+        <button class="btn btn-sm" onclick="addCert()">+ Add</button>
+      </div>
+      ${a.certifications.map((c, ci) => `
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:0.75rem;margin-bottom:0.65rem">
+          <div style="display:flex;justify-content:flex-end;margin-bottom:0.35rem">
+            <button class="btn btn-sm btn-danger" onclick="removeCert(${ci})">✕</button>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label>Name</label>
+              <input type="text" value="${esc(c.name)}" onchange="APP.data.about.certifications[${ci}].name=this.value">
+            </div>
+            <div class="field">
+              <label>Provider</label>
+              <input type="text" value="${esc(c.provider)}" onchange="APP.data.about.certifications[${ci}].provider=this.value">
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label>Image path</label>
+              <input type="text" value="${esc(c.image || '')}" placeholder="certs/gcp-ace.png"
+                onchange="APP.data.about.certifications[${ci}].image=this.value">
+            </div>
+            <div class="field">
+              <label>PDF path</label>
+              <input type="text" value="${esc(c.pdf || '')}" placeholder="certs/gcp-ace.pdf"
+                onchange="APP.data.about.certifications[${ci}].pdf=this.value">
+            </div>
+          </div>
+          <div class="row-3">
+            <div class="field">
+              <label>Issued (YYYY-MM-DD)</label>
+              <input type="text" value="${esc(c.issued || '')}" placeholder="2022-05-13"
+                onchange="APP.data.about.certifications[${ci}].issued=this.value">
+            </div>
+            <div class="field">
+              <label>Expires</label>
+              <input type="text" value="${esc(c.expires || '')}" placeholder="2024-05-13"
+                onchange="APP.data.about.certifications[${ci}].expires=this.value">
+            </div>
+            <div class="field">
+              <label>Credential ID</label>
+              <input type="text" value="${esc(c.credentialId || '')}"
+                onchange="APP.data.about.certifications[${ci}].credentialId=this.value">
+            </div>
+          </div>
+          <div class="field" style="margin-bottom:0">
+            <label>Logo URL (placeholder fallback)</label>
+            <input type="text" value="${esc(c.logo || '')}" onchange="APP.data.about.certifications[${ci}].logo=this.value">
+          </div>
+        </div>`).join('')}
+    </div>`;
+}
+function addEducation() {
+  APP.data.about.education.push({ degree: '', institution: '', period: '', logo: '' });
+  renderTab();
+}
+function removeEducation(i) {
+  APP.data.about.education.splice(i, 1);
+  renderTab();
+}
+function addCert() {
+  APP.data.about.certifications.push({ name: '', provider: '', logo: '', image: '', pdf: '', issued: '', expires: '', credentialId: '' });
+  renderTab();
+}
+function removeCert(i) {
+  APP.data.about.certifications.splice(i, 1);
+  renderTab();
+}
+
+/* ── Custom Pages ─────────────────────────────────── */
+function renderPages(el) {
+  if (!APP.data.customPages) APP.data.customPages = {};
+  const cp = APP.data.customPages;
+  const pageIds = Object.keys(cp);
+  const iconKeys = ['home','briefcase','rocket','tools','user','chartLine','chartDown','search','brain','scale','microscope','bot','target','barChart','fileText','graduationCap','award','send','filter','table','messageCircle','sparkles'];
+  const builtInIds = ['home','experience','projects','skills','about'];
+
+  el.innerHTML = `
+    <h2 class="section-title">Custom Pages</h2>
+    <p style="color:var(--muted);font-size:0.85rem;margin-bottom:1rem">
+      Add new pages to your portfolio — they appear in the sidebar nav automatically.<br>
+      Each page can have multiple sections: text, metrics, features, tech badges, timeline, cards, or links.
+    </p>
+    <button class="btn" onclick="addCustomPage()" style="margin-bottom:1.5rem">+ Add Page</button>
+
+    ${pageIds.length === 0 ? '<div class="hint" style="padding:2rem;text-align:center">No custom pages yet. Click "+ Add Page" to create one.</div>' : ''}
+
+    ${pageIds.map(pid => {
+      const pg = cp[pid];
+      const inNav = APP.data.pages.some(p => p.id === pid);
+      return `
+      <div class="card" style="margin-bottom:1.5rem">
+        <div class="card-header">
+          <h3>${esc(pg.title) || 'Untitled Page'} <span style="font-size:0.75rem;color:var(--muted);font-weight:400">/#/${pid}</span></h3>
+          <div class="card-actions">
+            <button class="btn btn-sm btn-danger" onclick="removeCustomPage('${pid}')">✕ Remove Page</button>
+          </div>
+        </div>
+
+        <!-- Page settings -->
+        <div class="row-3">
+          <div class="field">
+            <label>Page ID (URL slug)</label>
+            <input type="text" value="${esc(pid)}" onchange="renameCustomPage('${pid}', this.value)">
+            <div class="hint">URL path: /#/this-value</div>
+          </div>
+          <div class="field">
+            <label>Page Title</label>
+            <input type="text" value="${esc(pg.title)}" onchange="APP.data.customPages['${pid}'].title=this.value; syncPageLabel('${pid}', this.value)">
+          </div>
+          <div class="field">
+            <label>Subtitle (optional)</label>
+            <input type="text" value="${esc(pg.subtitle || '')}" onchange="APP.data.customPages['${pid}'].subtitle=this.value">
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label>Nav Icon</label>
+            <select onchange="updatePageIcon('${pid}', this.value)">
+              ${iconKeys.map(k => `<option value="${k}" ${getPageIcon(pid) === k ? 'selected' : ''}>${k}</option>`).join('')}
+            </select>
+          </div>
+          <div class="field">
+            <label>Position in Nav</label>
+            <select onchange="movePageInNav('${pid}', parseInt(this.value))">
+              ${APP.data.pages.map((p, i) => `<option value="${i}" ${p.id === pid ? 'selected' : ''}>${i + 1}. ${esc(p.label)}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+
+        <!-- Sections -->
+        <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+            <label style="font-size:0.85rem;font-weight:600;color:var(--accent)">Page Sections (${(pg.sections || []).length})</label>
+            <div style="display:flex;gap:0.35rem;flex-wrap:wrap">
+              <button class="btn btn-sm" onclick="addPageSection('${pid}','text')">+ Text</button>
+              <button class="btn btn-sm" onclick="addPageSection('${pid}','metrics')">+ Metrics</button>
+              <button class="btn btn-sm" onclick="addPageSection('${pid}','features')">+ Features</button>
+              <button class="btn btn-sm" onclick="addPageSection('${pid}','tech')">+ Tech</button>
+              <button class="btn btn-sm" onclick="addPageSection('${pid}','timeline')">+ Timeline</button>
+              <button class="btn btn-sm" onclick="addPageSection('${pid}','cards')">+ Cards</button>
+              <button class="btn btn-sm" onclick="addPageSection('${pid}','links')">+ Links</button>
+            </div>
+          </div>
+          ${renderPageSections(pid, pg.sections || [])}
+        </div>
+      </div>`;
+    }).join('')}
+  `;
+}
+
+function renderPageSections(pid, sections) {
+  if (!sections.length) return '<div class="hint" style="padding:1rem;text-align:center">No sections yet. Use the buttons above to add content.</div>';
+  return sections.map((s, si) => {
+    let body = '';
+    switch (s.type) {
+      case 'text':
+        body = `
+          <div class="field"><label>Title</label><input type="text" value="${esc(s.title || '')}" onchange="APP.data.customPages['${pid}'].sections[${si}].title=this.value"></div>
+          <div class="field"><label>Paragraphs (one per line)</label>
+            <textarea rows="5" onchange="APP.data.customPages['${pid}'].sections[${si}].content=this.value.split('\\n').filter(l=>l.trim())">${(s.content || []).join('\n')}</textarea>
+          </div>`;
+        break;
+      case 'metrics':
+        body = `
+          <div class="field"><label>Title</label><input type="text" value="${esc(s.title || '')}" onchange="APP.data.customPages['${pid}'].sections[${si}].title=this.value"></div>
+          ${(s.items || []).map((it, ii) => `
+            <div class="list-item">
+              <input type="text" value="${esc(it.value)}" placeholder="Value" style="max-width:100px" onchange="APP.data.customPages['${pid}'].sections[${si}].items[${ii}].value=this.value">
+              <input type="text" value="${esc(it.label)}" placeholder="Label" onchange="APP.data.customPages['${pid}'].sections[${si}].items[${ii}].label=this.value">
+              <button class="btn btn-sm btn-danger" onclick="removePageSectionItem('${pid}',${si},${ii})">✕</button>
+            </div>`).join('')}
+          <button class="btn btn-sm" style="margin-top:0.5rem" onclick="addPageSectionItem('${pid}',${si},'metrics')">+ Add Metric</button>`;
+        break;
+      case 'features':
+        body = `
+          <div class="field"><label>Title</label><input type="text" value="${esc(s.title || '')}" onchange="APP.data.customPages['${pid}'].sections[${si}].title=this.value"></div>
+          ${(s.items || []).map((it, ii) => `
+            <div class="list-item">
+              <input type="text" value="${esc(it)}" placeholder="Feature" onchange="APP.data.customPages['${pid}'].sections[${si}].items[${ii}]=this.value">
+              <button class="btn btn-sm btn-danger" onclick="removePageSectionItem('${pid}',${si},${ii})">✕</button>
+            </div>`).join('')}
+          <button class="btn btn-sm" style="margin-top:0.5rem" onclick="addPageSectionItem('${pid}',${si},'features')">+ Add Feature</button>`;
+        break;
+      case 'tech':
+        body = `
+          <div class="field"><label>Title</label><input type="text" value="${esc(s.title || '')}" onchange="APP.data.customPages['${pid}'].sections[${si}].title=this.value"></div>
+          ${(s.items || []).map((it, ii) => `
+            <div class="list-item">
+              <input type="text" value="${esc(it.name)}" placeholder="Name" onchange="APP.data.customPages['${pid}'].sections[${si}].items[${ii}].name=this.value">
+              <input type="text" value="${esc(it.icon)}" placeholder="Icon URL or key" style="max-width:300px" onchange="APP.data.customPages['${pid}'].sections[${si}].items[${ii}].icon=this.value">
+              <button class="btn btn-sm btn-danger" onclick="removePageSectionItem('${pid}',${si},${ii})">✕</button>
+            </div>`).join('')}
+          <button class="btn btn-sm" style="margin-top:0.5rem" onclick="addPageSectionItem('${pid}',${si},'tech')">+ Add Tech</button>
+          <div class="hint">Icon: URL (https://cdn.simpleicons.org/SLUG) or key (brain, bot, etc.)</div>`;
+        break;
+      case 'timeline':
+        body = `
+          <div class="field"><label>Title</label><input type="text" value="${esc(s.title || '')}" onchange="APP.data.customPages['${pid}'].sections[${si}].title=this.value"></div>
+          ${(s.steps || []).map((st, ii) => `
+            <div class="list-item" style="flex-direction:column;align-items:stretch;gap:0.5rem">
+              <div style="display:flex;gap:0.5rem">
+                <input type="text" value="${esc(st.title)}" placeholder="Step title" onchange="APP.data.customPages['${pid}'].sections[${si}].steps[${ii}].title=this.value">
+                <button class="btn btn-sm btn-danger" onclick="removePageSectionStep('${pid}',${si},${ii})">✕</button>
+              </div>
+              <input type="text" value="${esc(st.desc || '')}" placeholder="Description" onchange="APP.data.customPages['${pid}'].sections[${si}].steps[${ii}].desc=this.value">
+            </div>`).join('')}
+          <button class="btn btn-sm" style="margin-top:0.5rem" onclick="addPageSectionStep('${pid}',${si})">+ Add Step</button>`;
+        break;
+      case 'cards':
+        body = `
+          <div class="field"><label>Title</label><input type="text" value="${esc(s.title || '')}" onchange="APP.data.customPages['${pid}'].sections[${si}].title=this.value"></div>
+          ${(s.items || []).map((it, ii) => `
+            <div style="background:var(--bg);padding:0.75rem;border-radius:var(--radius);margin-bottom:0.5rem">
+              <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem">
+                <strong style="font-size:0.82rem">${esc(it.title) || 'Card'}</strong>
+                <button class="btn btn-sm btn-danger" onclick="removePageSectionItem('${pid}',${si},${ii})">✕</button>
+              </div>
+              <div class="row-3">
+                <div class="field"><label>Title</label><input type="text" value="${esc(it.title)}" onchange="APP.data.customPages['${pid}'].sections[${si}].items[${ii}].title=this.value"></div>
+                <div class="field"><label>Subtitle</label><input type="text" value="${esc(it.subtitle || '')}" onchange="APP.data.customPages['${pid}'].sections[${si}].items[${ii}].subtitle=this.value"></div>
+                <div class="field"><label>Icon key</label><input type="text" value="${esc(it.icon || '')}" onchange="APP.data.customPages['${pid}'].sections[${si}].items[${ii}].icon=this.value"></div>
+              </div>
+              <div class="field"><label>Description</label><input type="text" value="${esc(it.description || '')}" onchange="APP.data.customPages['${pid}'].sections[${si}].items[${ii}].description=this.value"></div>
+            </div>`).join('')}
+          <button class="btn btn-sm" style="margin-top:0.5rem" onclick="addPageSectionItem('${pid}',${si},'cards')">+ Add Card</button>`;
+        break;
+      case 'links':
+        body = `
+          <div class="field"><label>Title</label><input type="text" value="${esc(s.title || '')}" onchange="APP.data.customPages['${pid}'].sections[${si}].title=this.value"></div>
+          ${(s.items || []).map((it, ii) => `
+            <div class="list-item">
+              <input type="text" value="${esc(it.label)}" placeholder="Label" onchange="APP.data.customPages['${pid}'].sections[${si}].items[${ii}].label=this.value">
+              <input type="text" value="${esc(it.url)}" placeholder="URL" onchange="APP.data.customPages['${pid}'].sections[${si}].items[${ii}].url=this.value">
+              <input type="text" value="${esc(it.description || '')}" placeholder="Description" style="max-width:200px" onchange="APP.data.customPages['${pid}'].sections[${si}].items[${ii}].description=this.value">
+              <button class="btn btn-sm btn-danger" onclick="removePageSectionItem('${pid}',${si},${ii})">✕</button>
+            </div>`).join('')}
+          <button class="btn btn-sm" style="margin-top:0.5rem" onclick="addPageSectionItem('${pid}',${si},'links')">+ Add Link</button>`;
+        break;
+    }
+    return `
+      <div style="background:var(--bg);padding:1rem;border-radius:var(--radius);margin-bottom:0.75rem">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
+          <span style="font-size:0.8rem;font-weight:600;color:var(--accent);text-transform:uppercase">${s.type}</span>
+          <div style="display:flex;gap:0.25rem">
+            ${si > 0 ? `<button class="btn btn-sm" onclick="movePageSection('${pid}',${si},-1)">↑</button>` : ''}
+            ${si < sections.length - 1 ? `<button class="btn btn-sm" onclick="movePageSection('${pid}',${si},1)">↓</button>` : ''}
+            <button class="btn btn-sm btn-danger" onclick="removePageSection('${pid}',${si})">✕</button>
+          </div>
+        </div>
+        ${body}
+      </div>`;
+  }).join('');
+}
+
+/* Custom page helpers */
+function addCustomPage() {
+  const id = 'page-' + Date.now().toString(36);
+  if (!APP.data.customPages) APP.data.customPages = {};
+  APP.data.customPages[id] = { title: 'New Page', subtitle: '', sections: [] };
+  // Add to nav
+  APP.data.pages.push({ id: id, label: 'New Page', icon: 'fileText' });
+  renderTab();
+}
+
+function removeCustomPage(pid) {
+  if (!confirm('Remove this page and all its sections?')) return;
+  delete APP.data.customPages[pid];
+  APP.data.pages = APP.data.pages.filter(p => p.id !== pid);
+  renderTab();
+}
+
+function renameCustomPage(oldId, newId) {
+  newId = newId.trim().toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-');
+  if (!newId || newId === oldId) return;
+  const builtIn = ['home','experience','projects','skills','about'];
+  if (builtIn.includes(newId) || (APP.data.customPages[newId] && newId !== oldId)) {
+    toast('That page ID is already taken', 'error'); return;
+  }
+  APP.data.customPages[newId] = APP.data.customPages[oldId];
+  delete APP.data.customPages[oldId];
+  const pg = APP.data.pages.find(p => p.id === oldId);
+  if (pg) pg.id = newId;
+  renderTab();
+}
+
+function syncPageLabel(pid, label) {
+  const pg = APP.data.pages.find(p => p.id === pid);
+  if (pg) pg.label = label;
+}
+
+function getPageIcon(pid) {
+  const pg = APP.data.pages.find(p => p.id === pid);
+  return pg ? pg.icon : 'fileText';
+}
+
+function updatePageIcon(pid, icon) {
+  const pg = APP.data.pages.find(p => p.id === pid);
+  if (pg) pg.icon = icon;
+}
+
+function movePageInNav(pid, newIdx) {
+  const oldIdx = APP.data.pages.findIndex(p => p.id === pid);
+  if (oldIdx === newIdx || oldIdx < 0) return;
+  const [item] = APP.data.pages.splice(oldIdx, 1);
+  APP.data.pages.splice(newIdx, 0, item);
+  renderTab();
+}
+
+function addPageSection(pid, type) {
+  const sec = { type: type, title: '' };
+  if (type === 'text') sec.content = [''];
+  else if (type === 'metrics') sec.items = [{ value: '', label: '' }];
+  else if (type === 'features') sec.items = [''];
+  else if (type === 'tech') sec.items = [{ name: '', icon: '' }];
+  else if (type === 'timeline') sec.steps = [{ title: '', desc: '' }];
+  else if (type === 'cards') sec.items = [{ title: '', subtitle: '', icon: '', description: '' }];
+  else if (type === 'links') sec.items = [{ label: '', url: '', description: '' }];
+  APP.data.customPages[pid].sections.push(sec);
+  renderTab();
+}
+
+function removePageSection(pid, si) {
+  APP.data.customPages[pid].sections.splice(si, 1);
+  renderTab();
+}
+
+function movePageSection(pid, si, dir) {
+  const arr = APP.data.customPages[pid].sections;
+  [arr[si], arr[si + dir]] = [arr[si + dir], arr[si]];
+  renderTab();
+}
+
+function addPageSectionItem(pid, si, type) {
+  const sec = APP.data.customPages[pid].sections[si];
+  if (type === 'metrics') sec.items.push({ value: '', label: '' });
+  else if (type === 'features') sec.items.push('');
+  else if (type === 'tech') sec.items.push({ name: '', icon: '' });
+  else if (type === 'cards') sec.items.push({ title: '', subtitle: '', icon: '', description: '' });
+  else if (type === 'links') sec.items.push({ label: '', url: '', description: '' });
+  renderTab();
+}
+
+function removePageSectionItem(pid, si, ii) {
+  APP.data.customPages[pid].sections[si].items.splice(ii, 1);
+  renderTab();
+}
+
+function addPageSectionStep(pid, si) {
+  APP.data.customPages[pid].sections[si].steps.push({ title: '', desc: '' });
+  renderTab();
+}
+
+function removePageSectionStep(pid, si, ii) {
+  APP.data.customPages[pid].sections[si].steps.splice(ii, 1);
+  renderTab();
+}
+
+/* ── Util ─────────────────────────────────────────── */
+function esc(str) {
+  if (str == null) return '';
+  return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+/* ── Init ─────────────────────────────────────────── */
+(async function init() {
+  if (APP.token && APP.repo) {
+    try {
+      document.getElementById('app').innerHTML = '<div class="setup-box"><span class="spinner"></span><p style="margin-top:1rem">Loading content...</p></div>';
+      await loadContent();
+      toast('Content loaded');
+    } catch (e) {
+      toast('Failed to load: ' + e.message, 'error');
+      renderSetup();
+    }
+  } else {
+    renderSetup();
+  }
+})();
+</script>
+</body>
+</html>

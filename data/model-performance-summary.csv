@@ -1,0 +1,9 @@
+Model,Type,AU-ROC,AU-PR,Drift %,Status
+Churn Propensity v3,Binary,0.91,0.84,-2.1%,Healthy
+Upgrade Likelihood,Binary,0.87,0.79,-8.5%,Drifted
+Revenue Forecast Q2,Regression,—,—,-4.2%,Healthy
+Next Best Offer,Recommendation,0.78,0.71,-3.8%,Healthy
+Payment Default,Binary,0.93,0.88,-1.4%,Healthy
+CXS Response v2,Custom Binary,0.86,0.80,-9.2%,Drifted
+Segment Classifier,Multinomial,0.82,0.76,-5.1%,Watch
+LTV Prediction,Regression,—,—,-2.8%,Healthy

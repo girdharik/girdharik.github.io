@@ -1,248 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>John Doe - Resume</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Girdhari Kumar — Senior AI Engineer | Generative AI, LLMs & Multi-Agent Systems</title>
+  <meta name="description" content="Senior AI Engineer shipping Generative AI and LLM systems: LangGraph multi-agent workflows, Retrieval-Augmented Generation (RAG), Vertex AI Gemini, tool calling, FastAPI, MLOps, BigQuery, and Cloud Composer. Google Cloud PDE & PMLE certified.">
+  <meta name="author" content="Girdhari Kumar">
+  <meta name="keywords" content="AI Engineer, Generative AI, GenAI, Agentic AI, Large Language Models, LLMs, LangGraph, LangChain, RAG, Retrieval-Augmented Generation, Embeddings, Vector Search, Tool Calling, Prompt Engineering, Vertex AI, Gemini, Multi-Agent Systems, FastAPI, Streamlit, MLOps, Model Monitoring, Drift Detection, SHAP, Responsible AI, BigQuery, Cloud Composer, Airflow, Dataproc, PySpark, ETL, Data Pipelines, GCP Data Engineer, Python, CI/CD">
+  <meta property="og:title" content="Girdhari Kumar — Senior AI Engineer | Generative AI & LLMs">
+  <meta property="og:description" content="Production Generative AI · LLMs · LangGraph · RAG · Vertex AI · Tool Calling · FastAPI · MLOps · BigQuery · Airflow">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://girdharik.github.io/">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#0a0e14">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="src/styles/base.css">
+  <link rel="stylesheet" href="src/styles/nav.css">
+  <link rel="stylesheet" href="src/styles/home.css">
+  <link rel="stylesheet" href="src/styles/experience.css">
+  <link rel="stylesheet" href="src/styles/projects.css">
+  <link rel="stylesheet" href="src/styles/skills.css">
+  <link rel="stylesheet" href="src/styles/about.css">
+  <link rel="stylesheet" href="src/styles/detail.css">
 </head>
 <body>
-    <nav>
-        <div class="menu-toggle" id="menuToggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        <ul id="navMenu">
-            <li><a href="#" onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#work">Work Experience</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#skills">Skills</a></li>
-            <li><a href="#education">Education</a></li>
-            <li><a href="#certifications">Certifications</a></li>
-        </ul>
-    </nav>
 
-    <!-- About Section -->
-    <section id="about" class="about-bg about-flex">
-        <div class="about-profile">
-            <img src="profile.jpg" alt="Profile Photo" class="profile-photo">
-            <div class="about-details">
-                <h1>John Doe</h1>
-                <h2>Software Engineer</h2>
-                <div class="social-links water-effect">
-                    <a href="https://linkedin.com/in/johndoe" target="_blank" title="LinkedIn">
-                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/linkedin.svg" alt="LinkedIn">
-                    </a>
-                    <a href="https://github.com/johndoe" target="_blank" title="GitHub">
-                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg" alt="GitHub">
-                    </a>
-                    <button class="copy-btn" data-copy="+1234567890" title="Copy Phone Number">
-                        <img src="https://cdn.jsdelivr.net/npm/feather-icons/dist/icons/phone.svg" alt="Mobile">
-                    </button>
-                    <button class="copy-btn" data-copy="johndoe@gmail.com" title="Copy Email">
-                        <img src="https://cdn.jsdelivr.net/npm/feather-icons/dist/icons/mail.svg" alt="Email">
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="about-content">
-            <h2>About</h2>
-            <p>Passionate software engineer with experience in web development, cloud computing, and open-source projects. I specialize in building scalable applications and enjoy solving complex technical challenges.</p>
-            <p>My goal is to create efficient, maintainable code that provides exceptional user experiences. I'm continuously learning new technologies and best practices to stay at the cutting edge of software development.</p>
-        </div>
-    </section>
+  <nav id="sidebar">
+    <div class="sidebar-brand" id="sidebarBrand"></div>
+    <ul id="navLinks"></ul>
+    <div class="sidebar-footer" id="sidebarFooter"></div>
+  </nav>
 
-    <!-- Work Experience Section -->
-    <section id="work">
-        <h2>Work Experience</h2>
-        <div class="work-timeline">
-            <div class="certification work-card" data-has-multiple-roles="true">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft Logo" class="company-logo">
-                <span>
-                    <div class="job-header">
-                        <strong>Senior Software Engineer</strong>
-                    </div>
-                    <span class="company-name">Microsoft</span>
-                    <div class="job-meta">
-                        <span class="job-duration" data-start-date="2022-01">Jan 2022 - Present</span>
-                        <span class="job-location">Redmond, WA</span>
-                    </div>
-                    <ul class="job-description">
-                        <li>Led development of cloud-based solutions with Azure and improved system performance by 40%</li>
-                        <li>Mentored 5 junior engineers and established best practices for the team</li>
-                        <li>Designed and implemented scalable architecture supporting 1M+ concurrent users</li>
-                    </ul>
-                </span>
-            </div>
-            <div class="timeline-connector"></div>
-            <div class="certification work-card">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg" alt="Meta Logo" class="company-logo">
-                <span>
-                    <div class="job-header">
-                        <strong>Software Engineer</strong>
-                    </div>
-                    <span class="company-name">Meta</span>
-                    <div class="job-meta">
-                        <span class="job-duration" data-start-date="2020-03" data-end-date="2021-12">Mar 2020 - Dec 2021</span>
-                        <span class="job-location">Menlo Park, CA</span>
-                    </div>
-                    <ul class="job-description">
-                        <li>Developed React-based components for Facebook interface used by millions of users</li>
-                        <li>Contributed to 3 open-source projects and implemented performance optimizations</li>
-                        <li>Collaborated with cross-functional teams to deliver features on time</li>
-                    </ul>
-                </span>
-            </div>
-        </div>
-    </section>
+  <header id="topbar">
+    <button class="topbar-toggle" id="menuToggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="topbar-brand" id="topbarBrand"></div>
+  </header>
 
-    <!-- Projects Section -->
-    <section id="projects">
-        <h2>Projects</h2>
-        <div class="certifications-grid">
-            <div class="certification project-card">
-                <a href="https://github.com/johndoe/portfolio" target="_blank" class="project-github-link">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" alt="GitHub">
-                </a>
-                <span>
-                    <strong>Portfolio Website</strong><br>
-                    <span class="project-desc">Personal website built with React and hosted on GitHub Pages.</span><br>
-                    <span class="project-tech"><strong>Tech Stack:</strong> React, GitHub Pages</span>
-                </span>
-            </div>
-            <div class="certification project-card">
-                <a href="https://github.com/johndoe/api-automation" target="_blank" class="project-github-link">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" alt="GitHub">
-                </a>
-                <span>
-                    <strong>API Automation Tool</strong><br>
-                    <span class="project-desc">Automated API testing and reporting tool.</span><br>
-                    <span class="project-tech"><strong>Tech Stack:</strong> Python, Flask, Postman</span>
-                </span>
-            </div>
-        </div>
-    </section>
+  <div class="overlay" id="overlay"></div>
 
-    <!-- Skills Section -->
-    <section id="skills">
-        <h2>Skills</h2>
-        <div class="skills-grid">
-            <div class="skill">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript">
-                <span>JavaScript</span>
-            </div>
-            <div class="skill">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript">
-                <span>TypeScript</span>
-            </div>
-            <div class="skill">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python">
-                <span>Python</span>
-            </div>
-            <div class="skill">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React">
-                <span>React</span>
-            </div>
-            <div class="skill">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js">
-                <span>Node.js</span>
-            </div>
-            <div class="skill">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" alt="Express">
-                <span>Express</span>
-            </div>
-            <div class="skill">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker">
-                <span>Docker</span>
-            </div>
-            <div class="skill">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg" alt="Kubernetes">
-                <span>Kubernetes</span>
-            </div>
-            <div class="skill">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg" alt="AWS">
-                <span>AWS</span>
-            </div>
-            <div class="skill">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="SQL">
-                <span>SQL</span>
-            </div>
-            <div class="skill">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" alt="MongoDB">
-                <span>MongoDB</span>
-            </div>
-        </div>
-    </section>
+  <main id="app"></main>
 
-    <!-- Education Section -->
-    <section id="education">
-        <h2>Education</h2>
-        <div class="certifications-grid">
-            <div class="certification education-card">
-                <img src="https://cdn-icons-png.flaticon.com/512/3976/3976631.png" alt="University">
-                <span>
-                    <strong>B.Sc. in Computer Science</strong><br>
-                    <span class="cert-provider">University of Example</span><br>
-                    <span class="cert-date">2016 - 2020</span><br>
-                    <span class="education-gpa">GPA: 3.8/4.0</span>
-                </span>
-            </div>
-            <div class="certification education-card">
-                <img src="https://cdn-icons-png.flaticon.com/512/4628/4628631.png" alt="Certification">
-                <span>
-                    <strong>Full Stack Web Development</strong><br>
-                    <span class="cert-provider">Tech Bootcamp</span><br>
-                    <span class="cert-date">2020</span><br>
-                    <span class="education-achievement">Top Performer</span>
-                </span>
-            </div>
-        </div>
-    </section>
+  <!-- Ask-my-AI stub -->
+  <button class="bot-fab" id="botFab" type="button" aria-expanded="false" aria-controls="botPanel">
+    <span class="bot-fab-pulse" aria-hidden="true"></span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+    Ask my AI
+  </button>
+  <div class="bot-panel" id="botPanel" role="dialog" aria-label="Ask my AI — coming soon">
+    <div class="bot-panel-header">
+      <h3>
+        Ask my AI
+        <span class="bot-badge">Soon</span>
+      </h3>
+      <button class="bot-panel-close" id="botClose" type="button" aria-label="Close">&times;</button>
+    </div>
+    <div class="bot-panel-body">
+      <p>A personal portfolio agent is coming — trained on my GenAI, MLOps, and GCP work. Try sample questions recruiters ask:</p>
+      <button type="button" class="bot-sample-q">How do your LangGraph agents handle tool-calling safety?</button>
+      <button type="button" class="bot-sample-q">Walk me through your Hybrid RAG architecture.</button>
+      <button type="button" class="bot-sample-q">What GCP cost guardrails have you shipped?</button>
+    </div>
+  </div>
 
-    <!-- Certifications Section -->
-    <section id="certifications">
-        <h2>Certifications</h2>
-        <div class="certifications-grid">
-            <div class="certification">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" alt="AWS" class="company-cert-logo">
-                <span>
-                    <strong>AWS Certified Solutions Architect</strong>
-                    <a href="https://aws.amazon.com/certification/certified-solutions-architect-associate/" target="_blank" class="cert-name-link">
-                        <span class="cert-link-icon">🔗</span>
-                    </a><br>
-                    <span class="cert-provider">Amazon Web Services</span><br>
-                    <span class="cert-date">Issued Jan 2024</span><br>
-                    <span class="cert-expiry">Expires Jan 2027</span>
-                </span>
-            </div>
-            <div class="certification">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a8/Microsoft_Azure_Logo.svg" alt="Azure" class="company-cert-logo">
-                <span>
-                    <strong>Microsoft Certified: Azure Fundamentals</strong>
-                    <a href="https://learn.microsoft.com/en-us/credentials/certifications/azure-fundamentals/" target="_blank" class="cert-name-link">
-                        <span class="cert-link-icon">🔗</span>
-                    </a><br>
-                    <span class="cert-provider">Microsoft</span><br>
-                    <span class="cert-date">Issued Dec 2023</span><br>
-                    <span class="cert-expiry">Never Expires</span>
-                </span>
-            </div>
-            <div class="certification">
-                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/googlecloud/googlecloud-original.svg" alt="Google Cloud" class="company-cert-logo">
-                <span>
-                    <strong>Google Cloud Digital Leader</strong>
-                    <a href="https://cloud.google.com/learn/certification" target="_blank" class="cert-name-link">
-                        <span class="cert-link-icon">🔗</span>
-                    </a><br>
-                    <span class="cert-provider">Google Cloud</span><br>
-                    <span class="cert-date">Issued Nov 2023</span><br>
-                    <span class="cert-expiry">Expires Nov 2025</span>
-                </span>
-            </div>
-        </div>
-    </section>
-    <script src="script.js"></script>
+  <script src="src/data.js"></script>
+  <script src="src/components/utils.js"></script>
+  <script src="src/components/shared.js"></script>
+  <script src="src/pages/home.js"></script>
+  <script src="src/pages/experience.js"></script>
+  <script src="src/pages/projects.js"></script>
+  <script src="src/pages/projectDetail.js"></script>
+  <script src="src/pages/skills.js"></script>
+  <script src="src/pages/about.js"></script>
+  <script src="src/pages/custom.js"></script>
+  <script src="src/router.js"></script>
+
+  <script data-goatcounter="https://girdharik.goatcounter.com/count"
+          async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>

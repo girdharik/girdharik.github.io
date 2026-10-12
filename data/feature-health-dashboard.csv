@@ -1,0 +1,11 @@
+Feature,Type,Drift Metric,Value,SHAP Rank,Alert
+tenure_months,Continuous,Cohen's d,0.82,2,Critical
+avg_revenue_3m,Continuous,Cohen's d,0.65,1,Warning
+data_usage_gb,Continuous,Cohen's d,0.58,5,Warning
+plan_type,Categorical,PSI,0.18,3,Warning
+plan_changes,Continuous,Cohen's d,0.45,8,Watch
+support_calls,Continuous,Cohen's d,0.38,4,Watch
+payment_method,Categorical,PSI,0.05,12,Healthy
+device_os,Categorical,PSI,0.03,15,Healthy
+zip_code,Identifier,Null Rate,2.1%,—,Healthy
+session_seq,Sequence,Null Rate,0.8%,20,Healthy
