@@ -65,37 +65,45 @@
       <button class="bot-panel-close" id="botClose" type="button" aria-label="Close">&times;</button>
     </div>
     <div class="bot-panel-body">
-      <p class="bot-intro">Ask about my GenAI agents, Hybrid RAG, MLOps monitoring, or GCP work. Recruiters can also match a JD to my experience.</p>
+      <p class="bot-intro">Ask about my work, or attach a JD (PDF, Word, Markdown…) to check fit.</p>
       <div class="bot-samples" id="botSamples">
-        <p class="bot-samples-label">For recruiters</p>
-        <button type="button" class="bot-sample-q">What production GenAI systems have you owned end-to-end?</button>
-        <button type="button" class="bot-sample-q">How would you explain your BigQuery guardrails to a hiring manager?</button>
-        <button type="button" class="bot-sample-q">How do you control cost and latency for Gemini / Vertex workloads?</button>
-        <button type="button" class="bot-sample-q">Walk me through Hybrid RAG — why hybrid over pure vector search?</button>
-        <button type="button" class="bot-sample-q">How do PSI and SHAP work together in your monitoring stack?</button>
-        <button type="button" class="bot-sample-q">What MLOps / CI-CD patterns have you shipped in production?</button>
-      </div>
-      <div class="bot-jd" id="botJd">
-        <button type="button" class="bot-jd-toggle" id="botJdToggle" aria-expanded="false">
-          Match a job description
-        </button>
-        <div class="bot-jd-panel" id="botJdPanel" hidden>
-          <label class="bot-jd-label" for="botJdInput">Paste JD or upload a .txt / .md file</label>
-          <textarea class="bot-jd-input" id="botJdInput" rows="5" maxlength="12000" placeholder="Paste the full JD (role summary + must-have requirements)…"></textarea>
-          <div class="bot-jd-actions">
-            <label class="bot-jd-upload">
-              <input type="file" id="botJdFile" accept=".txt,.md,.text,text/plain,text/markdown" hidden />
-              Upload file
-            </label>
-            <button type="button" class="bot-jd-match" id="botJdMatch">Check fit</button>
-          </div>
-        </div>
+        <p class="bot-samples-label">Quick asks</p>
+        <button type="button" class="bot-sample-q">What GenAI / MLOps work have you shipped in production?</button>
+        <button type="button" class="bot-sample-q">Are you open to roles, and what are you strongest in?</button>
+        <button type="button" class="bot-sample-q">Walk me through a production system you’d own on day one.</button>
       </div>
       <div class="bot-messages" id="botMessages" aria-live="polite"></div>
       <p class="bot-status" id="botStatus" hidden></p>
-      <form class="bot-form" id="botForm">
-        <input class="bot-input" id="botInput" type="text" maxlength="500" autocomplete="off" placeholder="Ask a question…" aria-label="Ask a question" />
-        <button class="bot-send" id="botSend" type="submit">Send</button>
+      <form class="bot-composer" id="botForm">
+        <div class="bot-attach-chip" id="botAttachChip" hidden>
+          <span id="botAttachName"></span>
+          <button type="button" class="bot-attach-clear" id="botAttachClear" aria-label="Remove file">&times;</button>
+        </div>
+        <textarea
+          class="bot-input"
+          id="botInput"
+          rows="2"
+          maxlength="12000"
+          autocomplete="off"
+          placeholder="Ask a question, or paste a job description…"
+          aria-label="Ask a question or paste a job description"
+        ></textarea>
+        <div class="bot-composer-bar">
+          <label class="bot-attach" title="Upload JD (PDF, Word, MD, TXT…)">
+            <input
+              type="file"
+              id="botJdFile"
+              accept=".pdf,.docx,.doc,.md,.markdown,.txt,.text,.rtf,.html,.htm,.csv,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,text/markdown,text/html,text/rtf"
+              hidden
+            />
+            <svg class="bot-attach-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+            Attach JD
+          </label>
+          <div class="bot-composer-actions">
+            <button class="bot-match" id="botJdMatch" type="button">Match JD</button>
+            <button class="bot-send" id="botSend" type="submit">Ask</button>
+          </div>
+        </div>
       </form>
     </div>
   </div>

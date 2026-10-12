@@ -15,7 +15,7 @@
   const WAKE_TIMEOUT_MS = 120000;
   const ASK_TIMEOUT_MS = 90000;
   const JD_TIMEOUT_MS = 120000;
-  const MAX_JD_CHARS = 12000;
+  const MAX_UPLOAD_BYTES = 6 * 1024 * 1024;
 
   const STATUS_LINES = [
     "Looking through my projects…",
@@ -36,7 +36,9 @@
     waking: false,
     asking: false,
     pendingQuestion: null,
-    pendingJd: null,
+    pendingJdText: null,
+    pendingJdFile: null,
+    attachedFile: null,
     statusTimer: null,
     statusIdx: 0,
     statusLines: STATUS_LINES,
@@ -118,6 +120,42 @@
     }
   }
 
+  function setBusy(busy) {
+    state.asking = busy;
+    const send = $("botSend");
+    const match = $("botJdMatch");
+    if (send) send.disabled = busy;
+    if (match) match.disabled = busy;
+  }
+
+  function updateAttachChip() {
+    const chip = $("botAttachChip");
+    const name = $("botAttachName");
+    if (!chip || !name) return;
+    if (state.attachedFile) {
+      name.textContent = state.attachedFile.name;
+      chip.hidden = false;
+    } else {
+      name.textContent = "";
+      chip.hidden = true;
+    }
+  }
+
+  function clearAttachedFile() {
+    state.attachedFile = null;
+    const input = $("botJdFile");
+    if (input) input.value = "";
+    updateAttachChip();
+  }
+
+  function looksLikeJd(text) {
+    const t = (text || "").trim();
+    if (t.length < 280) return false;
+    return /\b(responsibilit|requirement|qualifications?|must[- ]have|job description|years? of experience|we are (looking|seeking)|role overview)\b/i.test(
+      t
+    );
+  }
+
   async function wakeAgent() {
     if (!spaceConfigured()) {
       state.ready = false;
@@ -156,14 +194,16 @@
       if (state.ready) {
         setStatus("", false);
       } else {
-        setStatus("Still getting ready — try your question again in a moment.", false);
+        setStatus("Still getting ready — try again in a moment.", false);
       }
     }
 
-    if (state.ready && state.pendingJd) {
-      const jd = state.pendingJd;
-      state.pendingJd = null;
-      await sendJdMatch(jd);
+    if (state.ready && (state.pendingJdFile || state.pendingJdText)) {
+      const file = state.pendingJdFile;
+      const text = state.pendingJdText;
+      state.pendingJdFile = null;
+      state.pendingJdText = null;
+      await runJdMatch({ file, text });
     } else if (state.ready && state.pendingQuestion) {
       const q = state.pendingQuestion;
       state.pendingQuestion = null;
@@ -183,35 +223,35 @@
       },
       ASK_TIMEOUT_MS
     );
-    if (!res.ok) {
-      throw new Error("ask_failed_" + res.status);
-    }
+    if (!res.ok) throw new Error("ask_failed_" + res.status);
     return res.json();
   }
 
-  async function callMatchJd(jd) {
-    const res = await fetchWithTimeout(
-      AGENT_SPACE_URL + "/match_jd",
-      {
-        method: "POST",
-        mode: "cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ jd }),
-      },
-      JD_TIMEOUT_MS
-    );
-    if (!res.ok) {
-      throw new Error("match_jd_failed_" + res.status);
+  async function callMatchJd({ text, file }) {
+    let res;
+    if (file) {
+      const form = new FormData();
+      form.append("file", file, file.name);
+      if (text) form.append("jd", text);
+      res = await fetchWithTimeout(
+        AGENT_SPACE_URL + "/match_jd",
+        { method: "POST", mode: "cors", body: form },
+        JD_TIMEOUT_MS
+      );
+    } else {
+      res = await fetchWithTimeout(
+        AGENT_SPACE_URL + "/match_jd",
+        {
+          method: "POST",
+          mode: "cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ jd: text || "" }),
+        },
+        JD_TIMEOUT_MS
+      );
     }
+    if (!res.ok) throw new Error("match_jd_failed_" + res.status);
     return res.json();
-  }
-
-  function setBusy(busy) {
-    state.asking = busy;
-    const send = $("botSend");
-    const match = $("botJdMatch");
-    if (send) send.disabled = busy;
-    if (match) match.disabled = busy;
   }
 
   async function sendQuestion(question) {
@@ -230,7 +270,8 @@
 
     if (!state.ready) {
       state.pendingQuestion = q;
-      state.pendingJd = null;
+      state.pendingJdFile = null;
+      state.pendingJdText = null;
       setStatus(STATUS_LINES[0], true);
       if (!state.waking) wakeAgent();
       return;
@@ -248,11 +289,9 @@
         await wakeAgent();
         data = await callAsk(q);
       }
-
       stopStatusCycle();
       setStatus("", false);
-      const answer = (data && data.answer) || GENERIC_RETRY;
-      renderAssistant(answer);
+      renderAssistant((data && data.answer) || GENERIC_RETRY);
     } catch (_) {
       stopStatusCycle();
       setStatus("", false);
@@ -264,21 +303,24 @@
     }
   }
 
-  async function sendJdMatch(jdText) {
-    const jd = (jdText || "").trim();
-    if (!jd || state.asking) return;
-
-    if (jd.length < 40) {
-      appendMessage("user", "JD match (too short)", false);
+  async function runJdMatch({ text, file }) {
+    if (state.asking) return;
+    const jdText = (text || "").trim();
+    if (!file && jdText.length < 40) {
+      appendMessage("user", "JD match", false);
       renderAssistant(
-        "Paste a fuller job description (role summary + requirements) so I can compare fairly."
+        "Paste a fuller job description, or attach a PDF / Word / Markdown file."
       );
       return;
     }
 
-    const preview =
-      jd.length > 160 ? jd.slice(0, 160).replace(/\s+/g, " ") + "…" : jd.replace(/\s+/g, " ");
-    appendMessage("user", "JD match: " + preview, false);
+    const label = file
+      ? "JD match: " + file.name
+      : "JD match: " +
+        (jdText.length > 140
+          ? jdText.slice(0, 140).replace(/\s+/g, " ") + "…"
+          : jdText.replace(/\s+/g, " "));
+    appendMessage("user", label, false);
 
     if (!spaceConfigured()) {
       renderAssistant(GENERIC_RETRY);
@@ -286,7 +328,8 @@
     }
 
     if (!state.ready) {
-      state.pendingJd = jd;
+      state.pendingJdFile = file || null;
+      state.pendingJdText = jdText || null;
       state.pendingQuestion = null;
       setStatus(JD_STATUS_LINES[0], true);
       if (!state.waking) wakeAgent();
@@ -299,17 +342,22 @@
     try {
       let data;
       try {
-        data = await callMatchJd(jd);
+        data = await callMatchJd({ text: jdText, file: file || null });
       } catch (_) {
         state.ready = false;
         await wakeAgent();
-        data = await callMatchJd(jd);
+        data = await callMatchJd({ text: jdText, file: file || null });
       }
-
       stopStatusCycle();
       setStatus("", false);
-      const answer = (data && data.answer) || GENERIC_RETRY;
-      renderAssistant(answer);
+      renderAssistant((data && data.answer) || GENERIC_RETRY);
+      clearAttachedFile();
+      const input = $("botInput");
+      if (input && file) {
+        /* keep pasted text if any; clear only when file-driven */
+      } else if (input) {
+        input.value = "";
+      }
     } catch (_) {
       stopStatusCycle();
       setStatus("", false);
@@ -321,38 +369,24 @@
     }
   }
 
-  function setJdOpen(open) {
-    const toggle = $("botJdToggle");
-    const panel = $("botJdPanel");
-    if (!toggle || !panel) return;
-    toggle.setAttribute("aria-expanded", open ? "true" : "false");
-    panel.hidden = !open;
+  function submitMatch() {
+    const input = $("botInput");
+    const text = input ? input.value : "";
+    runJdMatch({ text, file: state.attachedFile });
   }
 
-  function readJdFile(file) {
-    return new Promise((resolve, reject) => {
-      if (!file) {
-        reject(new Error("no_file"));
-        return;
-      }
-      const name = (file.name || "").toLowerCase();
-      const okExt = /\.(txt|md|text)$/.test(name) || (file.type || "").startsWith("text/");
-      if (!okExt) {
-        reject(new Error("bad_type"));
-        return;
-      }
-      if (file.size > MAX_JD_CHARS * 2) {
-        reject(new Error("too_large"));
-        return;
-      }
-      const reader = new FileReader();
-      reader.onload = () => {
-        const text = String(reader.result || "").slice(0, MAX_JD_CHARS);
-        resolve(text);
-      };
-      reader.onerror = () => reject(new Error("read_failed"));
-      reader.readAsText(file);
-    });
+  function submitAskOrMatch() {
+    const input = $("botInput");
+    const text = (input && input.value) || "";
+    if (state.attachedFile) {
+      submitMatch();
+      return;
+    }
+    if (looksLikeJd(text)) {
+      submitMatch();
+      return;
+    }
+    sendQuestion(text);
   }
 
   function setOpen(open) {
@@ -377,7 +411,6 @@
     const panel = $("botPanel");
     const close = $("botClose");
     const form = $("botForm");
-    const input = $("botInput");
     if (!fab || !panel) return;
 
     fab.addEventListener("click", () => setOpen(!panel.classList.contains("open")));
@@ -393,57 +426,56 @@
       });
     });
 
-    const jdToggle = $("botJdToggle");
-    const jdMatch = $("botJdMatch");
-    const jdInput = $("botJdInput");
     const jdFile = $("botJdFile");
+    const jdMatch = $("botJdMatch");
+    const clearBtn = $("botAttachClear");
+    const input = $("botInput");
 
-    if (jdToggle) {
-      jdToggle.addEventListener("click", () => {
-        const open = jdToggle.getAttribute("aria-expanded") !== "true";
-        setJdOpen(open);
-        if (open && jdInput) setTimeout(() => jdInput.focus(), 100);
+    if (clearBtn) {
+      clearBtn.addEventListener("click", () => clearAttachedFile());
+    }
+
+    if (jdFile) {
+      jdFile.addEventListener("change", () => {
+        const file = jdFile.files && jdFile.files[0];
+        if (!file) return;
+        if (file.size > MAX_UPLOAD_BYTES) {
+          jdFile.value = "";
+          renderAssistant(
+            "That file is too large (max 6 MB). Paste the requirements section instead."
+          );
+          return;
+        }
+        state.attachedFile = file;
+        updateAttachChip();
+        setStatus("JD attached — tap Match JD (or Ask will match automatically).", false);
       });
     }
 
     if (jdMatch) {
       jdMatch.addEventListener("click", () => {
         setOpen(true);
-        sendJdMatch(jdInput ? jdInput.value : "");
-      });
-    }
-
-    if (jdFile) {
-      jdFile.addEventListener("change", async () => {
-        const file = jdFile.files && jdFile.files[0];
-        jdFile.value = "";
-        if (!file) return;
-        try {
-          const text = await readJdFile(file);
-          if (jdInput) jdInput.value = text;
-          setJdOpen(true);
-          setStatus("JD loaded — tap Check fit when ready.", false);
-        } catch (err) {
-          const code = err && err.message;
-          if (code === "bad_type") {
-            renderAssistant("Please upload a plain .txt or .md job description.");
-          } else if (code === "too_large") {
-            renderAssistant("That file is too large. Paste the requirements section instead.");
-          } else {
-            renderAssistant(GENERIC_RETRY);
-          }
-        }
+        submitMatch();
       });
     }
 
     if (form) {
       form.addEventListener("submit", (e) => {
         e.preventDefault();
-        sendQuestion(input ? input.value : "");
+        submitAskOrMatch();
+      });
+    }
+
+    if (input) {
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          submitAskOrMatch();
+        }
       });
     }
   }
 
   global.initBot = initBot;
-  global.AskMyAI = { wakeAgent, sendQuestion, sendJdMatch, AGENT_SPACE_URL };
+  global.AskMyAI = { wakeAgent, sendQuestion, AGENT_SPACE_URL };
 })(window);
