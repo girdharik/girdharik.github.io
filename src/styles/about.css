@@ -1,5 +1,5 @@
 /* ============================================================
-   ABOUT PAGE
+   ABOUT PAGE — consistent left-aligned layout
    ============================================================ */
 
 .bio-text {
@@ -7,11 +7,28 @@
   line-height: 1.7;
   color: var(--clr-text);
   margin-bottom: 0.75rem;
+  max-width: 68ch;
+}
+
+/* Education + Certifications stacked in one column */
+.about-credentials {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+.about-cred-block {
+  margin-bottom: 0;
+  min-width: 0;
+  width: 100%;
+}
+.about-cred-block .section-head {
+  margin-bottom: 1rem;
 }
 
 .edu-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: 1fr;
   gap: 1rem;
   max-width: 480px;
 }
@@ -23,6 +40,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  width: 100%;
   border: var(--glass-border);
   box-shadow: var(--shadow);
   transition: transform 0.3s, box-shadow 0.3s;
@@ -37,21 +55,23 @@
   flex-shrink: 0;
   border-radius: 6px;
 }
+.edu-info { min-width: 0; }
 .edu-card h3 {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 700;
-  margin-bottom: 0.1rem;
+  margin-bottom: 0.15rem;
 }
 .edu-inst, .edu-period {
   font-size: 0.8rem;
   color: var(--clr-muted);
 }
 
-/* ── Certificate Carousel (compact + responsive) ─ */
+/* ── Certificate Carousel (left-aligned, column width) ─ */
 .cert-carousel {
   position: relative;
-  width: min(100%, 360px);
-  margin: 0 auto;
+  width: 100%;
+  max-width: 480px;
+  margin: 0;
 }
 .cert-viewport {
   overflow: hidden;
@@ -77,13 +97,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 140px;
-  max-height: 220px;
+  min-height: 160px;
+  max-height: 260px;
+  aspect-ratio: 4 / 3;
 }
 .cert-img {
   width: 100%;
-  height: auto;
-  max-height: 220px;
+  height: 100%;
+  max-height: 260px;
   object-fit: contain;
   object-position: center;
   display: block;
@@ -98,8 +119,7 @@
   padding: 1rem 0.85rem;
   text-align: center;
   width: 100%;
-  min-height: 140px;
-  max-height: 220px;
+  min-height: 160px;
   background: var(--clr-bg-elev);
 }
 .cert-ph-logo {
@@ -120,52 +140,38 @@
 .cert-caption {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.1rem;
-  padding: 0.55rem 0.25rem 0.1rem;
+  align-items: flex-start;
+  gap: 0.15rem;
+  padding: 0.75rem 0 0.15rem;
 }
 .cert-cap-name {
-  font-size: 0.8rem;
+  font-size: 0.88rem;
   font-weight: 600;
   color: var(--clr-text);
-  text-align: center;
-  line-height: 1.3;
+  text-align: left;
+  line-height: 1.35;
 }
 .cert-cap-provider {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   color: var(--clr-muted);
-  text-align: center;
+  text-align: left;
 }
 .cert-cap-pdf {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--clr-primary);
-  margin-top: 0.15rem;
+  margin-top: 0.2rem;
 }
 .cert-cap-pdf:hover { color: var(--clr-secondary); }
 
-@media (max-width: 480px) {
-  .cert-carousel { width: min(100%, 280px); }
-  .cert-frame,
-  .cert-placeholder { min-height: 110px; max-height: 170px; }
-  .cert-img { max-height: 170px; }
-  .cert-cap-name { font-size: 0.75rem; }
-}
-
-@media (min-width: 900px) {
-  .cert-carousel { width: min(100%, 400px); }
-  .cert-frame,
-  .cert-placeholder { max-height: 240px; }
-  .cert-img { max-height: 240px; }
-}
-
-/* Carousel nav */
+/* Carousel nav — left aligned with content */
 .cert-nav {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  margin-top: 1rem;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 0.85rem;
 }
 .cert-nav-btn {
   display: inline-flex;
@@ -183,7 +189,7 @@
 .cert-nav-btn:hover {
   background: rgba(46,230,168,0.15);
   border-color: var(--clr-primary);
-  transform: scale(1.1);
+  transform: scale(1.08);
 }
 .cert-nav-btn svg { width: 18px; height: 18px; }
 .cert-dots {
@@ -209,16 +215,16 @@
   color: var(--clr-muted);
   font-family: var(--font-mono);
   min-width: 3rem;
-  text-align: center;
+  text-align: left;
 }
 
-/* ── Reimagined Contact Section ───────────────── */
+/* ── Contact — same left alignment as page content ─ */
 .contact-hero {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 3rem 2rem;
+  align-items: flex-start;
+  text-align: left;
+  padding: 2rem 1.75rem;
   border-radius: var(--radius);
   background: linear-gradient(135deg, rgba(46,230,168,0.08) 0%, rgba(91,140,255,0.06) 50%, rgba(91,140,255,0.06) 100%);
   border: var(--glass-border);
@@ -249,60 +255,63 @@
 }
 .contact-sparkle { display: inline-flex; }
 .contact-sparkle svg {
-  width: 28px; height: 28px;
+  width: 26px; height: 26px;
   stroke: var(--clr-accent);
   animation: sparkleRotate 4s ease-in-out infinite;
 }
 @keyframes sparkleRotate {
   0%, 100% { transform: rotate(0deg) scale(1); }
-  50% { transform: rotate(15deg) scale(1.15); }
+  50% { transform: rotate(15deg) scale(1.1); }
 }
 .contact-heading {
-  font-size: 1.8rem;
+  font-family: var(--font-display);
+  font-size: 1.55rem;
   font-weight: 800;
   letter-spacing: -0.03em;
-  background: linear-gradient(135deg, var(--clr-primary), var(--clr-accent));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--clr-text);
 }
 .contact-subtitle {
   font-size: 0.92rem;
   color: var(--clr-muted);
-  max-width: 440px;
+  max-width: 52ch;
   line-height: 1.6;
-  margin-bottom: 1.75rem;
+  margin-bottom: 1.5rem;
   position: relative;
 }
 
-/* CTA button */
 .contact-cta {
   display: inline-flex;
   text-decoration: none;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
   position: relative;
   border-radius: var(--radius);
   overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 20px rgba(46,230,168,0.3);
 }
 .contact-cta::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, var(--clr-primary), var(--clr-accent));
+  background: linear-gradient(135deg, var(--clr-primary), #1a9f74);
   opacity: 1;
   transition: opacity 0.3s;
 }
-.contact-cta:hover::before { opacity: 0.85; }
+.contact-cta:hover::before { opacity: 0.9; }
+.contact-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(46,230,168,0.35);
+}
 .contact-cta-inner {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.85rem 1.75rem;
+  padding: 0.85rem 1.5rem;
   position: relative;
   z-index: 1;
 }
 .contact-cta-icon { display: inline-flex; }
-.contact-cta-icon svg { width: 20px; height: 20px; stroke: #fff; fill: none; }
+.contact-cta-icon svg { width: 20px; height: 20px; stroke: #0a0e14; fill: none; }
 .contact-cta-text {
   display: flex;
   flex-direction: column;
@@ -311,29 +320,20 @@
 .contact-cta-label {
   font-size: 0.92rem;
   font-weight: 700;
-  color: #fff;
+  color: #0a0e14;
 }
 .contact-cta-email {
   font-size: 0.75rem;
-  color: rgba(255,255,255,0.8);
+  color: rgba(10,14,20,0.75);
   font-family: var(--font-mono);
 }
-.contact-cta {
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 4px 20px rgba(46,230,168,0.3);
-}
-.contact-cta:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(46,230,168,0.4);
-}
 
-/* Info pills */
 .contact-pills {
   display: flex;
   flex-wrap: wrap;
   gap: 0.65rem;
-  justify-content: center;
-  margin-bottom: 1.25rem;
+  justify-content: flex-start;
+  margin-bottom: 1.15rem;
   position: relative;
 }
 .contact-pill {
@@ -341,7 +341,7 @@
   align-items: center;
   gap: 0.4rem;
   padding: 0.4rem 0.85rem;
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(255,255,255,0.1);
   font-size: 0.8rem;
@@ -354,11 +354,11 @@
 .contact-pill-icon { display: inline-flex; }
 .contact-pill-icon svg { width: 14px; height: 14px; }
 
-/* Social buttons */
 .contact-socials {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.65rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
   position: relative;
 }
 .contact-social-btn {
@@ -388,7 +388,6 @@
 .email-btn:hover { border-color: var(--clr-accent); color: var(--clr-accent); }
 .email-btn svg { fill: none; stroke: currentColor; }
 
-/* Availability badge */
 .contact-availability {
   display: flex;
   align-items: center;
@@ -409,10 +408,28 @@
   50% { box-shadow: 0 0 0 6px rgba(52,211,153,0); }
 }
 
+@media (max-width: 900px) {
+  .cert-carousel { max-width: 100%; }
+  .cert-frame {
+    max-height: 220px;
+    aspect-ratio: auto;
+    min-height: 140px;
+  }
+  .cert-img { max-height: 220px; }
+}
+
 @media (max-width: 480px) {
-  .edu-grid { grid-template-columns: 1fr; }
-  .contact-hero { padding: 2rem 1rem; }
-  .contact-heading { font-size: 1.4rem; }
-  .contact-socials { flex-direction: column; align-items: center; }
-  .contact-cta-inner { padding: 0.75rem 1.25rem; }
+  .contact-hero { padding: 1.5rem 1.1rem; }
+  .contact-heading { font-size: 1.35rem; }
+  .contact-socials { width: 100%; }
+  .contact-social-btn { flex: 1 1 auto; justify-content: center; }
+  .cert-frame,
+  .cert-placeholder { min-height: 120px; max-height: 180px; }
+  .cert-img { max-height: 180px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-hero::before,
+  .contact-sparkle svg,
+  .availability-dot { animation: none; }
 }

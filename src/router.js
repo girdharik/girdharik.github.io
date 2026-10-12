@@ -132,36 +132,12 @@
     }, { passive: true });
   }
 
-  /* ── Ask-my-AI bot stub ────────────────────────── */
-  function initBotStub() {
-    const fab = document.getElementById("botFab");
-    const panel = document.getElementById("botPanel");
-    const close = document.getElementById("botClose");
-    if (!fab || !panel) return;
-
-    function setOpen(open) {
-      panel.classList.toggle("open", open);
-      fab.setAttribute("aria-expanded", open ? "true" : "false");
-    }
-
-    fab.addEventListener("click", () => setOpen(!panel.classList.contains("open")));
-    if (close) close.addEventListener("click", () => setOpen(false));
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") setOpen(false);
-    });
-    panel.querySelectorAll(".bot-sample-q").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        U.toast("Portfolio agent coming soon — explore Projects meanwhile");
-      });
-    });
-  }
-
   /* ── Boot ──────────────────────────────────────── */
   function init() {
     buildNav();
     initMobileMenu();
     initScrollTop();
-    initBotStub();
+    if (typeof initBot === "function") initBot();
     window.addEventListener("hashchange", route);
     route();
   }

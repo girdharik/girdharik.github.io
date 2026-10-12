@@ -13,9 +13,14 @@ function renderAbout() {
   a.bio.forEach((p) => bioSec.appendChild(U.el("p", "bio-text", U.esc(p))));
   frag.appendChild(bioSec);
 
-  /* Education */
-  if (a.education && a.education.length) {
+  /* Education + Certifications — shared row for aligned columns */
+  const hasEdu = a.education && a.education.length;
+  const hasCerts = a.certifications && a.certifications.length;
+  const credentials = U.el("div", "about-credentials");
+
+  if (hasEdu) {
     const eduSec = Shared.sectionBlock("Education", U.icons.graduationCap);
+    eduSec.classList.add("about-cred-block");
     const grid = U.el("div", "edu-grid");
     a.education.forEach((e) => {
       const card = U.el("div", "edu-card reveal");
@@ -24,7 +29,7 @@ function renderAbout() {
         img.src = e.logo; img.alt = e.institution; img.loading = "lazy";
         card.appendChild(img);
       }
-      const info = U.el("div");
+      const info = U.el("div", "edu-info");
       info.appendChild(U.el("h3", "", U.esc(e.degree)));
       info.appendChild(U.el("p", "edu-inst", U.esc(e.institution)));
       info.appendChild(U.el("p", "edu-period", U.esc(e.period)));
@@ -32,12 +37,13 @@ function renderAbout() {
       grid.appendChild(card);
     });
     eduSec.appendChild(grid);
-    frag.appendChild(eduSec);
+    credentials.appendChild(eduSec);
   }
 
   /* ── Certifications Carousel ─────────────────── */
-  if (a.certifications && a.certifications.length) {
+  if (hasCerts) {
     const certSec = Shared.sectionBlock("Certifications", U.icons.certificate);
+    certSec.classList.add("about-cred-block");
     const certs = a.certifications;
     let idx = 0;
 
@@ -134,10 +140,12 @@ function renderAbout() {
     carousel.appendChild(nav);
 
     certSec.appendChild(carousel);
-    frag.appendChild(certSec);
+    credentials.appendChild(certSec);
   }
 
-  /* ── Reimagined Get in Touch ─────────────────── */
+  if (hasEdu || hasCerts) frag.appendChild(credentials);
+
+  /* ── Get in Touch ─────────────────── */
   const contactSec = U.el("div", "content-section reveal");
   const contactHero = U.el("div", "contact-hero");
 

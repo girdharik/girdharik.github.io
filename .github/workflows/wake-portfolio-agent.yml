@@ -1,0 +1,33 @@
+name: Wake portfolio agent
+
+on:
+  schedule:
+    # Once daily — free HF CPU sleeps after ~48h idle
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+jobs:
+  wake:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Space /health
+        env:
+          AGENT_SPACE_URL: ${{ secrets.AGENT_SPACE_URL }}
+        run: |
+          if [ -z "$AGENT_SPACE_URL" ]; then
+            echo "Set repo secret AGENT_SPACE_URL to your Space base URL (no trailing slash)."
+            exit 0
+          fi
+          url="${AGENT_SPACE_URL%/}/health"
+          echo "Waking $url"
+          for i in 1 2 3 4 5 6; do
+            if curl -fsS --max-time 30 "$url"; then
+              echo
+              echo "Space ready"
+              exit 0
+            fi
+            echo "Attempt $i failed — retrying in 20s"
+            sleep 20
+          done
+          echo "Wake ping did not succeed (Space may still be building)."
+          exit 0
