@@ -135,8 +135,11 @@ a { color: var(--clr-primary); text-decoration: none; }
 /* ── Metrics grid ─────────────────────────────── */
 .metrics-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
   gap: 1rem;
+}
+.metrics-grid .metric-label {
+  line-height: 1.35;
 }
 .metric-card {
   background: var(--clr-bg-elev);

@@ -64,11 +64,6 @@ const SITE = {
       id:  "about",
       label:  "About",
       icon:  "user"
-    },
-    {
-      id:  "documents",
-      label:  "Documents",
-      icon:  "fileText"
     }
   ],
   home:  {
@@ -96,28 +91,52 @@ const SITE = {
     },
     highlights:  [
       {
-        value:  "300+",
-        label:  "Models in Production"
+        value:  "3",
+        label:  "LLM Copilots & Agents Shipped"
       },
       {
-        value:  "7",
-        label:  "Monitoring Frameworks"
+        value:  "4",
+        label:  "LangGraph Multi-Agent Roles"
+      },
+      {
+        value:  "Hybrid RAG",
+        label:  "Keyword + Vector Retrieval"
       },
       {
         value:  "~4K",
-        label:  "Tokens Saved / Step"
+        label:  "Tokens Cut per Agent Step"
       },
       {
-        value:  "60%",
-        label:  "Cloud Cost Reduced"
+        value:  "6",
+        label:  "LLM Tool Guardrails"
       },
       {
-        value:  "100%",
-        label:  "SLA Met"
+        value:  "40+",
+        label:  "AI Deploy Tools (CLI)"
       },
       {
         value:  "40%",
         label:  "Faster Incident Response"
+      },
+      {
+        value:  "300+",
+        label:  "Models Monitored in Prod"
+      },
+      {
+        value:  "7",
+        label:  "MLOps Monitoring Frameworks"
+      },
+      {
+        value:  "60%",
+        label:  "Cloud Spend Reduced"
+      },
+      {
+        value:  "100%",
+        label:  "Pipeline SLA Met"
+      },
+      {
+        value:  "200GB",
+        label:  "BigQuery Cost Cap / Query"
       }
     ]
   },

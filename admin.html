@@ -218,7 +218,7 @@ const APP = {
   filePath: 'src/data.js',
   data: null,      // parsed SITE object
   fileSha: '',     // needed for GitHub API commits
-  activeTab: 'documents',
+  activeTab: 'nav',
   docsFolderId: '',   // '' = all
   docsSelectedId: '',
 };
@@ -405,15 +405,17 @@ async function doSetup() {
 }
 
 /* ── Load content from GitHub ───────────────────── */
+const CORE_NAV_IDS = ['home', 'experience', 'projects', 'skills', 'about'];
+
 function ensureDocsModel() {
   if (!APP.data.docs) APP.data.docs = { folders: [], items: [] };
   if (!Array.isArray(APP.data.docs.folders)) APP.data.docs.folders = [];
   if (!Array.isArray(APP.data.docs.items)) APP.data.docs.items = [];
-  // Keep Documents in nav if missing
   if (!APP.data.pages) APP.data.pages = [];
-  if (!APP.data.pages.some((p) => p.id === 'documents')) {
-    APP.data.pages.push({ id: 'documents', label: 'Documents', icon: 'fileText' });
-  }
+}
+
+function isDocsInNav() {
+  return (APP.data.pages || []).some((p) => p.id === 'documents');
 }
 
 async function loadContent() {
@@ -442,6 +444,7 @@ async function saveContent() {
 /* ── Main admin layout ──────────────────────────── */
 function renderAdmin() {
   const tabs = [
+    { id: 'nav', label: '🧭 Site Navigation' },
     { id: 'documents', label: '📚 Documents' },
     { id: 'meta', label: '👤 Personal Info' },
     { id: 'home', label: '🏠 Home Page' },
@@ -487,6 +490,7 @@ function renderTab() {
   const el = document.getElementById('tabContent');
   el.classList.toggle('wide', APP.activeTab === 'documents');
   const renderers = {
+    nav: renderNavAdmin,
     documents: renderDocumentsAdmin,
     meta: renderMeta,
     home: renderHome,
@@ -556,6 +560,94 @@ function mdPreview(src, format) {
   return '<pre>' + esc(src || '') + '</pre>';
 }
 
+/* ── Site Navigation ──────────────────────────────── */
+function renderNavAdmin(el) {
+  ensureDocsModel();
+  const pages = APP.data.pages || [];
+  const iconKeys = ['home','briefcase','rocket','tools','user','fileText','bot','brain','chartLine','target','microscope','scale','send'];
+
+  el.innerHTML = `
+    <h2 class="section-title">Site Navigation</h2>
+    <p class="empty-hint" style="padding-top:0;margin-bottom:1rem">
+      These entries appear in the portfolio sidebar. Core pages (Home, Experience, Projects, Skills, About) stay for site structure.
+      You can <strong>remove</strong> Documents or any custom page from the live site here.
+    </p>
+    <div class="docs-pane-actions" style="margin-bottom:1rem">
+      ${!isDocsInNav() ? '<button class="btn btn-sm btn-primary" onclick="addDocumentsToNav()">+ Add Documents to nav</button>' : ''}
+      <button class="btn btn-sm" onclick="switchTab('pages')">Manage custom pages →</button>
+    </div>
+    ${pages.map((p, i) => {
+      const core = CORE_NAV_IDS.includes(p.id);
+      return `
+      <div class="card">
+        <div class="card-header">
+          <h3>${esc(p.label)} <span style="font-size:0.75rem;color:var(--muted);font-weight:400">/#/${esc(p.id)}${core ? ' · core' : ''}</span></h3>
+          <div class="card-actions">
+            ${i > 0 ? `<button class="btn btn-sm" onclick="moveNavPage(${i},-1)">↑</button>` : ''}
+            ${i < pages.length - 1 ? `<button class="btn btn-sm" onclick="moveNavPage(${i},1)">↓</button>` : ''}
+            ${core
+              ? '<span class="hint" style="align-self:center">Cannot remove</span>'
+              : `<button class="btn btn-sm btn-danger" onclick="removeNavPage('${p.id}')">Remove from site</button>`}
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label>Nav label</label>
+            <input type="text" value="${esc(p.label)}" onchange="APP.data.pages[${i}].label=this.value">
+          </div>
+          <div class="field">
+            <label>Icon</label>
+            <select onchange="APP.data.pages[${i}].icon=this.value">
+              ${iconKeys.map((k) => `<option value="${k}" ${p.icon === k ? 'selected' : ''}>${k}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+      </div>`;
+    }).join('')}
+  `;
+}
+
+function moveNavPage(i, dir) {
+  const arr = APP.data.pages;
+  const j = i + dir;
+  if (j < 0 || j >= arr.length) return;
+  [arr[i], arr[j]] = [arr[j], arr[i]];
+  renderTab();
+}
+
+function removeNavPage(id) {
+  if (CORE_NAV_IDS.includes(id)) {
+    toast('Core pages cannot be removed', 'error');
+    return;
+  }
+  const label = (APP.data.pages.find((p) => p.id === id) || {}).label || id;
+  if (!confirm(`Remove “${label}” from the site navigation?\n\nVisitors will no longer see this page in the sidebar.`)) return;
+
+  APP.data.pages = APP.data.pages.filter((p) => p.id !== id);
+
+  if (id === 'documents') {
+    const wipe = confirm('Also delete all Documents folders and pages content?\n\nOK = delete content · Cancel = keep content (you can add Documents back later)');
+    if (wipe) APP.data.docs = { folders: [], items: [] };
+    APP.docsSelectedId = '';
+  }
+
+  if (APP.data.customPages && APP.data.customPages[id]) {
+    const wipeCustom = confirm(`Also delete the custom page content for “${label}”?`);
+    if (wipeCustom) delete APP.data.customPages[id];
+  }
+
+  toast(`Removed “${label}” from navigation — Save & Publish to update the live site`);
+  renderTab();
+}
+
+function addDocumentsToNav() {
+  ensureDocsModel();
+  if (isDocsInNav()) return;
+  APP.data.pages.push({ id: 'documents', label: 'Documents', icon: 'fileText' });
+  toast('Documents added to navigation — Save & Publish when ready');
+  renderTab();
+}
+
 /* ── Documents (wiki-style) ───────────────────────── */
 function renderDocumentsAdmin(el) {
   ensureDocsModel();
@@ -564,13 +656,20 @@ function renderDocumentsAdmin(el) {
   const folderId = APP.docsFolderId;
   const selected = items.find((d) => d.id === APP.docsSelectedId) || null;
   const visible = folderId ? items.filter((d) => d.folderId === folderId) : items;
+  const inNav = isDocsInNav();
 
   el.innerHTML = `
     <div class="section-title" style="margin-bottom:0.75rem">Documents</div>
-    <p class="empty-hint" style="padding-top:0;margin-bottom:1rem">
+    <p class="empty-hint" style="padding-top:0;margin-bottom:0.75rem">
       Write pages in Markdown (or HTML), put them in folders, import files from your computer.
       Use the live preview on the right — then <strong>Save &amp; Publish</strong> to update the site.
     </p>
+    <div class="docs-pane-actions" style="margin-bottom:1rem">
+      ${inNav
+        ? '<button class="btn btn-sm btn-danger" onclick="removeNavPage(\'documents\')">Remove Documents from site</button>'
+        : '<button class="btn btn-sm btn-primary" onclick="addDocumentsToNav()">Show Documents on site</button><span class="hint">Currently hidden from sidebar</span>'}
+      <button class="btn btn-sm" onclick="switchTab('nav')">Site Navigation →</button>
+    </div>
     <div class="docs-admin">
       <div class="docs-pane">
         <h4>Folders</h4>
