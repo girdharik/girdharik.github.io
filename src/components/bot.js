@@ -4,13 +4,19 @@
   "use strict";
 
   /**
-   * Hugging Face Space base URL (no trailing slash).
-   * Replace with your deployed Space, e.g. https://USER-portfolio-qa.hf.space
+   * Existing Docker Space (girdharik/AiAgents) — new Docker Spaces are paid.
+   * No trailing slash.
    */
-  const AGENT_SPACE_URL = "https://REPLACE_HF_USER-portfolio-qa.hf.space";
+  const AGENT_SPACE_URL = "https://girdharik-AiAgents.hf.space";
+
+  const GENERIC_RETRY =
+    "I couldn't complete that just now. Please try again in a moment.";
 
   const WAKE_TIMEOUT_MS = 120000;
   const ASK_TIMEOUT_MS = 90000;
+  const JD_TIMEOUT_MS = 120000;
+  const MAX_JD_CHARS = 12000;
+
   const STATUS_LINES = [
     "Looking through my projects…",
     "Pulling the relevant details…",
@@ -18,13 +24,22 @@
     "Putting that together…",
   ];
 
+  const JD_STATUS_LINES = [
+    "Reading the job description…",
+    "Comparing against my experience…",
+    "Checking must-have requirements…",
+    "Writing a short fit summary…",
+  ];
+
   const state = {
     ready: false,
     waking: false,
     asking: false,
     pendingQuestion: null,
+    pendingJd: null,
     statusTimer: null,
     statusIdx: 0,
+    statusLines: STATUS_LINES,
   };
 
   function spaceConfigured() {
@@ -43,13 +58,14 @@
     el.classList.toggle("busy", !!busy);
   }
 
-  function startStatusCycle() {
+  function startStatusCycle(lines) {
     stopStatusCycle();
+    state.statusLines = lines && lines.length ? lines : STATUS_LINES;
     state.statusIdx = 0;
-    setStatus(STATUS_LINES[0], true);
+    setStatus(state.statusLines[0], true);
     state.statusTimer = setInterval(() => {
-      state.statusIdx = (state.statusIdx + 1) % STATUS_LINES.length;
-      setStatus(STATUS_LINES[state.statusIdx], true);
+      state.statusIdx = (state.statusIdx + 1) % state.statusLines.length;
+      setStatus(state.statusLines[state.statusIdx], true);
     }, 2800);
   }
 
@@ -109,7 +125,7 @@
     }
     if (state.ready || state.waking) return state.ready;
     state.waking = true;
-    startStatusCycle();
+    startStatusCycle(STATUS_LINES);
 
     const started = Date.now();
     let delay = 1500;
@@ -144,7 +160,11 @@
       }
     }
 
-    if (state.ready && state.pendingQuestion) {
+    if (state.ready && state.pendingJd) {
+      const jd = state.pendingJd;
+      state.pendingJd = null;
+      await sendJdMatch(jd);
+    } else if (state.ready && state.pendingQuestion) {
       const q = state.pendingQuestion;
       state.pendingQuestion = null;
       await sendQuestion(q);
@@ -169,6 +189,31 @@
     return res.json();
   }
 
+  async function callMatchJd(jd) {
+    const res = await fetchWithTimeout(
+      AGENT_SPACE_URL + "/match_jd",
+      {
+        method: "POST",
+        mode: "cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jd }),
+      },
+      JD_TIMEOUT_MS
+    );
+    if (!res.ok) {
+      throw new Error("match_jd_failed_" + res.status);
+    }
+    return res.json();
+  }
+
+  function setBusy(busy) {
+    state.asking = busy;
+    const send = $("botSend");
+    const match = $("botJdMatch");
+    if (send) send.disabled = busy;
+    if (match) match.disabled = busy;
+  }
+
   async function sendQuestion(question) {
     const q = (question || "").trim();
     if (!q || state.asking) return;
@@ -179,22 +224,20 @@
     appendMessage("user", q, false);
 
     if (!spaceConfigured()) {
-      renderAssistant(
-        "The portfolio agent URL is not configured yet. Set `AGENT_SPACE_URL` in `src/components/bot.js` after deploying the Hugging Face Space."
-      );
+      renderAssistant(GENERIC_RETRY);
       return;
     }
 
     if (!state.ready) {
       state.pendingQuestion = q;
+      state.pendingJd = null;
       setStatus(STATUS_LINES[0], true);
       if (!state.waking) wakeAgent();
       return;
     }
 
-    state.asking = true;
-    startStatusCycle();
-    $("botSend") && ($("botSend").disabled = true);
+    setBusy(true);
+    startStatusCycle(STATUS_LINES);
 
     try {
       let data;
@@ -208,18 +251,108 @@
 
       stopStatusCycle();
       setStatus("", false);
-      const answer = (data && data.answer) || "I couldn't find a good answer for that.";
+      const answer = (data && data.answer) || GENERIC_RETRY;
       renderAssistant(answer);
     } catch (_) {
       stopStatusCycle();
       setStatus("", false);
-      renderAssistant("Something went wrong answering that. Please try again in a moment.");
+      renderAssistant(GENERIC_RETRY);
     } finally {
-      state.asking = false;
-      $("botSend") && ($("botSend").disabled = false);
+      setBusy(false);
       const thread = $("botMessages");
       if (thread) thread.scrollTop = thread.scrollHeight;
     }
+  }
+
+  async function sendJdMatch(jdText) {
+    const jd = (jdText || "").trim();
+    if (!jd || state.asking) return;
+
+    if (jd.length < 40) {
+      appendMessage("user", "JD match (too short)", false);
+      renderAssistant(
+        "Paste a fuller job description (role summary + requirements) so I can compare fairly."
+      );
+      return;
+    }
+
+    const preview =
+      jd.length > 160 ? jd.slice(0, 160).replace(/\s+/g, " ") + "…" : jd.replace(/\s+/g, " ");
+    appendMessage("user", "JD match: " + preview, false);
+
+    if (!spaceConfigured()) {
+      renderAssistant(GENERIC_RETRY);
+      return;
+    }
+
+    if (!state.ready) {
+      state.pendingJd = jd;
+      state.pendingQuestion = null;
+      setStatus(JD_STATUS_LINES[0], true);
+      if (!state.waking) wakeAgent();
+      return;
+    }
+
+    setBusy(true);
+    startStatusCycle(JD_STATUS_LINES);
+
+    try {
+      let data;
+      try {
+        data = await callMatchJd(jd);
+      } catch (_) {
+        state.ready = false;
+        await wakeAgent();
+        data = await callMatchJd(jd);
+      }
+
+      stopStatusCycle();
+      setStatus("", false);
+      const answer = (data && data.answer) || GENERIC_RETRY;
+      renderAssistant(answer);
+    } catch (_) {
+      stopStatusCycle();
+      setStatus("", false);
+      renderAssistant(GENERIC_RETRY);
+    } finally {
+      setBusy(false);
+      const thread = $("botMessages");
+      if (thread) thread.scrollTop = thread.scrollHeight;
+    }
+  }
+
+  function setJdOpen(open) {
+    const toggle = $("botJdToggle");
+    const panel = $("botJdPanel");
+    if (!toggle || !panel) return;
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    panel.hidden = !open;
+  }
+
+  function readJdFile(file) {
+    return new Promise((resolve, reject) => {
+      if (!file) {
+        reject(new Error("no_file"));
+        return;
+      }
+      const name = (file.name || "").toLowerCase();
+      const okExt = /\.(txt|md|text)$/.test(name) || (file.type || "").startsWith("text/");
+      if (!okExt) {
+        reject(new Error("bad_type"));
+        return;
+      }
+      if (file.size > MAX_JD_CHARS * 2) {
+        reject(new Error("too_large"));
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        const text = String(reader.result || "").slice(0, MAX_JD_CHARS);
+        resolve(text);
+      };
+      reader.onerror = () => reject(new Error("read_failed"));
+      reader.readAsText(file);
+    });
   }
 
   function setOpen(open) {
@@ -228,7 +361,6 @@
     if (!panel) return;
     if (fab) fab.setAttribute("aria-expanded", open ? "true" : "false");
     if (open) {
-      // Restart pop/spin animation each open
       panel.classList.remove("open");
       void panel.offsetWidth;
       panel.classList.add("open");
@@ -261,6 +393,49 @@
       });
     });
 
+    const jdToggle = $("botJdToggle");
+    const jdMatch = $("botJdMatch");
+    const jdInput = $("botJdInput");
+    const jdFile = $("botJdFile");
+
+    if (jdToggle) {
+      jdToggle.addEventListener("click", () => {
+        const open = jdToggle.getAttribute("aria-expanded") !== "true";
+        setJdOpen(open);
+        if (open && jdInput) setTimeout(() => jdInput.focus(), 100);
+      });
+    }
+
+    if (jdMatch) {
+      jdMatch.addEventListener("click", () => {
+        setOpen(true);
+        sendJdMatch(jdInput ? jdInput.value : "");
+      });
+    }
+
+    if (jdFile) {
+      jdFile.addEventListener("change", async () => {
+        const file = jdFile.files && jdFile.files[0];
+        jdFile.value = "";
+        if (!file) return;
+        try {
+          const text = await readJdFile(file);
+          if (jdInput) jdInput.value = text;
+          setJdOpen(true);
+          setStatus("JD loaded — tap Check fit when ready.", false);
+        } catch (err) {
+          const code = err && err.message;
+          if (code === "bad_type") {
+            renderAssistant("Please upload a plain .txt or .md job description.");
+          } else if (code === "too_large") {
+            renderAssistant("That file is too large. Paste the requirements section instead.");
+          } else {
+            renderAssistant(GENERIC_RETRY);
+          }
+        }
+      });
+    }
+
     if (form) {
       form.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -270,5 +445,5 @@
   }
 
   global.initBot = initBot;
-  global.AskMyAI = { wakeAgent, sendQuestion, AGENT_SPACE_URL };
+  global.AskMyAI = { wakeAgent, sendQuestion, sendJdMatch, AGENT_SPACE_URL };
 })(window);

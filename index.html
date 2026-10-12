@@ -65,11 +65,31 @@
       <button class="bot-panel-close" id="botClose" type="button" aria-label="Close">&times;</button>
     </div>
     <div class="bot-panel-body">
-      <p class="bot-intro">Ask about my GenAI agents, Hybrid RAG, MLOps monitoring, or GCP work.</p>
-      <div class="bot-samples">
-        <button type="button" class="bot-sample-q">How do your LangGraph agents handle tool-calling safety?</button>
-        <button type="button" class="bot-sample-q">Walk me through your Hybrid RAG architecture.</button>
-        <button type="button" class="bot-sample-q">What GCP cost guardrails have you shipped?</button>
+      <p class="bot-intro">Ask about my GenAI agents, Hybrid RAG, MLOps monitoring, or GCP work. Recruiters can also match a JD to my experience.</p>
+      <div class="bot-samples" id="botSamples">
+        <p class="bot-samples-label">For recruiters</p>
+        <button type="button" class="bot-sample-q">What production GenAI systems have you owned end-to-end?</button>
+        <button type="button" class="bot-sample-q">How would you explain your BigQuery guardrails to a hiring manager?</button>
+        <button type="button" class="bot-sample-q">How do you control cost and latency for Gemini / Vertex workloads?</button>
+        <button type="button" class="bot-sample-q">Walk me through Hybrid RAG — why hybrid over pure vector search?</button>
+        <button type="button" class="bot-sample-q">How do PSI and SHAP work together in your monitoring stack?</button>
+        <button type="button" class="bot-sample-q">What MLOps / CI-CD patterns have you shipped in production?</button>
+      </div>
+      <div class="bot-jd" id="botJd">
+        <button type="button" class="bot-jd-toggle" id="botJdToggle" aria-expanded="false">
+          Match a job description
+        </button>
+        <div class="bot-jd-panel" id="botJdPanel" hidden>
+          <label class="bot-jd-label" for="botJdInput">Paste JD or upload a .txt / .md file</label>
+          <textarea class="bot-jd-input" id="botJdInput" rows="5" maxlength="12000" placeholder="Paste the full JD (role summary + must-have requirements)…"></textarea>
+          <div class="bot-jd-actions">
+            <label class="bot-jd-upload">
+              <input type="file" id="botJdFile" accept=".txt,.md,.text,text/plain,text/markdown" hidden />
+              Upload file
+            </label>
+            <button type="button" class="bot-jd-match" id="botJdMatch">Check fit</button>
+          </div>
+        </div>
       </div>
       <div class="bot-messages" id="botMessages" aria-live="polite"></div>
       <p class="bot-status" id="botStatus" hidden></p>
