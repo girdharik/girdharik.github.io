@@ -48,8 +48,9 @@ src/
    - **Repo:** `girdharik/girdharik.github.io`
    - **Branch:** `main`
    - **Token:** paste the PAT (stored only in this browser’s `localStorage`)
-4. Load content, edit tabs (Personal, Home, Experience, Projects, Skills, About), then **Save**.
-5. Admin writes `src/data.js` through the GitHub Contents API; the site updates after Pages rebuilds.
+4. Use **Documents** to write pages (Markdown/HTML), organize folders, and import `.md` / `.txt` / `.html` files. Live preview updates as you type.
+5. Other tabs edit Personal, Home, Experience, Projects, Skills, About.
+6. Click **Save & Publish** so changes commit to `src/data.js`. **Open live site** shows the published site (save first for latest text).
 
 Experience tenure is computed from `start` / `end` dates — do not hard-code duration strings.
 

@@ -64,7 +64,7 @@
   font-size: 0.95rem;
   line-height: 1.55;
   color: var(--clr-muted);
-  max-width: 36ch;
+  max-width: min(52ch, 100%);
   margin-bottom: 1.5rem;
 }
 
@@ -156,10 +156,11 @@
 }
 .pipeline {
   width: 100%;
-  max-width: 340px;
+  max-width: min(380px, 100%);
   display: flex;
   flex-direction: column;
   gap: 0;
+  margin-inline: auto;
 }
 .pipeline-node {
   display: flex;
@@ -237,7 +238,7 @@
 /* ── Project preview grid ─────────────────────── */
 .project-preview-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
   gap: 1rem;
   margin-bottom: 1rem;
 }
@@ -295,27 +296,45 @@
 .view-all-link:hover { color: var(--clr-secondary); }
 
 /* ── Responsive ────────────────────────────────── */
+@media (min-width: 1200px) {
+  .hero-layout {
+    grid-template-columns: 1.25fr 0.85fr;
+    gap: 3.5rem;
+  }
+  .hero-section {
+    min-height: min(68vh, 520px);
+    padding: 3rem 3.25rem;
+  }
+}
+
 @media (max-width: 900px) {
   .hero-layout {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 1.75rem;
   }
   .hero-section {
     min-height: auto;
-    padding: 2rem 1.5rem;
+    padding: 1.75rem 1.35rem;
   }
-  .hero-visual { min-height: 220px; }
+  .hero-visual { min-height: 0; }
   .pipeline { max-width: 100%; }
 }
 
 @media (max-width: 768px) {
   .hero-name { font-size: 2rem; }
-  .project-preview-grid { grid-template-columns: 1fr 1fr; }
+  .hero-role { font-size: 0.98rem; }
+  .project-preview-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 480px) {
-  .hero-name { font-size: 1.7rem; }
+  .hero-section { padding: 1.35rem 1rem; border-radius: var(--radius-sm); }
+  .hero-name { font-size: 1.65rem; }
+  .hero-support { font-size: 0.9rem; }
   .project-preview-grid { grid-template-columns: 1fr; }
   .hero-cta { flex-direction: column; }
-  .cta-primary, .cta-secondary { justify-content: center; }
+  .cta-primary, .cta-secondary { justify-content: center; width: 100%; }
+  .hero-contact { gap: 0.4rem; }
+  .pill { flex: 1 1 auto; justify-content: center; }
 }

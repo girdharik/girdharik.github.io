@@ -31,7 +31,7 @@ const SITE = {
     name:  "Girdhari Kumar",
     shortName:  "GK",
     title:  "Senior AI Engineer | Generative AI, LLMs & Multi-Agent Systems",
-    tagline:  "Generative AI Â· LangGraph Â· RAG Â· Vertex AI Â· FastAPI Â· MLOps Â· GCP",
+    tagline:  "Generative AI · LangGraph · RAG · Vertex AI · FastAPI · MLOps · GCP",
     email:  "gknandan117@gmail.com",
     phone:  "",
     location:  "Chennai, India",
@@ -74,7 +74,7 @@ const SITE = {
   home:  {
     hero:  {
       greeting:  "Hi, I'm",
-      support:  "I ship Generative AI systems that work in production â LLM copilots, multi-agent workflows, and Retrieval-Augmented Generation (RAG) on Google Cloud â plus the ML monitoring and data pipelines that keep models reliable at scale.",
+      support:  "I ship Generative AI systems that work in production — LLM copilots, multi-agent workflows, and Retrieval-Augmented Generation (RAG) on Google Cloud — plus the ML monitoring and data pipelines that keep models reliable at scale.",
       pipeline:  [
         {
           label:  "User Question",
@@ -82,15 +82,15 @@ const SITE = {
         },
         {
           label:  "LangGraph Agent",
-          sub:  "Plan Â· tool calling Â· reason"
+          sub:  "Plan · tool calling · reason"
         },
         {
           label:  "Safe Tools + RAG",
-          sub:  "BigQuery Â· vector search"
+          sub:  "BigQuery · vector search"
         },
         {
           label:  "Live Answer",
-          sub:  "Streaming Â· metrics Â· root cause"
+          sub:  "Streaming · metrics · root cause"
         }
       ]
     },
@@ -132,14 +132,14 @@ const SITE = {
           start:  "2024-02-21",
           end:  "",
           bullets:  [
-            "Built production Generative AI / LLM systems with LangGraph, Google Vertex AI (Gemini), FastAPI, and Streamlit â including a Model Health Copilot that streams live reasoning and answers questions on model performance, drift, explainability, and root cause analysis.",
-            "Implemented safe LLM tool calling into BigQuery with multi-layer execution controls (read-only, write blocking, project lock, dry-run cost caps, timeouts), cutting ~2.5Kâ4K tokens per agent step without losing answer quality.",
-            "Designed multi-agent / agentic workflows for Airflow / Cloud Composer failures â supervisor + specialist agents with Hybrid Retrieval-Augmented Generation (RAG) on Elasticsearch (keyword BM25 + embeddings / vector search) â cutting manual incident response ~40% across 100+ weekly alerts.",
-            "Automated ML deployment with an LLM-driven pipeline: repo validation, SQL parameterization, data quality checks, Airflow DAG generation, and GitLab / Jenkins CI/CD â plus a Python CLI with 40+ tools for AI coding assistants.",
+            "Built production Generative AI / LLM systems with LangGraph, Google Vertex AI (Gemini), FastAPI, and Streamlit — including a Model Health Copilot that streams live reasoning and answers questions on model performance, drift, explainability, and root cause analysis.",
+            "Implemented safe LLM tool calling into BigQuery with multi-layer execution controls (read-only, write blocking, project lock, dry-run cost caps, timeouts), cutting ~2.5K–4K tokens per agent step without losing answer quality.",
+            "Designed multi-agent / agentic workflows for Airflow / Cloud Composer failures — supervisor + specialist agents with Hybrid Retrieval-Augmented Generation (RAG) on Elasticsearch (keyword BM25 + embeddings / vector search) — cutting manual incident response ~40% across 100+ weekly alerts.",
+            "Automated ML deployment with an LLM-driven pipeline: repo validation, SQL parameterization, data quality checks, Airflow DAG generation, and GitLab / Jenkins CI/CD — plus a Python CLI with 40+ tools for AI coding assistants.",
             "Owned MLOps / model monitoring for 300+ production models on GCP (BigQuery, Dataproc, PySpark): performance metrics, PSI score drift, feature drift, SHAP explainability, confusion matrix, fairness evaluation, and champion-vs-challenger comparison.",
             "Built automated root cause analysis that links performance drop, score shift, feature importance change, feature drift, and data quality into clear severity-ranked diagnostics for data science and business teams.",
             "Partnered with Legal on Responsible AI / fairness evaluation across demographic groups; onboarded models with historical metrics and cost labels for cloud spend attribution.",
-            "Ran Apache Airflow / Cloud Composer at scale â TaskGroups, auto-healing, Black Friday peak support for batch and real-time serving â meeting 100% SLA with zero missed deliveries.",
+            "Ran Apache Airflow / Cloud Composer at scale — TaskGroups, auto-healing, Black Friday peak support for batch and real-time serving — meeting 100% SLA with zero missed deliveries.",
             "Built ETL/ELT-style PySpark feature and scoring pipelines on Dataproc, BigQuery data quality checks, environment-aware dataset routing, and Cloud Functions deploy automation via GitLab + Jenkins.",
             "Reduced cloud cost ~60% through Dataproc right-sizing, cost tagging, and BigQuery dry-run blocks on queries scanning more than 200 GB."
           ]
@@ -152,16 +152,16 @@ const SITE = {
       location:  "Hyderabad, India",
       roles:  [
         {
-          title:  "Programmer Analyst â GCP Data & ML Engineering",
+          title:  "Programmer Analyst — GCP Data & ML Engineering",
           start:  "2022-02-03",
           end:  "2024-02-19",
           bullets:  [
-            "Delivered hands-on Google Cloud Platform solutions for enterprise customers across BigQuery, Dataproc, Cloud Composer (Apache Airflow), Dataflow, Pub/Sub, Dataplex, and Cloud Storage â fixing production failures and improving pipeline reliability.",
-            "Tuned BigQuery data warehousing for performance and cost: SQL optimization, job/slot planning, IAM and dataset design â unblocking analytics and ETL/ELT workloads with customer data engineering teams.",
-            "Stabilized Dataproc Spark clusters and Cloud Composer DAGs â sizing, job failures, scheduling, and environment health â for batch processing and orchestration at scale.",
+            "Delivered hands-on Google Cloud Platform solutions for enterprise customers across BigQuery, Dataproc, Cloud Composer (Apache Airflow), Dataflow, Pub/Sub, Dataplex, and Cloud Storage — fixing production failures and improving pipeline reliability.",
+            "Tuned BigQuery data warehousing for performance and cost: SQL optimization, job/slot planning, IAM and dataset design — unblocking analytics and ETL/ELT workloads with customer data engineering teams.",
+            "Stabilized Dataproc Spark clusters and Cloud Composer DAGs — sizing, job failures, scheduling, and environment health — for batch processing and orchestration at scale.",
             "Ran deep root cause analysis with logs and metrics; reproduced platform defects with Google engineering and shipped practical workarounds for customers.",
-            "Coached customer engineers on GCP data practices â BigQuery query/cost patterns, Dataproc right-sizing, and Airflow / Composer DAG design.",
-            "Worked across Vertex AI training jobs, notebooks, model endpoints, quotas, and IAM â connecting data pipelines to ML training and serving on GCP."
+            "Coached customer engineers on GCP data practices — BigQuery query/cost patterns, Dataproc right-sizing, and Airflow / Composer DAG design.",
+            "Worked across Vertex AI training jobs, notebooks, model endpoints, quotas, and IAM — connecting data pipelines to ML training and serving on GCP."
           ]
         }
       ]
@@ -171,7 +171,7 @@ const SITE = {
     {
       slug:  "model-health-copilot",
       title:  "Model Health Copilot",
-      subtitle:  "LLM copilot for model monitoring â streaming answers with safe BigQuery tool calling",
+      subtitle:  "LLM copilot for model monitoring — streaming answers with safe BigQuery tool calling",
       icon:  "bot",
       tags:  [
         "LangGraph",
@@ -188,7 +188,7 @@ const SITE = {
             type:  "text",
             title:  "Overview",
             content:  [
-              "A production Copilot that lets ML engineers and data scientists ask about model health in natural language â performance, drift, SHAP explainability, and root cause â while the agent safely runs analytical queries.",
+              "A production Copilot that lets ML engineers and data scientists ask about model health in natural language — performance, drift, SHAP explainability, and root cause — while the agent safely runs analytical queries.",
               "Built with LangGraph + Gemini on Vertex AI, FastAPI for the API layer, streaming responses for live reasoning, and Streamlit for the conversational UI."
             ]
           },
@@ -219,7 +219,7 @@ const SITE = {
             title:  "Key Capabilities",
             items:  [
               "Streams live LLM reasoning to the UI as the answer is built",
-              "Strips hidden reasoning from chat history â saves ~2,500â4,000 tokens per agent step",
+              "Strips hidden reasoning from chat history — saves ~2,500–4,000 tokens per agent step",
               "Loads focused skills on demand so prompts stay lean",
               "Six BigQuery safety layers: read-only, write blocking, project lock, allowlist, dry-run cost caps, timeouts",
               "Formats answers for data science vs business audiences"
@@ -339,7 +339,7 @@ const SITE = {
             title:  "Overview",
             content:  [
               "A multi-agent incident response system for ML pipeline failures. A Supervisor orchestrates Log Classifier, JIRA Manager, and Rerun agents to automate L1/L2 support workflows.",
-              "Context for the LLM comes from Hybrid RAG on Elasticsearch â keyword search (BM25) plus embeddings / vector similarity over past incident resolutions."
+              "Context for the LLM comes from Hybrid RAG on Elasticsearch — keyword search (BM25) plus embeddings / vector similarity over past incident resolutions."
             ]
           },
           {
@@ -368,7 +368,7 @@ const SITE = {
             type:  "features",
             title:  "Key Capabilities",
             items:  [
-              "LangGraph multi-agent orchestration with Gemini â plan, call tools, act",
+              "LangGraph multi-agent orchestration with Gemini — plan, call tools, act",
               "Hybrid retrieval: keyword search (BM25) + vector search for past fixes",
               "CPU-gated Composer reruns so peaks do not overload the cluster",
               "Creates Jira tickets with classified root causes automatically",
@@ -415,7 +415,7 @@ const SITE = {
     {
       slug:  "ml-deploy-copilot",
       title:  "ML Deploy Copilot",
-      subtitle:  "LLM-driven CI/CD â validate, generate Airflow DAGs, deploy with GitLab & Jenkins",
+      subtitle:  "LLM-driven CI/CD — validate, generate Airflow DAGs, deploy with GitLab & Jenkins",
       icon:  "rocket",
       tags:  [
         "LangChain",
@@ -432,7 +432,7 @@ const SITE = {
             title:  "Overview",
             content:  [
               "Automates the ML deployment lifecycle so data scientists invoke a skill from their IDE instead of manually navigating CI/CD. A 7-stage LLM pipeline clones, validates, parameterizes, sanity-checks, builds DAGs, validates, and deploys.",
-              "Also ships as a Python CLI skill provider for AI coding assistants â exposing a deterministic tool registry for deployment automation."
+              "Also ships as a Python CLI skill provider for AI coding assistants — exposing a deterministic tool registry for deployment automation."
             ]
           },
           {
@@ -563,8 +563,8 @@ const SITE = {
             type:  "text",
             title:  "Overview",
             content:  [
-              "The cornerstone of the ML monitoring platform at Verizon â automated, scheduled computation of key performance metrics for every production model across wireless, wireline, and value segment lines.",
-              "Supports five model types â Binary, Multinomial, Regression, Recommendation, and custom_binary â each with tailored metric suites and drift detection logic."
+              "The cornerstone of the ML monitoring platform at Verizon — automated, scheduled computation of key performance metrics for every production model across wireless, wireline, and value segment lines.",
+              "Supports five model types — Binary, Multinomial, Regression, Recommendation, and custom_binary — each with tailored metric suites and drift detection logic."
             ]
           },
           {
@@ -594,7 +594,7 @@ const SITE = {
             title:  "Key Capabilities",
             items:  [
               "AU-ROC, AU-PR, Lift, Precision, Recall for binary models",
-              "RMSE, MAE, MAPE for regression with Â±30% threshold alerting",
+              "RMSE, MAE, MAPE for regression with ±30% threshold alerting",
               "Decile-level monotonic rank ordering validation",
               "Tier-based drift thresholds: -8% critical, -10% standard",
               "Configurable validation frequencies (weekly, monthly, quarterly)"
@@ -689,7 +689,7 @@ const SITE = {
               {
                 name:  "model_metrics_analysis.ipynb",
                 path:  "files/model_metrics_analysis.ipynb",
-                description:  "EDA notebook â metric trends & anomalies"
+                description:  "EDA notebook — metric trends & anomalies"
               },
               {
                 name:  "perf_validation_ddl.sql",
@@ -782,7 +782,7 @@ const SITE = {
           },
           {
             type:  "chart",
-            title:  "Score Distribution â Base vs Current",
+            title:  "Score Distribution — Base vs Current",
             chartType:  "bar",
             csvFile:  "data/score-distribution.csv",
             colors:  [
@@ -827,7 +827,7 @@ const SITE = {
             items:  [
               "Auto-categorization of 1000+ features into 5 types",
               "Cohen's d for continuous, PSI for categorical, null-rate for sequence",
-              "Alert cross-referencing with SHAP importance â model-relevant drift only",
+              "Alert cross-referencing with SHAP importance — model-relevant drift only",
               "Descriptive stats: mean, std, min, max, null rate, distinct count"
             ]
           },
@@ -864,7 +864,7 @@ const SITE = {
           },
           {
             type:  "chart",
-            title:  "Top Drifting Features â Cohen's d",
+            title:  "Top Drifting Features — Cohen's d",
             chartType:  "bar",
             csvFile:  "data/feature-drift.csv",
             options:  {
@@ -924,7 +924,7 @@ const SITE = {
         "Fairness",
         "MLOps"
       ],
-      description:  "Bias evaluation integrating demographic data to compute fairness metrics across protected groups with representation analysis â partnered with Legal.",
+      description:  "Bias evaluation integrating demographic data to compute fairness metrics across protected groups with representation analysis — partnered with Legal.",
       detail:  {
         sections:  []
       }
@@ -962,7 +962,7 @@ const SITE = {
     {
       slug:  "gcp-data-platforms",
       title:  "GCP Data Platforms & Cost Guardrails",
-      subtitle:  "ETL/ELT on BigQuery & Dataproc â data quality, Airflow ops, cloud cost control",
+      subtitle:  "ETL/ELT on BigQuery & Dataproc — data quality, Airflow ops, cloud cost control",
       icon:  "tools",
       tags:  [
         "GCP",
@@ -972,14 +972,14 @@ const SITE = {
         "Airflow",
         "PySpark"
       ],
-      description:  "Google Cloud data engineering at scale â PySpark feature and scoring pipelines, BigQuery data quality checks, dry-run cost caps, environment-aware routing, and Cloud Composer reliability.",
+      description:  "Google Cloud data engineering at scale — PySpark feature and scoring pipelines, BigQuery data quality checks, dry-run cost caps, environment-aware routing, and Cloud Composer reliability.",
       detail:  {
         sections:  [
           {
             type:  "text",
             title:  "Overview",
             content:  [
-              "Alongside GenAI and MLOps work, I design and operate the GCP data layer that feeds monitoring and scoring systems â Dataproc/PySpark pipelines, BigQuery warehouses, and Airflow orchestration.",
+              "Alongside GenAI and MLOps work, I design and operate the GCP data layer that feeds monitoring and scoring systems — Dataproc/PySpark pipelines, BigQuery warehouses, and Airflow orchestration.",
               "Focus areas: data quality automation, cloud cost guardrails, and zero-missed-SLA operations during peak traffic."
             ]
           },
@@ -1010,7 +1010,7 @@ const SITE = {
             title:  "Key Capabilities",
             items:  [
               "PySpark pipelines on Dataproc for large-scale feature engineering and scoring",
-              "Automated Data Sanity Check engine â nulls, duplicates, uniqueness, bounds, referential integrity",
+              "Automated Data Sanity Check engine — nulls, duplicates, uniqueness, bounds, referential integrity",
               "BigQuery dry-run cost checks that block queries scanning >200 GB",
               "Environment-aware dataset routing (Dev / PLE / Prod) driven by CI/CD variables",
               "Dataproc CPU utilization analysis for cluster right-sizing",
@@ -1352,15 +1352,15 @@ const SITE = {
   ],
   about:  {
     bio:  [
-      "I'm Girdhari Kumar, a Senior AI Engineer in Chennai. I build Generative AI products on Large Language Models (LLMs) â copilots, multi-agent systems, and Retrieval-Augmented Generation (RAG) â and ship them with the same rigor I bring to MLOps and Google Cloud data platforms.",
-      "At Verizon I own production AI and model monitoring for 300+ models: LangGraph agents, Vertex AI (Gemini), safe tool calling, Hybrid RAG on Elasticsearch, token cost controls, and end-to-end drift / explainability frameworks â with measurable impact on incidents, tokens, and cloud spend.",
-      "I also bring strong GCP Data Engineering â BigQuery, Dataproc, Cloud Composer / Airflow, PySpark, ETL/ELT, data quality, and cost control â backed by Google Cloud Professional Data Engineer, Professional Machine Learning Engineer, and Associate Cloud Engineer certifications."
+      "I'm Girdhari Kumar, a Senior AI Engineer in Chennai. I build Generative AI products on Large Language Models (LLMs) — copilots, multi-agent systems, and Retrieval-Augmented Generation (RAG) — and ship them with the same rigor I bring to MLOps and Google Cloud data platforms.",
+      "At Verizon I own production AI and model monitoring for 300+ models: LangGraph agents, Vertex AI (Gemini), safe tool calling, Hybrid RAG on Elasticsearch, token cost controls, and end-to-end drift / explainability frameworks — with measurable impact on incidents, tokens, and cloud spend.",
+      "I also bring strong GCP Data Engineering — BigQuery, Dataproc, Cloud Composer / Airflow, PySpark, ETL/ELT, data quality, and cost control — backed by Google Cloud Professional Data Engineer, Professional Machine Learning Engineer, and Associate Cloud Engineer certifications."
     ],
     education:  [
       {
         degree:  "B.E, Construction Engineering",
         institution:  "Jadavpur University, Kolkata",
-        period:  "2017 â 2021",
+        period:  "2017 — 2021",
         logo:  "https://upload.wikimedia.org/wikipedia/en/thumb/5/58/Jadavpur_University_Logo.svg/330px-Jadavpur_University_Logo.svg.png"
       }
     ],
@@ -1407,19 +1407,24 @@ const SITE = {
       }
     ]
   },
-  customPages:  {
-    documents:  {
-      title:  "Documents",
-      subtitle:  "",
-      sections:  [
-        {
-          type:  "text",
-          title:  "Building....",
-          content:  [
-            "Building...."
-          ]
-        }
-      ]
-    }
-  }
+  /* Docs space — folders + markdown/HTML pages (editable in admin) */
+  docs: {
+    folders: [
+      { id: "notes", name: "Notes", description: "Working notes and write-ups" },
+      { id: "guides", name: "Guides", description: "How-tos and runbooks" },
+    ],
+    items: [
+      {
+        id: "welcome",
+        title: "Welcome to Documents",
+        folderId: "notes",
+        format: "markdown",
+        updated: "2026-10-12",
+        published: true,
+        body: "## Documents\n\nUse this space like a simple wiki.\n\n- Create **folders** for topics\n- Write in **Markdown** (or paste HTML)\n- **Import** `.md`, `.txt`, or `.html` files from your computer\n- Preview live in admin, then Save & Publish\n\n### Example\n\n| Skill | Focus |\n| --- | --- |\n| Generative AI | LangGraph, RAG, Vertex AI |\n| MLOps | Monitoring, drift, SHAP |\n| GCP | BigQuery, Composer, PySpark |\n",
+      },
+    ],
+  },
+
+  customPages: {},
 };

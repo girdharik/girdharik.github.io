@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin — Portfolio Editor</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
   <style>
     :root {
       --bg: #0f172a; --surface: #1e293b; --border: #334155;
@@ -39,7 +40,8 @@
     .admin-sidebar button:hover { background: rgba(59,130,246,0.08); color: var(--text); }
     .admin-sidebar button.active { background: rgba(59,130,246,0.15); color: var(--primary); border-right: 2px solid var(--primary); }
 
-    .admin-content { flex: 1; padding: 2rem; max-width: 900px; }
+    .admin-content { flex: 1; padding: 2rem; max-width: 1100px; width: 100%; }
+    .admin-content.wide { max-width: none; }
 
     /* ── Components ────────────────────────────── */
     .section-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 1.5rem; }
@@ -135,11 +137,66 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* ── Documents workspace ───────────────────── */
+    .docs-admin {
+      display: grid;
+      grid-template-columns: 220px 240px 1fr;
+      gap: 1rem;
+      min-height: calc(100vh - 120px);
+    }
+    .docs-pane {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 0.85rem; overflow: auto;
+      max-height: calc(100vh - 120px);
+    }
+    .docs-pane h4 {
+      font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--muted); margin-bottom: 0.65rem;
+    }
+    .docs-pane-actions { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.75rem; }
+    .folder-item, .doc-item {
+      display: flex; align-items: center; justify-content: space-between; gap: 0.35rem;
+      width: 100%; padding: 0.55rem 0.6rem; border: 1px solid transparent;
+      border-radius: 8px; background: none; color: var(--text);
+      font-family: var(--font); font-size: 0.84rem; cursor: pointer; text-align: left;
+    }
+    .folder-item:hover, .doc-item:hover { background: rgba(59,130,246,0.08); }
+    .folder-item.active, .doc-item.active {
+      background: rgba(59,130,246,0.15); border-color: rgba(59,130,246,0.35); color: var(--primary);
+    }
+    .doc-editor-wrap { display: flex; flex-direction: column; gap: 0.75rem; height: 100%; }
+    .doc-editor-toolbar { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: end; }
+    .doc-split {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; flex: 1; min-height: 420px;
+    }
+    .doc-split textarea {
+      width: 100%; height: 100%; min-height: 420px; resize: vertical;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.82rem; line-height: 1.55;
+    }
+    .doc-live-preview {
+      background: #0b1220; border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1rem; overflow: auto; min-height: 420px; line-height: 1.65; font-size: 0.9rem;
+    }
+    .doc-live-preview h1,.doc-live-preview h2,.doc-live-preview h3 { margin: 1rem 0 0.5rem; }
+    .doc-live-preview p, .doc-live-preview ul, .doc-live-preview ol { margin: 0.5rem 0; }
+    .doc-live-preview code { background: rgba(59,130,246,0.15); padding: 0.1rem 0.3rem; border-radius: 4px; }
+    .doc-live-preview pre { background: #020617; padding: 0.75rem; overflow: auto; border-radius: 8px; }
+    .doc-live-preview table { width: 100%; border-collapse: collapse; }
+    .doc-live-preview th, .doc-live-preview td { border: 1px solid var(--border); padding: 0.4rem 0.5rem; }
+    .empty-hint { color: var(--muted); font-size: 0.85rem; padding: 1rem 0.25rem; line-height: 1.5; }
+    .import-hidden { display: none; }
+
     /* ── Responsive ────────────────────────────── */
+    @media (max-width: 1100px) {
+      .docs-admin { grid-template-columns: 1fr 1fr; }
+      .docs-pane.editor-pane { grid-column: 1 / -1; }
+      .doc-split { grid-template-columns: 1fr; }
+    }
     @media (max-width: 768px) {
       .admin-sidebar { display: none; }
       .admin-content { padding: 1rem; }
       .row, .row-3 { grid-template-columns: 1fr; }
+      .docs-admin { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -161,7 +218,9 @@ const APP = {
   filePath: 'src/data.js',
   data: null,      // parsed SITE object
   fileSha: '',     // needed for GitHub API commits
-  activeTab: 'meta',
+  activeTab: 'documents',
+  docsFolderId: '',   // '' = all
+  docsSelectedId: '',
 };
 
 /* ── GitHub API helpers ─────────────────────────── */
@@ -173,20 +232,33 @@ const GH = {
     };
   },
 
+  utf8FromBase64(b64) {
+    const bin = atob(String(b64 || '').replace(/\n/g, ''));
+    const bytes = Uint8Array.from(bin, (c) => c.charCodeAt(0));
+    return new TextDecoder('utf-8').decode(bytes);
+  },
+
+  utf8ToBase64(text) {
+    const bytes = new TextEncoder().encode(text);
+    let bin = '';
+    bytes.forEach((b) => { bin += String.fromCharCode(b); });
+    return btoa(bin);
+  },
+
   async getFile() {
     const url = `https://api.github.com/repos/${APP.repo}/contents/${APP.filePath}?ref=${APP.branch}`;
     const res = await fetch(url, { headers: GH.headers() });
     if (!res.ok) throw new Error(`Failed to fetch file: ${res.status}`);
     const json = await res.json();
     APP.fileSha = json.sha;
-    return atob(json.content.replace(/\n/g, ''));
+    return GH.utf8FromBase64(json.content);
   },
 
   async saveFile(content, message) {
     const url = `https://api.github.com/repos/${APP.repo}/contents/${APP.filePath}`;
     const body = {
       message: message || `Update portfolio content — ${new Date().toLocaleDateString()}`,
-      content: btoa(unescape(encodeURIComponent(content))),
+      content: GH.utf8ToBase64(content),
       sha: APP.fileSha,
       branch: APP.branch,
     };
@@ -333,9 +405,21 @@ async function doSetup() {
 }
 
 /* ── Load content from GitHub ───────────────────── */
+function ensureDocsModel() {
+  if (!APP.data.docs) APP.data.docs = { folders: [], items: [] };
+  if (!Array.isArray(APP.data.docs.folders)) APP.data.docs.folders = [];
+  if (!Array.isArray(APP.data.docs.items)) APP.data.docs.items = [];
+  // Keep Documents in nav if missing
+  if (!APP.data.pages) APP.data.pages = [];
+  if (!APP.data.pages.some((p) => p.id === 'documents')) {
+    APP.data.pages.push({ id: 'documents', label: 'Documents', icon: 'fileText' });
+  }
+}
+
 async function loadContent() {
   const raw = await GH.getFile();
   APP.data = parseDataJS(raw);
+  ensureDocsModel();
   APP.rawText = raw;
   renderAdmin();
 }
@@ -358,12 +442,13 @@ async function saveContent() {
 /* ── Main admin layout ──────────────────────────── */
 function renderAdmin() {
   const tabs = [
+    { id: 'documents', label: '📚 Documents' },
     { id: 'meta', label: '👤 Personal Info' },
     { id: 'home', label: '🏠 Home Page' },
     { id: 'experience', label: '💼 Experience' },
     { id: 'projects', label: '🚀 Projects' },
     { id: 'skills', label: '🛠 Skills' },
-    { id: 'about', label: '📄 About' },
+    { id: 'about', label: 'ℹ️ About' },
     { id: 'pages', label: '📑 Custom Pages' },
   ];
 
@@ -376,7 +461,7 @@ function renderAdmin() {
           <span>${APP.repo}</span>
         </div>
         <button class="btn save-btn btn-success" onclick="saveContent()">💾 Save & Publish</button>
-        <button class="btn btn-sm" onclick="previewSite()">👁 Preview</button>
+        <button class="btn btn-sm" onclick="previewSite()">👁 Open live site</button>
         <button class="btn btn-sm btn-danger" onclick="disconnect()">Disconnect</button>
       </div>
     </header>
@@ -384,7 +469,7 @@ function renderAdmin() {
       <nav class="admin-sidebar">
         ${tabs.map(t => `<button data-tab="${t.id}" class="${t.id === APP.activeTab ? 'active' : ''}" onclick="switchTab('${t.id}')">${t.label}</button>`).join('')}
       </nav>
-      <div class="admin-content" id="tabContent"></div>
+      <div class="admin-content ${APP.activeTab === 'documents' ? 'wide' : ''}" id="tabContent"></div>
     </div>`;
 
   renderTab();
@@ -400,14 +485,36 @@ function switchTab(id) {
 
 function renderTab() {
   const el = document.getElementById('tabContent');
-  const renderers = { meta: renderMeta, home: renderHome, experience: renderExperience, projects: renderProjects, skills: renderSkills, about: renderAbout, pages: renderPages };
+  el.classList.toggle('wide', APP.activeTab === 'documents');
+  const renderers = {
+    documents: renderDocumentsAdmin,
+    meta: renderMeta,
+    home: renderHome,
+    experience: renderExperience,
+    projects: renderProjects,
+    skills: renderSkills,
+    about: renderAbout,
+    pages: renderPages,
+  };
   if (renderers[APP.activeTab]) renderers[APP.activeTab](el);
 }
 
 function previewSite() {
-  // Open the portfolio in a new tab (works when running locally or on GitHub Pages)
-  const url = window.location.href.replace('admin.html', 'index.html');
-  window.open(url, '_blank');
+  // Prefer same-origin site (local server or GitHub Pages)
+  const base = window.location.href.split('admin.html')[0];
+  let path = '#/';
+  if (APP.activeTab === 'documents' && APP.docsSelectedId) {
+    path = '#/documents/' + encodeURIComponent(APP.docsSelectedId);
+  } else if (APP.activeTab === 'documents') {
+    path = '#/documents';
+  }
+  const url = base + 'index.html' + path + '?v=' + Date.now();
+  const w = window.open(url, '_blank');
+  if (!w) {
+    toast('Pop-up blocked — allow pop-ups, or open index.html manually after Save', 'error');
+    return;
+  }
+  toast('Live site opened. Save & Publish first to see latest edits online.');
 }
 
 function disconnect() {
@@ -422,6 +529,264 @@ function disconnect() {
 /* ================================================================
    TAB RENDERERS
    ================================================================ */
+
+function slugifyDoc(s) {
+  return String(s || 'doc').toLowerCase().trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+    .slice(0, 60) || ('doc-' + Date.now());
+}
+
+function uniqueDocId(base) {
+  ensureDocsModel();
+  let id = slugifyDoc(base);
+  const ids = new Set(APP.data.docs.items.map((d) => d.id));
+  if (!ids.has(id)) return id;
+  let n = 2;
+  while (ids.has(id + '-' + n)) n++;
+  return id + '-' + n;
+}
+
+function mdPreview(src, format) {
+  if (format === 'html') return src || '';
+  if (typeof marked !== 'undefined' && marked.parse) {
+    try { return marked.parse(src || '', { breaks: true, gfm: true }); }
+    catch (_) {}
+  }
+  return '<pre>' + esc(src || '') + '</pre>';
+}
+
+/* ── Documents (wiki-style) ───────────────────────── */
+function renderDocumentsAdmin(el) {
+  ensureDocsModel();
+  const folders = APP.data.docs.folders;
+  const items = APP.data.docs.items;
+  const folderId = APP.docsFolderId;
+  const selected = items.find((d) => d.id === APP.docsSelectedId) || null;
+  const visible = folderId ? items.filter((d) => d.folderId === folderId) : items;
+
+  el.innerHTML = `
+    <div class="section-title" style="margin-bottom:0.75rem">Documents</div>
+    <p class="empty-hint" style="padding-top:0;margin-bottom:1rem">
+      Write pages in Markdown (or HTML), put them in folders, import files from your computer.
+      Use the live preview on the right — then <strong>Save &amp; Publish</strong> to update the site.
+    </p>
+    <div class="docs-admin">
+      <div class="docs-pane">
+        <h4>Folders</h4>
+        <div class="docs-pane-actions">
+          <button class="btn btn-sm btn-primary" onclick="addDocsFolder()">+ Folder</button>
+        </div>
+        <button class="folder-item ${folderId === '' ? 'active' : ''}" onclick="selectDocsFolder('')">All documents</button>
+        ${folders.map((f) => `
+          <div style="display:flex;gap:0.25rem;align-items:center">
+            <button class="folder-item ${folderId === f.id ? 'active' : ''}" style="flex:1" onclick="selectDocsFolder('${f.id}')">${esc(f.name)}</button>
+            <button class="btn btn-sm btn-danger" title="Delete folder" onclick="removeDocsFolder('${f.id}')">×</button>
+          </div>
+        `).join('')}
+      </div>
+
+      <div class="docs-pane">
+        <h4>Pages</h4>
+        <div class="docs-pane-actions">
+          <button class="btn btn-sm btn-primary" onclick="addDocPage()">+ Page</button>
+          <button class="btn btn-sm" onclick="document.getElementById('docImportInput').click()">Import…</button>
+          <input id="docImportInput" class="import-hidden" type="file" accept=".md,.markdown,.txt,.html,.htm,.csv,.json" onchange="importDocFile(event)">
+        </div>
+        ${visible.length ? visible.map((d) => `
+          <div style="display:flex;gap:0.25rem;align-items:center">
+            <button class="doc-item ${selected && selected.id === d.id ? 'active' : ''}" style="flex:1" onclick="selectDocPage('${d.id}')">${esc(d.title || 'Untitled')}</button>
+            <button class="btn btn-sm btn-danger" title="Delete page" onclick="removeDocPage('${d.id}')">×</button>
+          </div>
+        `).join('') : '<p class="empty-hint">No pages here yet. Create one or import a file.</p>'}
+      </div>
+
+      <div class="docs-pane editor-pane">
+        ${selected ? renderDocEditor(selected) : '<p class="empty-hint">Select a page to edit, or create a new one. Preview updates as you type — no need to open a new tab for that.</p>'}
+      </div>
+    </div>
+  `;
+}
+
+function renderDocEditor(doc) {
+  const folders = APP.data.docs.folders;
+  return `
+    <div class="doc-editor-wrap">
+      <div class="doc-editor-toolbar">
+        <div class="field" style="flex:2;margin:0">
+          <label>Title</label>
+          <input type="text" value="${esc(doc.title || '')}" oninput="updateSelectedDoc('title', this.value)">
+        </div>
+        <div class="field" style="flex:1;margin:0">
+          <label>Folder</label>
+          <select onchange="updateSelectedDoc('folderId', this.value)">
+            <option value="" ${!doc.folderId ? 'selected' : ''}>Unfiled</option>
+            ${folders.map((f) => `<option value="${esc(f.id)}" ${doc.folderId === f.id ? 'selected' : ''}>${esc(f.name)}</option>`).join('')}
+          </select>
+        </div>
+        <div class="field" style="flex:1;margin:0">
+          <label>Format</label>
+          <select onchange="updateSelectedDoc('format', this.value); refreshDocPreview()">
+            <option value="markdown" ${doc.format !== 'html' ? 'selected' : ''}>Markdown</option>
+            <option value="html" ${doc.format === 'html' ? 'selected' : ''}>HTML</option>
+          </select>
+        </div>
+        <div class="field" style="flex:0.8;margin:0">
+          <label>Published</label>
+          <select onchange="updateSelectedDoc('published', this.value === 'true')">
+            <option value="true" ${doc.published !== false ? 'selected' : ''}>Yes</option>
+            <option value="false" ${doc.published === false ? 'selected' : ''}>Draft</option>
+          </select>
+        </div>
+      </div>
+      <div class="field" style="margin:0">
+        <label>Page id (URL) — #/documents/${esc(doc.id)}</label>
+        <input type="text" value="${esc(doc.id)}" onchange="renameDocId(this.value)">
+      </div>
+      <div class="doc-split">
+        <div class="field" style="margin:0;display:flex;flex-direction:column;height:100%">
+          <label>Write</label>
+          <textarea id="docBodyEditor" oninput="onDocBodyInput(this.value)">${esc(doc.body || '')}</textarea>
+        </div>
+        <div class="field" style="margin:0;display:flex;flex-direction:column;height:100%">
+          <label>Live preview</label>
+          <div class="doc-live-preview" id="docLivePreview">${mdPreview(doc.body || '', doc.format)}</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function selectDocsFolder(id) {
+  APP.docsFolderId = id || '';
+  renderTab();
+}
+
+function selectDocPage(id) {
+  APP.docsSelectedId = id;
+  renderTab();
+}
+
+function addDocsFolder() {
+  ensureDocsModel();
+  const name = prompt('Folder name');
+  if (!name || !name.trim()) return;
+  const id = uniqueDocId(name);
+  APP.data.docs.folders.push({ id, name: name.trim(), description: '' });
+  APP.docsFolderId = id;
+  renderTab();
+}
+
+function removeDocsFolder(id) {
+  ensureDocsModel();
+  if (!confirm('Delete this folder? Pages inside become Unfiled.')) return;
+  APP.data.docs.folders = APP.data.docs.folders.filter((f) => f.id !== id);
+  APP.data.docs.items.forEach((d) => { if (d.folderId === id) d.folderId = ''; });
+  if (APP.docsFolderId === id) APP.docsFolderId = '';
+  renderTab();
+}
+
+function addDocPage() {
+  ensureDocsModel();
+  const title = prompt('Page title', 'New page');
+  if (!title || !title.trim()) return;
+  const id = uniqueDocId(title);
+  const doc = {
+    id,
+    title: title.trim(),
+    folderId: APP.docsFolderId || '',
+    format: 'markdown',
+    updated: new Date().toISOString().slice(0, 10),
+    published: true,
+    body: '# ' + title.trim() + '\n\nStart writing here…\n',
+  };
+  APP.data.docs.items.unshift(doc);
+  APP.docsSelectedId = id;
+  renderTab();
+}
+
+function removeDocPage(id) {
+  ensureDocsModel();
+  if (!confirm('Delete this page?')) return;
+  APP.data.docs.items = APP.data.docs.items.filter((d) => d.id !== id);
+  if (APP.docsSelectedId === id) APP.docsSelectedId = '';
+  renderTab();
+}
+
+function getSelectedDoc() {
+  ensureDocsModel();
+  return APP.data.docs.items.find((d) => d.id === APP.docsSelectedId) || null;
+}
+
+function updateSelectedDoc(key, value) {
+  const doc = getSelectedDoc();
+  if (!doc) return;
+  doc[key] = value;
+  doc.updated = new Date().toISOString().slice(0, 10);
+  if (key === 'folderId' || key === 'published' || key === 'format') {
+    renderTab();
+    return;
+  }
+  if (key === 'title') {
+    const listBtn = document.querySelector('.doc-item.active');
+    if (listBtn) listBtn.textContent = value || 'Untitled';
+  }
+}
+
+function onDocBodyInput(value) {
+  const doc = getSelectedDoc();
+  if (!doc) return;
+  doc.body = value;
+  doc.updated = new Date().toISOString().slice(0, 10);
+  refreshDocPreview();
+}
+
+function refreshDocPreview() {
+  const doc = getSelectedDoc();
+  const el = document.getElementById('docLivePreview');
+  if (!doc || !el) return;
+  el.innerHTML = mdPreview(doc.body || '', doc.format);
+}
+
+function renameDocId(next) {
+  const doc = getSelectedDoc();
+  if (!doc) return;
+  const id = slugifyDoc(next);
+  if (!id || id === doc.id) return;
+  if (APP.data.docs.items.some((d) => d.id === id)) {
+    toast('That page id already exists', 'error');
+    renderTab();
+    return;
+  }
+  doc.id = id;
+  APP.docsSelectedId = id;
+  renderTab();
+}
+
+async function importDocFile(ev) {
+  const file = ev.target.files && ev.target.files[0];
+  ev.target.value = '';
+  if (!file) return;
+  ensureDocsModel();
+  const text = await file.text();
+  const name = file.name.replace(/\.(md|markdown|txt|html?|csv|json)$/i, '');
+  const lower = file.name.toLowerCase();
+  const format = (lower.endsWith('.html') || lower.endsWith('.htm')) ? 'html' : 'markdown';
+  const id = uniqueDocId(name);
+  const body = format === 'html' ? text : text;
+  APP.data.docs.items.unshift({
+    id,
+    title: name || 'Imported page',
+    folderId: APP.docsFolderId || '',
+    format,
+    updated: new Date().toISOString().slice(0, 10),
+    published: true,
+    body,
+  });
+  APP.docsSelectedId = id;
+  toast('Imported “' + file.name + '” — review preview, then Save & Publish');
+  renderTab();
+}
 
 /* ── Meta (Personal Info) ─────────────────────────── */
 function renderMeta(el) {

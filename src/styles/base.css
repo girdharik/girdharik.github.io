@@ -47,9 +47,12 @@ body {
 
 main {
   margin-left: var(--sidebar-w);
+  width: calc(100% - var(--sidebar-w));
+  max-width: none;
   min-height: 100vh;
-  padding: 2.5rem 3rem 4rem;
-  max-width: 1040px;
+  min-height: 100dvh;
+  padding: 2.5rem clamp(1.25rem, 3vw, 3.5rem) 4rem;
+  box-sizing: border-box;
 }
 
 img { max-width: 100%; height: auto; }
@@ -132,7 +135,7 @@ a { color: var(--clr-primary); text-decoration: none; }
 /* ── Metrics grid ─────────────────────────────── */
 .metrics-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr));
   gap: 1rem;
 }
 .metric-card {
@@ -288,15 +291,24 @@ a { color: var(--clr-primary); text-decoration: none; }
 @media (max-width: 900px) {
   main {
     margin-left: 0;
+    width: 100%;
     padding: 1.5rem 1.25rem 3rem;
     padding-top: calc(var(--topbar-h) + 1.5rem);
   }
 }
 
 @media (max-width: 480px) {
-  main { padding: 1rem 1rem 3rem; padding-top: calc(var(--topbar-h) + 1rem); }
-  .page-title { font-size: 1.6rem; }
-  .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+  main {
+    padding: 1rem 0.9rem 5.5rem;
+    padding-top: calc(var(--topbar-h) + 1rem);
+  }
+  .page-title { font-size: 1.55rem; }
+  .metrics-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+  .metric-card { padding: 1rem 0.75rem; }
+  .metric-value { font-size: 1.45rem; }
+  .page-nav { flex-direction: column; }
+  .page-nav-link { max-width: 100%; }
+  .tech-badge { font-size: 0.78rem; padding: 0.4rem 0.7rem; }
 }
 
 /* ── Page prev/next navigation ────────────────────── */
@@ -484,6 +496,16 @@ a { color: var(--clr-primary); text-decoration: none; }
 }
 
 @media (max-width: 900px) {
-  .bot-fab { right: 1rem; bottom: 5.5rem; }
-  .bot-panel { right: 1rem; bottom: 9rem; }
+  .bot-fab { right: 1rem; bottom: 1.25rem; }
+  .bot-panel { right: 1rem; bottom: 4.75rem; left: 1rem; width: auto; }
+}
+
+@media (max-width: 480px) {
+  .bot-fab {
+    right: 0.85rem;
+    bottom: 0.85rem;
+    padding: 0.65rem 0.95rem;
+    font-size: 0.78rem;
+  }
+  .scroll-top { bottom: 4.5rem; right: 0.85rem; }
 }

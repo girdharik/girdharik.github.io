@@ -35,8 +35,9 @@
   /* ── Route table ───────────────────────────────── */
   function route() {
     const hash = window.location.hash || "#/";
-    const path = hash.replace("#/", "").replace(/\/$/, "");
-    const parts = path.split("/");
+    const pathAndQuery = hash.replace(/^#\/?/, "").replace(/\/$/, "");
+    const path = pathAndQuery.split("?")[0];
+    const parts = path.split("/").filter(Boolean);
 
     // Close mobile nav
     sidebar.classList.remove("open");
@@ -69,6 +70,9 @@
     } else if (path === "about") {
       renderAbout();
       setActiveNav("about");
+    } else if (parts[0] === "documents") {
+      renderDocuments();
+      setActiveNav("documents");
     } else if (SITE.customPages && SITE.customPages[path]) {
       renderCustomPage(path);
       setActiveNav(path);

@@ -129,6 +129,15 @@
 }
 
 @media (max-width: 768px) {
-  .timeline { padding-left: 1.5rem; }
-  .timeline-dot { left: -1.5rem; }
+  .timeline { padding-left: 1.35rem; }
+  .timeline-item { padding-left: 1rem; }
+  .timeline-dot { left: -1.35rem; width: 10px; height: 10px; }
+  .job-card { padding: 1.15rem; }
+  .role-title-row { gap: 0.35rem; }
+  .role-bullets li { font-size: 0.86rem; }
+}
+
+@media (max-width: 480px) {
+  .job-card-header { align-items: flex-start; }
+  .company-logo { width: 36px; height: 36px; }
 }
