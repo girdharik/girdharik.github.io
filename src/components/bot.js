@@ -10,11 +10,11 @@
   const AGENT_SPACE_URL = "https://girdharik-AiAgents.hf.space";
 
   /**
-   * Optional shared key with Space secret PORTFOLIO_ASK_SECRET.
-   * Leave empty until the Space secret is set (flow keeps working).
-   * After you set the HF secret, put the same value here and redeploy Pages.
+   * Shared key with Space secret PORTFOLIO_ASK_SECRET (same value).
+   * Visible in Pages JS by design — raises the bar vs casual curl, not a vault.
+   * Rotate both together if leaked widely.
    */
-  const PORTFOLIO_ASK_KEY = "spidey";
+  const PORTFOLIO_ASK_KEY = "l_DA-AK80m_qN1_F53CHcyFxwBIeJnbN3I1ZsIfoiCI";
 
   const GENERIC_RETRY =
     "I couldn't complete that just now. Please try again in a moment.";

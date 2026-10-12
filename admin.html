@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
   <title>Admin — Portfolio Editor</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
@@ -211,8 +212,20 @@
    Works on free GitHub Pages (static, no server needed)
    ================================================================ */
 
+// PAT lives in sessionStorage only (clears when the tab closes).
+// Migrate away from any older localStorage token residue.
+(function migrateAdminTokenStorage() {
+  try {
+    const legacy = localStorage.getItem('gh_token');
+    if (legacy && !sessionStorage.getItem('gh_token')) {
+      sessionStorage.setItem('gh_token', legacy);
+    }
+    localStorage.removeItem('gh_token');
+  } catch (_) { /* private mode */ }
+})();
+
 const APP = {
-  token: localStorage.getItem('gh_token') || '',
+  token: sessionStorage.getItem('gh_token') || '',
   repo: localStorage.getItem('gh_repo') || '',   // "username/repo-name"
   branch: localStorage.getItem('gh_branch') || 'main',
   filePath: 'src/data.js',
@@ -356,14 +369,15 @@ function toast(msg, type = 'success') {
 function renderSetup() {
   document.getElementById('app').innerHTML = `
     <div class="setup-box">
-      <h2>⚙️ Connect to GitHub</h2>
+      <h2>Connect to GitHub</h2>
       <p>
-        Enter your GitHub repo and a Personal Access Token (PAT) with <strong>repo</strong> scope.<br>
-        <a href="https://github.com/settings/tokens/new?scopes=repo&description=Portfolio+Admin" target="_blank" style="color:var(--primary)">
-          Create a token here →
+        Prefer a <strong>fine-grained</strong> PAT limited to this repo (Contents: Read/Write),
+        not a classic token with full <code>repo</code> scope.<br>
+        <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" style="color:var(--primary)">
+          Create a fine-grained token →
         </a><br><br>
-        Your token is stored <strong>only in this browser's localStorage</strong>.<br>
-        It is never sent anywhere except GitHub's API.
+        The token is kept in <strong>sessionStorage only</strong> (cleared when you close this tab)
+        and is sent only to GitHub’s API. Disconnect when finished.
       </p>
       <div class="field">
         <label>Repository (owner/repo)</label>
@@ -392,7 +406,8 @@ async function doSetup() {
   APP.repo = repo; APP.branch = branch; APP.token = token;
   localStorage.setItem('gh_repo', repo);
   localStorage.setItem('gh_branch', branch);
-  localStorage.setItem('gh_token', token);
+  sessionStorage.setItem('gh_token', token);
+  localStorage.removeItem('gh_token');
 
   try {
     const ok = await GH.testConnection();
@@ -522,6 +537,7 @@ function previewSite() {
 }
 
 function disconnect() {
+  sessionStorage.removeItem('gh_token');
   localStorage.removeItem('gh_token');
   localStorage.removeItem('gh_repo');
   localStorage.removeItem('gh_branch');
