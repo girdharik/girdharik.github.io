@@ -105,17 +105,32 @@
     return row;
   }
 
+  function cleanAnswer(text) {
+    return String(text || "")
+      .replace(
+        /^(?:\*{0,2})\s*(?:Answer|Examples|How it works|Safeguards|Stop)\.?\s*(?:\*{0,2})\s*:?\s*$/gim,
+        ""
+      )
+      .replace(
+        /^(?:\*{0,2})\s*(?:Answer|Examples)\s*(?:\*{0,2})\s*[—:-]\s*/gim,
+        ""
+      )
+      .replace(/\n{3,}/g, "\n\n")
+      .trim();
+  }
+
   function renderAssistant(markdown) {
+    const cleaned = cleanAnswer(markdown);
     let html;
     try {
-      html = global.marked ? global.marked.parse(markdown || "") : null;
+      html = global.marked ? global.marked.parse(cleaned || "") : null;
     } catch (_) {
       html = null;
     }
     if (html) {
       appendMessage("assistant", html, true);
     } else {
-      appendMessage("assistant", markdown || "", false);
+      appendMessage("assistant", cleaned || "", false);
     }
   }
 
@@ -463,11 +478,13 @@
     }
   }
 
-  function hideGreeting() {
+  function hideGreeting(keepFabWave) {
     const el = $("botGreeting");
     const fab = $("botFab");
-    if (fab) fab.classList.remove("bot-fab-wave");
-    if (!el || !el.classList.contains("is-visible")) return;
+    if (fab && !keepFabWave) fab.classList.remove("bot-fab-wave");
+    if (!el || (!el.classList.contains("is-visible") && !el.classList.contains("is-leaving"))) {
+      return;
+    }
     el.classList.remove("is-visible");
     el.classList.add("is-leaving");
     const finish = () => {
@@ -481,22 +498,21 @@
     const el = $("botGreeting");
     const fab = $("botFab");
     if (!el || !fab) return;
-    if (fab.getAttribute("aria-expanded") === "true") return;
-
-    el.classList.remove("is-leaving");
-    el.classList.remove("is-visible");
-    void el.offsetWidth;
-    el.classList.add("is-visible");
+    // Panel already open — still flash the FAB wave once
+    const panelOpen = fab.getAttribute("aria-expanded") === "true";
 
     fab.classList.remove("bot-fab-wave");
     void fab.offsetWidth;
     fab.classList.add("bot-fab-wave");
-    // After waves, restore the normal label
-    setTimeout(() => {
-      if (fab.getAttribute("aria-expanded") !== "true") {
-        fab.classList.remove("bot-fab-wave");
-      }
-    }, 2800);
+    setTimeout(() => fab.classList.remove("bot-fab-wave"), 3200);
+
+    if (panelOpen) return;
+
+    el.classList.remove("is-leaving");
+    el.classList.remove("is-visible");
+    // Force paint so the entrance animation restarts
+    void el.offsetWidth;
+    el.classList.add("is-visible");
   }
 
   function setOpen(open) {
@@ -505,7 +521,8 @@
     if (!panel) return;
     if (fab) fab.setAttribute("aria-expanded", open ? "true" : "false");
     if (open) {
-      hideGreeting();
+      hideGreeting(true);
+      if (fab) fab.classList.remove("bot-fab-wave");
       panel.classList.remove("open");
       void panel.offsetWidth;
       panel.classList.add("open");
@@ -549,8 +566,8 @@
       greetDismiss.addEventListener("click", () => hideGreeting());
     }
 
-    // Welcome bubble + hand wave on every page open
-    setTimeout(showGreeting, 500);
+    // Welcome bubble + hand wave shortly after first paint
+    setTimeout(showGreeting, 700);
 
     panel.querySelectorAll(".bot-sample-q").forEach((btn) => {
       btn.addEventListener("click", () => {
