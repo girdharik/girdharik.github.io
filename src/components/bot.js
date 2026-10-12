@@ -12,6 +12,11 @@
   const GENERIC_RETRY =
     "I couldn't complete that just now. Please try again in a moment.";
 
+  const COMPARE_PROMPT =
+    "If you’re hiring and want to see whether I’m a good fit, you’re welcome to " +
+    "paste the job posting or requirements below, or upload a file " +
+    "(PDF, Word, Markdown, or text). I’ll reply with a short, honest match.";
+
   const WAKE_TIMEOUT_MS = 120000;
   const ASK_TIMEOUT_MS = 90000;
   const JD_TIMEOUT_MS = 120000;
@@ -31,6 +36,9 @@
     "Writing a short summary…",
   ];
 
+  const COMPARE_INTENT =
+    /\b(good\s+fit|open\s+role|hiring|compare|match)\b.*\b(role|job|posting|position|opening|fit|experience)?\b|\bjob\s+(description|posting|req|requirements)\b|\bshare\s+(a\s+)?(jd|job)\b|\bif\s+i('m|\s+am)\s+a\s+(good\s+)?fit\b/i;
+
   const state = {
     ready: false,
     waking: false,
@@ -39,6 +47,7 @@
     pendingJdText: null,
     pendingJdFile: null,
     attachedFile: null,
+    awaitingJd: false,
     statusTimer: null,
     statusIdx: 0,
     statusLines: STATUS_LINES,
@@ -123,14 +132,27 @@
   function setBusy(busy) {
     state.asking = busy;
     const send = $("botSend");
-    const match = $("botJdMatch");
     if (send) send.disabled = busy;
-    if (match) match.disabled = busy;
+    document.querySelectorAll(".bot-jd-card-compare").forEach((btn) => {
+      btn.disabled = busy;
+    });
   }
 
-  function updateAttachChip() {
-    const chip = $("botAttachChip");
-    const name = $("botAttachName");
+  function clearAttachedFile() {
+    state.attachedFile = null;
+    const input = $("botJdFile");
+    if (input) input.value = "";
+    document.querySelectorAll(".bot-jd-chip").forEach((chip) => {
+      chip.hidden = true;
+      const name = chip.querySelector(".bot-jd-chip-name");
+      if (name) name.textContent = "";
+    });
+  }
+
+  function updateChipInCard(card) {
+    if (!card) return;
+    const chip = card.querySelector(".bot-jd-chip");
+    const name = card.querySelector(".bot-jd-chip-name");
     if (!chip || !name) return;
     if (state.attachedFile) {
       name.textContent = state.attachedFile.name;
@@ -141,11 +163,88 @@
     }
   }
 
-  function clearAttachedFile() {
-    state.attachedFile = null;
-    const input = $("botJdFile");
-    if (input) input.value = "";
-    updateAttachChip();
+  function removeJdCards() {
+    document.querySelectorAll(".bot-msg-jd").forEach((el) => el.remove());
+  }
+
+  function showCompareCard() {
+    removeJdCards();
+    state.awaitingJd = true;
+    clearAttachedFile();
+
+    const thread = $("botMessages");
+    if (!thread) return;
+
+    const row = document.createElement("div");
+    row.className = "bot-msg bot-msg-assistant bot-msg-jd";
+    const bubble = document.createElement("div");
+    bubble.className = "bot-bubble bot-jd-card";
+
+    const prompt = document.createElement("p");
+    prompt.className = "bot-jd-card-prompt";
+    prompt.textContent = COMPARE_PROMPT;
+
+    const chip = document.createElement("div");
+    chip.className = "bot-jd-chip";
+    chip.hidden = true;
+    chip.innerHTML =
+      '<span class="bot-jd-chip-name"></span>' +
+      '<button type="button" class="bot-jd-chip-clear" aria-label="Remove file">&times;</button>';
+
+    const ta = document.createElement("textarea");
+    ta.className = "bot-jd-card-input";
+    ta.rows = 4;
+    ta.maxLength = 12000;
+    ta.placeholder = "Paste the job posting or requirements here…";
+    ta.setAttribute("aria-label", "Paste job posting or requirements");
+
+    const actions = document.createElement("div");
+    actions.className = "bot-jd-card-actions";
+
+    const uploadBtn = document.createElement("button");
+    uploadBtn.type = "button";
+    uploadBtn.className = "bot-jd-card-upload";
+    uploadBtn.innerHTML =
+      '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>' +
+      " Upload file";
+
+    const compareBtn = document.createElement("button");
+    compareBtn.type = "button";
+    compareBtn.className = "bot-jd-card-compare";
+    compareBtn.textContent = "See if I’m a fit";
+
+    actions.appendChild(uploadBtn);
+    actions.appendChild(compareBtn);
+
+    bubble.appendChild(prompt);
+    bubble.appendChild(chip);
+    bubble.appendChild(ta);
+    bubble.appendChild(actions);
+    row.appendChild(bubble);
+    thread.appendChild(row);
+    thread.scrollTop = thread.scrollHeight;
+
+    chip.querySelector(".bot-jd-chip-clear").addEventListener("click", () => {
+      clearAttachedFile();
+    });
+
+    uploadBtn.addEventListener("click", () => {
+      const fileInput = $("botJdFile");
+      if (fileInput) fileInput.click();
+    });
+
+    compareBtn.addEventListener("click", () => {
+      runJdMatch({ text: ta.value, file: state.attachedFile });
+    });
+
+    setTimeout(() => ta.focus(), 80);
+  }
+
+  function startCompareFlow(label) {
+    const text = (label || "Looking for a good fit for an open role?").trim();
+    appendMessage("user", text, false);
+    showCompareCard();
+    wakeAgent();
   }
 
   async function wakeAgent() {
@@ -250,6 +349,13 @@
     const q = (question || "").trim();
     if (!q || state.asking) return;
 
+    if (COMPARE_INTENT.test(q)) {
+      startCompareFlow(q);
+      const input = $("botInput");
+      if (input) input.value = "";
+      return;
+    }
+
     const input = $("botInput");
     if (input) input.value = "";
 
@@ -299,16 +405,18 @@
     if (state.asking) return;
     const jdText = (text || "").trim();
     if (!file && jdText.length < 40) {
-      appendMessage("user", "Compare role", false);
       renderAssistant(
-        "Please paste more of the job posting, or upload the file (PDF, Word, Markdown, or text)."
+        "Please paste a bit more of the posting, or upload the file, so I can compare fairly."
       );
       return;
     }
 
+    removeJdCards();
+    state.awaitingJd = false;
+
     const label = file
-      ? "Compare role: " + file.name
-      : "Compare role: " +
+      ? "Shared posting: " + file.name
+      : "Shared posting: " +
         (jdText.length > 140
           ? jdText.slice(0, 140).replace(/\s+/g, " ") + "…"
           : jdText.replace(/\s+/g, " "));
@@ -344,8 +452,6 @@
       setStatus("", false);
       renderAssistant((data && data.answer) || GENERIC_RETRY);
       clearAttachedFile();
-      const jdInput = $("botJdInput");
-      if (jdInput) jdInput.value = "";
     } catch (_) {
       stopStatusCycle();
       setStatus("", false);
@@ -357,18 +463,40 @@
     }
   }
 
-  function submitMatch() {
-    const jdInput = $("botJdInput");
-    const text = jdInput ? jdInput.value : "";
-    runJdMatch({ text, file: state.attachedFile });
+  function hideGreeting() {
+    const el = $("botGreeting");
+    const fab = $("botFab");
+    if (fab) fab.classList.remove("bot-fab-wave");
+    if (!el || !el.classList.contains("is-visible")) return;
+    el.classList.remove("is-visible");
+    el.classList.add("is-leaving");
+    const finish = () => {
+      el.classList.remove("is-leaving");
+    };
+    el.addEventListener("animationend", finish, { once: true });
+    setTimeout(finish, 320);
   }
 
-  function setRoleOpen(open) {
-    const toggle = $("botRoleToggle");
-    const panel = $("botRolePanel");
-    if (!toggle || !panel) return;
-    toggle.setAttribute("aria-expanded", open ? "true" : "false");
-    panel.hidden = !open;
+  function showGreeting() {
+    const el = $("botGreeting");
+    const fab = $("botFab");
+    if (!el || !fab) return;
+    if (fab.getAttribute("aria-expanded") === "true") return;
+
+    el.classList.remove("is-leaving");
+    el.classList.remove("is-visible");
+    void el.offsetWidth;
+    el.classList.add("is-visible");
+
+    fab.classList.remove("bot-fab-wave");
+    void fab.offsetWidth;
+    fab.classList.add("bot-fab-wave");
+    // After waves, restore the normal label
+    setTimeout(() => {
+      if (fab.getAttribute("aria-expanded") !== "true") {
+        fab.classList.remove("bot-fab-wave");
+      }
+    }, 2800);
   }
 
   function setOpen(open) {
@@ -377,6 +505,7 @@
     if (!panel) return;
     if (fab) fab.setAttribute("aria-expanded", open ? "true" : "false");
     if (open) {
+      hideGreeting();
       panel.classList.remove("open");
       void panel.offsetWidth;
       panel.classList.add("open");
@@ -395,39 +524,49 @@
     const form = $("botForm");
     if (!fab || !panel) return;
 
+    // Avoid double-binding if initBot runs more than once
+    if (fab.dataset.botReady === "1") {
+      setTimeout(showGreeting, 600);
+      return;
+    }
+    fab.dataset.botReady = "1";
+
     fab.addEventListener("click", () => setOpen(!panel.classList.contains("open")));
     if (close) close.addEventListener("click", () => setOpen(false));
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") {
+        hideGreeting();
+        setOpen(false);
+      }
     });
+
+    const greetOpen = $("botGreetingOpen");
+    const greetDismiss = $("botGreetingDismiss");
+    if (greetOpen) {
+      greetOpen.addEventListener("click", () => setOpen(true));
+    }
+    if (greetDismiss) {
+      greetDismiss.addEventListener("click", () => hideGreeting());
+    }
+
+    // Welcome bubble + hand wave on every page open
+    setTimeout(showGreeting, 500);
 
     panel.querySelectorAll(".bot-sample-q").forEach((btn) => {
       btn.addEventListener("click", () => {
         setOpen(true);
-        sendQuestion(btn.textContent || "");
+        const action = btn.getAttribute("data-action") || "ask";
+        const label = btn.textContent || "";
+        if (action === "compare") {
+          startCompareFlow(label);
+        } else {
+          sendQuestion(label);
+        }
       });
     });
 
     const jdFile = $("botJdFile");
-    const jdMatch = $("botJdMatch");
-    const clearBtn = $("botAttachClear");
-    const roleToggle = $("botRoleToggle");
     const input = $("botInput");
-
-    if (roleToggle) {
-      roleToggle.addEventListener("click", () => {
-        const open = roleToggle.getAttribute("aria-expanded") !== "true";
-        setRoleOpen(open);
-        if (open) {
-          const jdInput = $("botJdInput");
-          if (jdInput) setTimeout(() => jdInput.focus(), 80);
-        }
-      });
-    }
-
-    if (clearBtn) {
-      clearBtn.addEventListener("click", () => clearAttachedFile());
-    }
 
     if (jdFile) {
       jdFile.addEventListener("change", () => {
@@ -441,16 +580,9 @@
           return;
         }
         state.attachedFile = file;
-        updateAttachChip();
-        setRoleOpen(true);
-        setStatus("File ready — tap Compare when you want a short match summary.", false);
-      });
-    }
-
-    if (jdMatch) {
-      jdMatch.addEventListener("click", () => {
-        setOpen(true);
-        submitMatch();
+        const card = document.querySelector(".bot-jd-card");
+        updateChipInCard(card);
+        setStatus("File ready — tap Compare when you would like a short summary.", false);
       });
     }
 

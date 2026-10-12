@@ -48,6 +48,21 @@
   <main id="app"></main>
 
   <!-- Ask-my-AI — top-right so it stays visible without covering content CTAs -->
+  <div class="bot-greeting" id="botGreeting" aria-live="polite">
+    <p class="bot-greeting-hi">
+      Hi
+      <span class="bot-greeting-wave" aria-hidden="true">
+        <svg viewBox="0 0 36 36" width="22" height="22" fill="currentColor">
+          <path d="M7.5 18.2c-.4-1.2.3-2.4 1.5-2.7.4-.1.8 0 1.1.2V11c0-1.1.9-2 2-2s2 .9 2 2v2.4c.3-.5.8-.9 1.5-1 .9-.2 1.8.4 2 1.3V9.5c0-1.1.9-2 2-2s2 .9 2 2v5.2c.3-.4.8-.7 1.4-.8.9-.2 1.8.4 2 1.3v-.7c0-1.1.9-2 2-2s2 .9 2 2v8.8c0 4.2-2.7 7.7-6.5 8.9-2.6.8-5.2.4-7.3-1.1-2.4-1.7-4.2-4.4-4.9-7.5l-.8-3.4z"/>
+        </svg>
+      </span>
+    </p>
+    <p class="bot-greeting-text">I can share more insights about my work — projects, how I build, and fit for a role.</p>
+    <div class="bot-greeting-actions">
+      <button type="button" class="bot-greeting-cta" id="botGreetingOpen">Ask me</button>
+      <button type="button" class="bot-greeting-dismiss" id="botGreetingDismiss" aria-label="Dismiss">Not now</button>
+    </div>
+  </div>
   <button class="bot-fab" id="botFab" type="button" aria-expanded="false" aria-controls="botPanel" aria-label="Ask my AI">
     <span class="bot-fab-orb" aria-hidden="true">
       <span class="bot-fab-ring"></span>
@@ -55,6 +70,11 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
     </span>
     <span class="bot-fab-label">Ask my AI</span>
+    <span class="bot-fab-hi" aria-hidden="true">
+      <svg viewBox="0 0 36 36" width="16" height="16" fill="currentColor">
+        <path d="M7.5 18.2c-.4-1.2.3-2.4 1.5-2.7.4-.1.8 0 1.1.2V11c0-1.1.9-2 2-2s2 .9 2 2v2.4c.3-.5.8-.9 1.5-1 .9-.2 1.8.4 2 1.3V9.5c0-1.1.9-2 2-2s2 .9 2 2v5.2c.3-.4.8-.7 1.4-.8.9-.2 1.8.4 2 1.3v-.7c0-1.1.9-2 2-2s2 .9 2 2v8.8c0 4.2-2.7 7.7-6.5 8.9-2.6.8-5.2.4-7.3-1.1-2.4-1.7-4.2-4.4-4.9-7.5l-.8-3.4z"/>
+      </svg>
+    </span>
   </button>
   <div class="bot-panel" id="botPanel" role="dialog" aria-label="Ask my AI">
     <div class="bot-panel-header">
@@ -68,9 +88,9 @@
       <p class="bot-intro">Ask about my background, projects, or how I work.</p>
       <div class="bot-samples" id="botSamples">
         <p class="bot-samples-label">Suggestions</p>
-        <button type="button" class="bot-sample-q">What kind of work do you do?</button>
-        <button type="button" class="bot-sample-q">What have you built recently?</button>
-        <button type="button" class="bot-sample-q">Are you open to new opportunities?</button>
+        <button type="button" class="bot-sample-q" data-action="ask">What kind of work do you do?</button>
+        <button type="button" class="bot-sample-q" data-action="ask">What have you built recently?</button>
+        <button type="button" class="bot-sample-q" data-action="compare">Looking for a good fit for an open role?</button>
       </div>
       <div class="bot-messages" id="botMessages" aria-live="polite"></div>
       <p class="bot-status" id="botStatus" hidden></p>
@@ -89,39 +109,12 @@
           <button class="bot-send" id="botSend" type="submit">Ask</button>
         </div>
       </form>
-      <div class="bot-role" id="botRole">
-        <button type="button" class="bot-role-toggle" id="botRoleToggle" aria-expanded="false">
-          Comparing a role? Share the job description
-        </button>
-        <div class="bot-role-panel" id="botRolePanel" hidden>
-          <p class="bot-role-help">Optional. Paste the posting, or upload a file (PDF, Word, Markdown, text).</p>
-          <div class="bot-attach-chip" id="botAttachChip" hidden>
-            <span id="botAttachName"></span>
-            <button type="button" class="bot-attach-clear" id="botAttachClear" aria-label="Remove file">&times;</button>
-          </div>
-          <textarea
-            class="bot-role-input"
-            id="botJdInput"
-            rows="4"
-            maxlength="12000"
-            placeholder="Paste the job description here…"
-            aria-label="Paste job description"
-          ></textarea>
-          <div class="bot-role-actions">
-            <label class="bot-attach">
-              <input
-                type="file"
-                id="botJdFile"
-                accept=".pdf,.docx,.doc,.md,.markdown,.txt,.text,.rtf,.html,.htm,.csv,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,text/markdown,text/html,text/rtf"
-                hidden
-              />
-              <svg class="bot-attach-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
-              Upload file
-            </label>
-            <button type="button" class="bot-match" id="botJdMatch">Compare</button>
-          </div>
-        </div>
-      </div>
+      <input
+        type="file"
+        id="botJdFile"
+        accept=".pdf,.docx,.doc,.md,.markdown,.txt,.text,.rtf,.html,.htm,.csv,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,text/markdown,text/html,text/rtf"
+        hidden
+      />
     </div>
   </div>
 
