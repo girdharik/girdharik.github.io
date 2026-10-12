@@ -642,6 +642,107 @@ a { color: var(--clr-primary); text-decoration: none; }
   padding-top: 0.45rem;
   border-top: 1px solid rgba(255,255,255,0.08);
 }
+.bot-input {
+  width: 100%;
+  min-height: 2.6rem;
+  max-height: 5.5rem;
+  resize: none;
+  padding: 0.55rem 0.7rem;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-sm);
+  color: var(--clr-text);
+  font-family: var(--font);
+  font-size: 0.8rem;
+  line-height: 1.4;
+  box-sizing: border-box;
+}
+.bot-input:focus {
+  outline: none;
+  border-color: rgba(46,230,168,0.45);
+}
+.bot-composer-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.45rem;
+}
+.bot-composer-hint {
+  font-size: 0.68rem;
+  color: var(--clr-muted);
+}
+.bot-send {
+  flex-shrink: 0;
+  padding: 0.45rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font);
+  font-size: 0.76rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: rgba(46,230,168,0.15);
+  border: 1px solid rgba(46,230,168,0.35);
+  color: var(--clr-primary);
+}
+.bot-send:hover:not(:disabled) {
+  background: rgba(46,230,168,0.22);
+}
+.bot-send:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.bot-role {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.bot-role-toggle {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.4rem 0;
+  background: none;
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  color: var(--clr-muted);
+  font-family: var(--font);
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+.bot-role-toggle:hover,
+.bot-role-toggle[aria-expanded="true"] {
+  color: var(--clr-primary);
+}
+.bot-role-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.bot-role-panel[hidden] { display: none; }
+.bot-role-help {
+  margin: 0;
+  font-size: 0.7rem;
+  color: var(--clr-muted);
+  line-height: 1.4;
+}
+.bot-role-input {
+  width: 100%;
+  min-height: 4.5rem;
+  resize: vertical;
+  padding: 0.55rem 0.7rem;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-sm);
+  color: var(--clr-text);
+  font-family: var(--font);
+  font-size: 0.78rem;
+  line-height: 1.4;
+  box-sizing: border-box;
+}
+.bot-role-input:focus {
+  outline: none;
+  border-color: rgba(46,230,168,0.45);
+}
 .bot-attach-chip {
   display: inline-flex;
   align-items: center;
@@ -672,26 +773,7 @@ a { color: var(--clr-primary); text-decoration: none; }
   padding: 0 0.15rem;
 }
 .bot-attach-clear:hover { color: var(--clr-text); }
-.bot-input {
-  width: 100%;
-  min-height: 2.6rem;
-  max-height: 6.5rem;
-  resize: none;
-  padding: 0.55rem 0.7rem;
-  background: rgba(0,0,0,0.25);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: var(--radius-sm);
-  color: var(--clr-text);
-  font-family: var(--font);
-  font-size: 0.8rem;
-  line-height: 1.4;
-  box-sizing: border-box;
-}
-.bot-input:focus {
-  outline: none;
-  border-color: rgba(46,230,168,0.45);
-}
-.bot-composer-bar {
+.bot-role-actions {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -708,13 +790,7 @@ a { color: var(--clr-primary); text-decoration: none; }
 }
 .bot-attach-icon { flex-shrink: 0; }
 .bot-attach:hover { color: var(--clr-primary); }
-.bot-composer-actions {
-  display: flex;
-  gap: 0.35rem;
-  align-items: center;
-}
-.bot-match,
-.bot-send {
+.bot-match {
   flex-shrink: 0;
   padding: 0.45rem 0.75rem;
   border-radius: var(--radius-sm);
@@ -722,8 +798,6 @@ a { color: var(--clr-primary); text-decoration: none; }
   font-size: 0.76rem;
   font-weight: 600;
   cursor: pointer;
-}
-.bot-match {
   background: transparent;
   border: 1px solid rgba(46,230,168,0.35);
   color: var(--clr-primary);
@@ -731,16 +805,7 @@ a { color: var(--clr-primary); text-decoration: none; }
 .bot-match:hover:not(:disabled) {
   background: rgba(46,230,168,0.1);
 }
-.bot-send {
-  background: rgba(46,230,168,0.15);
-  border: 1px solid rgba(46,230,168,0.35);
-  color: var(--clr-primary);
-}
-.bot-send:hover:not(:disabled) {
-  background: rgba(46,230,168,0.22);
-}
-.bot-match:disabled,
-.bot-send:disabled {
+.bot-match:disabled {
   opacity: 0.55;
   cursor: default;
 }

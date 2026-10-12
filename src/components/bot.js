@@ -25,10 +25,10 @@
   ];
 
   const JD_STATUS_LINES = [
-    "Reading the job description…",
-    "Comparing against my experience…",
-    "Checking must-have requirements…",
-    "Writing a short fit summary…",
+    "Reading the role…",
+    "Comparing with my experience…",
+    "Checking the main requirements…",
+    "Writing a short summary…",
   ];
 
   const state = {
@@ -146,14 +146,6 @@
     const input = $("botJdFile");
     if (input) input.value = "";
     updateAttachChip();
-  }
-
-  function looksLikeJd(text) {
-    const t = (text || "").trim();
-    if (t.length < 280) return false;
-    return /\b(responsibilit|requirement|qualifications?|must[- ]have|job description|years? of experience|we are (looking|seeking)|role overview)\b/i.test(
-      t
-    );
   }
 
   async function wakeAgent() {
@@ -307,16 +299,16 @@
     if (state.asking) return;
     const jdText = (text || "").trim();
     if (!file && jdText.length < 40) {
-      appendMessage("user", "JD match", false);
+      appendMessage("user", "Compare role", false);
       renderAssistant(
-        "Paste a fuller job description, or attach a PDF / Word / Markdown file."
+        "Please paste more of the job posting, or upload the file (PDF, Word, Markdown, or text)."
       );
       return;
     }
 
     const label = file
-      ? "JD match: " + file.name
-      : "JD match: " +
+      ? "Compare role: " + file.name
+      : "Compare role: " +
         (jdText.length > 140
           ? jdText.slice(0, 140).replace(/\s+/g, " ") + "…"
           : jdText.replace(/\s+/g, " "));
@@ -352,12 +344,8 @@
       setStatus("", false);
       renderAssistant((data && data.answer) || GENERIC_RETRY);
       clearAttachedFile();
-      const input = $("botInput");
-      if (input && file) {
-        /* keep pasted text if any; clear only when file-driven */
-      } else if (input) {
-        input.value = "";
-      }
+      const jdInput = $("botJdInput");
+      if (jdInput) jdInput.value = "";
     } catch (_) {
       stopStatusCycle();
       setStatus("", false);
@@ -370,23 +358,17 @@
   }
 
   function submitMatch() {
-    const input = $("botInput");
-    const text = input ? input.value : "";
+    const jdInput = $("botJdInput");
+    const text = jdInput ? jdInput.value : "";
     runJdMatch({ text, file: state.attachedFile });
   }
 
-  function submitAskOrMatch() {
-    const input = $("botInput");
-    const text = (input && input.value) || "";
-    if (state.attachedFile) {
-      submitMatch();
-      return;
-    }
-    if (looksLikeJd(text)) {
-      submitMatch();
-      return;
-    }
-    sendQuestion(text);
+  function setRoleOpen(open) {
+    const toggle = $("botRoleToggle");
+    const panel = $("botRolePanel");
+    if (!toggle || !panel) return;
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    panel.hidden = !open;
   }
 
   function setOpen(open) {
@@ -429,7 +411,19 @@
     const jdFile = $("botJdFile");
     const jdMatch = $("botJdMatch");
     const clearBtn = $("botAttachClear");
+    const roleToggle = $("botRoleToggle");
     const input = $("botInput");
+
+    if (roleToggle) {
+      roleToggle.addEventListener("click", () => {
+        const open = roleToggle.getAttribute("aria-expanded") !== "true";
+        setRoleOpen(open);
+        if (open) {
+          const jdInput = $("botJdInput");
+          if (jdInput) setTimeout(() => jdInput.focus(), 80);
+        }
+      });
+    }
 
     if (clearBtn) {
       clearBtn.addEventListener("click", () => clearAttachedFile());
@@ -442,13 +436,14 @@
         if (file.size > MAX_UPLOAD_BYTES) {
           jdFile.value = "";
           renderAssistant(
-            "That file is too large (max 6 MB). Paste the requirements section instead."
+            "That file is too large (max 6 MB). Please paste the main requirements instead."
           );
           return;
         }
         state.attachedFile = file;
         updateAttachChip();
-        setStatus("JD attached — tap Match JD (or Ask will match automatically).", false);
+        setRoleOpen(true);
+        setStatus("File ready — tap Compare when you want a short match summary.", false);
       });
     }
 
@@ -462,7 +457,7 @@
     if (form) {
       form.addEventListener("submit", (e) => {
         e.preventDefault();
-        submitAskOrMatch();
+        sendQuestion(input ? input.value : "");
       });
     }
 
@@ -470,7 +465,7 @@
       input.addEventListener("keydown", (e) => {
         if (e.key === "Enter" && !e.shiftKey) {
           e.preventDefault();
-          submitAskOrMatch();
+          sendQuestion(input.value);
         }
       });
     }
