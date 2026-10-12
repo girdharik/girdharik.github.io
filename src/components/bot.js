@@ -58,7 +58,28 @@
     statusTimer: null,
     statusIdx: 0,
     statusLines: STATUS_LINES,
+    /** Recent turns for follow-ups (“where is it used?”) — sent with /ask */
+    history: [],
   };
+
+  const MAX_HISTORY_TURNS = 6;
+
+  function pushHistory(role, text) {
+    const clean = String(text || "")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (!clean) return;
+    state.history.push({ role: role, text: clean.slice(0, 700) });
+    if (state.history.length > MAX_HISTORY_TURNS) {
+      state.history = state.history.slice(-MAX_HISTORY_TURNS);
+    }
+  }
+
+  function historyForAsk() {
+    // Exclude the current user turn (caller appends it after building payload)
+    return state.history.slice();
+  }
 
   function spaceConfigured() {
     return AGENT_SPACE_URL && !AGENT_SPACE_URL.includes("REPLACE_HF_USER");
@@ -345,7 +366,10 @@
         method: "POST",
         mode: "cors",
         headers: askHeaders({ "Content-Type": "application/json" }),
-        body: JSON.stringify({ question }),
+        body: JSON.stringify({
+          question: question,
+          history: historyForAsk(),
+        }),
       },
       ASK_TIMEOUT_MS
     );
@@ -400,6 +424,7 @@
     if (input) input.value = "";
 
     appendMessage("user", q, false);
+    // Prior turns only are sent with /ask; we append this turn after the reply.
 
     if (!spaceConfigured()) {
       renderAssistant(GENERIC_RETRY);
@@ -429,7 +454,10 @@
       }
       stopStatusCycle();
       setStatus("", false);
-      renderAssistant((data && data.answer) || GENERIC_RETRY);
+      const answer = (data && data.answer) || GENERIC_RETRY;
+      renderAssistant(answer);
+      pushHistory("user", q);
+      pushHistory("assistant", answer);
     } catch (_) {
       stopStatusCycle();
       setStatus("", false);
