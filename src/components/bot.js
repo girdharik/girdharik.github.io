@@ -21,7 +21,7 @@
 
   const COMPARE_PROMPT =
     "If you’re hiring and want to see whether I’m a good fit, you’re welcome to " +
-    "paste the job posting or requirements below, or upload a file " +
+    "paste the job posting, a posting URL, or requirements below, or upload a file " +
     "(PDF, Word, Markdown, or text). I’ll reply with a short, honest match.";
 
   const WAKE_TIMEOUT_MS = 120000;
@@ -253,7 +253,7 @@
     ta.className = "bot-jd-card-input";
     ta.rows = 4;
     ta.maxLength = 12000;
-    ta.placeholder = "Paste the job posting or requirements here…";
+    ta.placeholder = "Paste the job posting, a posting URL, or requirements here…";
     ta.setAttribute("aria-label", "Paste job posting or requirements");
 
     const actions = document.createElement("div");
