@@ -60,6 +60,8 @@
     statusLines: STATUS_LINES,
     /** Recent turns for follow-ups (“where is it used?”) — sent with /ask */
     history: [],
+    /** Full JD text kept for match follow-ups (“why is Fit Partial?”) */
+    lastJdText: "",
   };
 
   const MAX_HISTORY_TURNS = 6;
@@ -298,6 +300,7 @@
 
   function startCompareFlow(label) {
     const text = (label || "Looking for a good fit for an open role?").trim();
+    state.lastJdText = "";
     appendMessage("user", text, false);
     showCompareCard();
     wakeAgent();
@@ -377,12 +380,16 @@
     return res.json();
   }
 
-  async function callMatchJd({ text, file }) {
+  async function callMatchJd({ text, file, question }) {
+    const hist = historyForAsk();
+    const followup = (question || "").trim();
     let res;
     if (file) {
       const form = new FormData();
       form.append("file", file, file.name);
       if (text) form.append("jd", text);
+      if (followup) form.append("question", followup);
+      if (hist.length) form.append("history", JSON.stringify(hist));
       res = await fetchWithTimeout(
         AGENT_SPACE_URL + "/match_jd",
         {
@@ -394,13 +401,16 @@
         JD_TIMEOUT_MS
       );
     } else {
+      const body = { jd: text || "" };
+      if (followup) body.question = followup;
+      if (hist.length) body.history = hist;
       res = await fetchWithTimeout(
         AGENT_SPACE_URL + "/match_jd",
         {
           method: "POST",
           mode: "cors",
           headers: askHeaders({ "Content-Type": "application/json" }),
-          body: JSON.stringify({ jd: text || "" }),
+          body: JSON.stringify(body),
         },
         JD_TIMEOUT_MS
       );
@@ -424,10 +434,16 @@
     if (input) input.value = "";
 
     appendMessage("user", q, false);
-    // Prior turns only are sent with /ask; we append this turn after the reply.
+    // Prior turns only are sent with /ask or JD follow-up; append after reply.
 
     if (!spaceConfigured()) {
       renderAssistant(GENERIC_RETRY);
+      return;
+    }
+
+    // After a JD match, route follow-ups to /match_jd with the cached posting.
+    if (state.lastJdText && state.lastJdText.length >= 40) {
+      await runJdFollowup(q);
       return;
     }
 
@@ -451,6 +467,52 @@
         state.ready = false;
         await wakeAgent();
         data = await callAsk(q);
+      }
+      stopStatusCycle();
+      setStatus("", false);
+      const answer = (data && data.answer) || GENERIC_RETRY;
+      renderAssistant(answer);
+      pushHistory("user", q);
+      pushHistory("assistant", answer);
+    } catch (_) {
+      stopStatusCycle();
+      setStatus("", false);
+      renderAssistant(GENERIC_RETRY);
+    } finally {
+      setBusy(false);
+      const thread = $("botMessages");
+      if (thread) thread.scrollTop = thread.scrollHeight;
+    }
+  }
+
+  async function runJdFollowup(question) {
+    const q = (question || "").trim();
+    if (!q || !state.lastJdText || state.asking) return;
+
+    if (!state.ready) {
+      state.pendingQuestion = q;
+      setStatus(STATUS_LINES[0], true);
+      if (!state.waking) wakeAgent();
+      return;
+    }
+
+    setBusy(true);
+    startStatusCycle(STATUS_LINES);
+
+    try {
+      let data;
+      try {
+        data = await callMatchJd({
+          text: state.lastJdText,
+          question: q,
+        });
+      } catch (_) {
+        state.ready = false;
+        await wakeAgent();
+        data = await callMatchJd({
+          text: state.lastJdText,
+          question: q,
+        });
       }
       stopStatusCycle();
       setStatus("", false);
@@ -518,7 +580,14 @@
       }
       stopStatusCycle();
       setStatus("", false);
-      renderAssistant((data && data.answer) || GENERIC_RETRY);
+      const answer = (data && data.answer) || GENERIC_RETRY;
+      renderAssistant(answer);
+      // Cache JD for follow-ups (paste text, or server-echoed extract from file).
+      const echoed = data && typeof data.jd === "string" ? data.jd : "";
+      const cached = (jdText && jdText.length >= 40 ? jdText : echoed).slice(0, 12000);
+      if (cached.length >= 40) state.lastJdText = cached;
+      pushHistory("user", label);
+      pushHistory("assistant", answer);
       clearAttachedFile();
     } catch (_) {
       stopStatusCycle();
