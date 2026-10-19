@@ -149,11 +149,41 @@
       .trim();
   }
 
+  /** Make JD Fit reports and similar markdown parse cleanly in marked. */
+  function normalizeAssistantMarkdown(text) {
+    let t = String(text || "").replace(/\r\n?/g, "\n");
+    // Section labels on their own lines with breathing room for lists
+    t = t.replace(
+      /\n*\*{0,2}\s*(Fit|Verdict|Matched|Gaps|Why suitable)\s*:?\s*\*{0,2}\s*/gi,
+      "\n\n**$1:**\n\n"
+    );
+    // Ensure "- " list markers start a real list (blank line before first item)
+    t = t.replace(/(\*\*[^*]+:\*\*)\n+(?=- )/g, "$1\n\n");
+    // Legacy arrow bullets → em dash (Matched: need → evidence)
+    t = t.replace(/^(\s*-\s+\*{0,2}[^*\n]+?\*{0,2})\s*→\s*/gm, "$1 — ");
+    // Collapse accidental dense "Matched:Item" into labeled bullets when model skips dashes
+    t = t.replace(
+      /(\*\*Matched:\*\*\n\n)([^\n-*][^\n]+)/i,
+      function (_m, head, first) {
+        if (/^\s*- /.test(first)) return head + first;
+        return head + "- " + first.trim();
+      }
+    );
+    return t.replace(/\n{3,}/g, "\n\n").trim();
+  }
+
   function renderAssistant(markdown) {
-    const cleaned = cleanAnswer(markdown);
+    const cleaned = normalizeAssistantMarkdown(cleanAnswer(markdown));
     let html;
     try {
-      html = global.marked ? global.marked.parse(cleaned || "") : null;
+      if (global.marked) {
+        if (typeof global.marked.setOptions === "function") {
+          global.marked.setOptions({ gfm: true, breaks: true });
+        }
+        html = global.marked.parse(cleaned || "", { gfm: true, breaks: true });
+      } else {
+        html = null;
+      }
     } catch (_) {
       html = null;
     }

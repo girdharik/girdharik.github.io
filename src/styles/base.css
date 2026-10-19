@@ -839,7 +839,16 @@ a { color: var(--clr-primary); text-decoration: none; }
 .bot-msg-assistant .bot-bubble p { margin: 0 0 0.45rem; }
 .bot-msg-assistant .bot-bubble p:last-child { margin-bottom: 0; }
 .bot-msg-assistant .bot-bubble ul,
-.bot-msg-assistant .bot-bubble ol { margin: 0.35rem 0; padding-left: 1.1rem; }
+.bot-msg-assistant .bot-bubble ol { margin: 0.35rem 0 0.55rem; padding-left: 1.15rem; }
+.bot-msg-assistant .bot-bubble li { margin: 0.28rem 0; }
+.bot-msg-assistant .bot-bubble strong {
+  color: var(--clr-primary);
+  font-weight: 600;
+}
+.bot-msg-assistant .bot-bubble li strong {
+  color: var(--clr-text);
+  font-weight: 600;
+}
 .bot-status {
   flex-shrink: 0;
   margin: 0;
