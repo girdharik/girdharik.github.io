@@ -152,9 +152,9 @@
   /** Make JD Fit reports and similar markdown parse cleanly in marked. */
   function normalizeAssistantMarkdown(text) {
     let t = String(text || "").replace(/\r\n?/g, "\n");
-    // Section labels on their own lines with breathing room for lists
+    // Section labels only at line start + required colon (avoid “strong fit for…”)
     t = t.replace(
-      /\n*\*{0,2}\s*(Fit|Verdict|Matched|Gaps|Why suitable)\s*:?\s*\*{0,2}\s*/gi,
+      /(?:^|\n+)\s*\*{0,2}\s*(Fit|Verdict|Matched|Gaps|Why suitable)\s*:\s*\*{0,2}\s*/gi,
       "\n\n**$1:**\n\n"
     );
     // Ensure "- " list markers start a real list (blank line before first item)
