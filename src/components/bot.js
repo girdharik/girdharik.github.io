@@ -161,6 +161,8 @@
     t = t.replace(/(\*\*[^*]+:\*\*)\n+(?=- )/g, "$1\n\n");
     // Legacy arrow bullets → em dash (Matched: need → evidence)
     t = t.replace(/^(\s*-\s+\*{0,2}[^*\n]+?\*{0,2})\s*→\s*/gm, "$1 — ");
+    // Occasional model quirk: "agent s" / "copilot s"
+    t = t.replace(/\b(agent|copilot|pipeline|workflow|system|project) s\b/gi, "$1s");
     // Collapse accidental dense "Matched:Item" into labeled bullets when model skips dashes
     t = t.replace(
       /(\*\*Matched:\*\*\n\n)([^\n-*][^\n]+)/i,
